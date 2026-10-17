@@ -1,0 +1,146 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-display: 'Syne', 'Space Grotesk', 'Inter', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --color-electric-purple: #9333ea;
+    --color-neon-purple: #a855f7;
+    --color-neon-pink: #e4007c;
+    --color-neon-blue: #06b6d4;
+  }
+
+  body {
+    background-color: #000000;
+    color: #ffffff;
+    font-family: var(--font-sans);
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+  }
+
+  #root {
+    width: 100%;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    background-color: #000000;
+  }
+}
+
+/* Custom Typography Utilities */
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+/* Subtle Matrix Dot Grid Background */
+.bg-tech-dots {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.bg-tech-dots-dense {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* Glow effects */
+.glow-purple {
+  box-shadow: 0 0 25px -4px rgba(168, 85, 247, 0.45), 0 0 10px -2px rgba(147, 51, 234, 0.3);
+}
+
+.glow-purple-lg {
+  box-shadow: 0 0 50px -10px rgba(168, 85, 247, 0.6), 0 0 20px -5px rgba(228, 0, 124, 0.4);
+}
+
+.glow-pink {
+  box-shadow: 0 0 25px -4px rgba(228, 0, 124, 0.45);
+}
+
+.glow-text-purple {
+  text-shadow: 0 0 20px rgba(168, 85, 247, 0.6), 0 0 40px rgba(147, 51, 234, 0.3);
+}
+
+.glow-text-white {
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+/* Animations */
+@keyframes pulse-slow {
+  0%, 100% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+}
+
+@keyframes ping-slow {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  75%, 100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+@keyframes radar-sweep {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes float-subtle {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-ping-slow {
+  animation: ping-slow 2.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.animate-radar {
+  animation: radar-sweep 8s linear infinite;
+}
+
+.animate-float {
+  animation: float-subtle 4s ease-in-out infinite;
+}
+
+/* Glassmorphism styling */
+.glass-panel {
+  background: rgba(10, 10, 12, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-panel-hover {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-panel-hover:hover {
+  background: rgba(18, 18, 22, 0.85);
+  border-color: rgba(255, 255, 255, 0.18);
+  transform: translateY(-2px);
+}
