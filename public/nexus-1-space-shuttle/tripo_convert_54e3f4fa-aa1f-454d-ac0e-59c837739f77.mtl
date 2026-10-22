@@ -1,0 +1,16 @@
+# Blender 5.0.1 MTL File: 'None'
+# www.blender.org
+
+newmtl tripo_mat_54e3f4fa-aa1f-454d-ac0e-59c837739f77
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd space_shuttle_3d_model_basecolor.JPEG
+map_Ns space_shuttle_3d_model_roughness.JPEG
+map_Pr space_shuttle_3d_model_roughness.JPEG
+map_refl space_shuttle_3d_model_metallic.JPEG
+map_Pm space_shuttle_3d_model_metallic.JPEG
+map_Bump -bm 1.000000 space_shuttle_3d_model_normal.JPEG

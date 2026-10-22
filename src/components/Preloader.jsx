@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { preloadShuttleModel } from '../utils/shuttleLoader';
 
 export default function Preloader({ onComplete, onStartExit }) {
   const [progress, setProgress] = useState(0);
@@ -15,6 +16,9 @@ export default function Preloader({ onComplete, onStartExit }) {
   onCompleteRef.current = onComplete;
 
   useEffect(() => {
+    // Preload 3D Space Shuttle model in background while progress bar runs
+    preloadShuttleModel();
+
     let timeoutId;
     let current = 0;
     let isCancelled = false;
@@ -51,27 +55,22 @@ export default function Preloader({ onComplete, onStartExit }) {
       } else {
         // Reached 100% cleanly
         setIsCompleted(true);
-        setStatusText('SYSTEMS NOMINAL • WELCOME TO INNOVERSE');
+        setStatusText('SYSTEMS NOMINAL • INITIATING HYPER-LAUNCH');
 
-        // Step 1: Satisfying hold at 100% (450ms)
+        // Step 1: Hold at 100% (350ms)
         setTimeout(() => {
           if (isCancelled) return;
           setIsContentFading(true);
+          setIsExiting(true);
+          if (onStartExitRef.current) onStartExitRef.current();
 
-          // Step 2: Trigger curtain slide-up and bloom hero in App
+          // Smooth handoff to spaceship transition (450ms)
           setTimeout(() => {
             if (isCancelled) return;
-            setIsExiting(true);
-            if (onStartExitRef.current) onStartExitRef.current();
-
-            // Step 3: Complete transition and clean up unmounted loader
-            setTimeout(() => {
-              if (isCancelled) return;
-              setIsDone(true);
-              if (onCompleteRef.current) onCompleteRef.current();
-            }, 1000); // 1000ms cubic bezier curtain duration
-          }, 350);
-        }, 450);
+            setIsDone(true);
+            if (onCompleteRef.current) onCompleteRef.current();
+          }, 450);
+        }, 350);
       }
     };
 
@@ -88,10 +87,10 @@ export default function Preloader({ onComplete, onStartExit }) {
 
   return (
     <div
-      className={`fixed inset-0 z-[100] flex flex-col justify-between p-6 sm:p-12 bg-black text-white select-none transition-transform duration-1000 ease-[cubic-bezier(0.85,0,0.15,1)] ${
+      className={`fixed inset-0 z-[100] flex flex-col justify-between p-6 sm:p-12 bg-black text-white select-none transition-all duration-500 ease-[cubic-bezier(0.85,0,0.15,1)] ${
         isExiting
-          ? '-translate-y-full pointer-events-none'
-          : 'translate-y-0'
+          ? 'opacity-0 scale-105 pointer-events-none'
+          : 'opacity-100 scale-100'
       }`}
     >
       {/* Background Matrix Dots */}
@@ -99,19 +98,17 @@ export default function Preloader({ onComplete, onStartExit }) {
 
       {/* Radiant bottom light-sweep border line during exit */}
       <div
-        className={`absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-purple-500 to-transparent transition-opacity duration-700 ${
-          isExiting ? 'opacity-100 shadow-[0_0_25px_#a855f7]' : 'opacity-0'
-        }`}
+        className={`absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-amber-500 to-transparent transition-opacity duration-700 ${isExiting ? 'opacity-100 shadow-[0_0_25px_#f59e0b]' : 'opacity-0'
+          }`}
       />
 
       {/* Top Header in Loader */}
       <div
-        className={`relative z-10 flex items-center justify-between font-mono text-[11px] text-white/40 uppercase tracking-widest transition-all duration-500 ${
-          isContentFading ? 'opacity-0 -translate-y-2' : 'opacity-100 translate-y-0'
-        }`}
+        className={`relative z-10 flex items-center justify-between font-mono text-[11px] text-white/40 uppercase tracking-widest transition-all duration-500 ${isContentFading ? 'opacity-0 -translate-y-2' : 'opacity-100 translate-y-0'
+          }`}
       >
         <div className="flex items-center gap-2">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#e4007c] animate-pulse" />
+          <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse shadow-[0_0_6px_#f59e0b]" />
           <span>INNOVERSE // 2026</span>
         </div>
         <div>
@@ -121,41 +118,36 @@ export default function Preloader({ onComplete, onStartExit }) {
 
       {/* Center Cinematic Wordmark & Progress Indicator */}
       <div
-        className={`relative z-10 flex flex-col items-center justify-center text-center my-auto transition-all duration-500 ease-out ${
-          isContentFading ? 'opacity-0 scale-95 blur-sm' : 'opacity-100 scale-100 blur-0'
-        }`}
+        className={`relative z-10 flex flex-col items-center justify-center text-center my-auto transition-all duration-500 ease-out ${isContentFading ? 'opacity-0 scale-95 blur-sm' : 'opacity-100 scale-100 blur-0'
+          }`}
       >
-        {/* Brand Logo with WeEvolveIT-style Animated Dots */}
+        {/* Brand Logo with Innoverse Animated Dots */}
         <div className="flex flex-col items-center gap-3 mb-8">
           <h1 className="font-display font-black text-4xl sm:text-6xl md:text-7xl tracking-wider text-white">
-            INNO<span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-fuchsia-400 to-cyan-400">VERSE</span>
+            Innoverse<span className="text-stroke-amber ml-2">2026</span>
           </h1>
 
           {/* Glowing Animated Sequence Dots */}
           <div className="flex items-center gap-2">
             <span
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                progress > 15 ? 'bg-white shadow-[0_0_8px_white]' : 'bg-white/20'
-              }`}
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${progress > 15 ? 'bg-white shadow-[0_0_8px_white]' : 'bg-white/20'
+                }`}
             />
             <span
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                progress > 40 ? 'bg-white shadow-[0_0_8px_white]' : 'bg-white/20'
-              }`}
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${progress > 40 ? 'bg-white shadow-[0_0_8px_white]' : 'bg-white/20'
+                }`}
             />
             <span
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                progress > 70 ? 'bg-white shadow-[0_0_8px_white]' : 'bg-white/20'
-              }`}
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${progress > 70 ? 'bg-white shadow-[0_0_8px_white]' : 'bg-white/20'
+                }`}
             />
             <span
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                isCompleted
-                  ? 'bg-cyan-400 shadow-[0_0_14px_#22d3ee] scale-125'
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${isCompleted
+                  ? 'bg-amber-400 shadow-[0_0_14px_#fbbf24] scale-125'
                   : progress > 90
-                  ? 'bg-[#e4007c] shadow-[0_0_12px_#e4007c] scale-110'
-                  : 'bg-white/20'
-              }`}
+                    ? 'bg-amber-500 shadow-[0_0_12px_#f59e0b] scale-110'
+                    : 'bg-white/20'
+                }`}
             />
           </div>
         </div>
@@ -163,18 +155,16 @@ export default function Preloader({ onComplete, onStartExit }) {
         {/* Large Monospace Progress Counter (Smooth Non-Skipping 000 to 100) */}
         <div className="flex items-baseline justify-center gap-1 font-mono select-none">
           <span
-            className={`text-6xl sm:text-8xl md:text-9xl font-black tracking-tight tabular-nums transition-all duration-300 ${
-              isCompleted
-                ? 'text-white drop-shadow-[0_0_35px_rgba(168,85,247,0.85)] scale-105'
+            className={`text-6xl sm:text-8xl md:text-9xl font-black tracking-tight tabular-nums transition-all duration-300 ${isCompleted
+                ? 'text-white drop-shadow-[0_0_35px_rgba(245,158,11,0.85)] scale-105'
                 : 'text-white/90'
-            }`}
+              }`}
           >
             {String(progress).padStart(3, '0')}
           </span>
           <span
-            className={`text-xl sm:text-3xl font-bold transition-all duration-300 ${
-              isCompleted ? 'text-cyan-400 drop-shadow-[0_0_15px_#22d3ee]' : 'text-[#e4007c]'
-            }`}
+            className={`text-xl sm:text-3xl font-bold transition-all duration-300 ${isCompleted ? 'text-amber-400 drop-shadow-[0_0_15px_#fbbf24]' : 'text-amber-500'
+              }`}
           >
             %
           </span>
@@ -185,7 +175,7 @@ export default function Preloader({ onComplete, onStartExit }) {
           {isCompleted ? (
             <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_12px_#34d399]" />
           ) : (
-            <span className="inline-block w-2 h-2 rounded-full border border-purple-400 border-t-transparent animate-spin" />
+            <span className="inline-block w-2 h-2 rounded-full border border-amber-400 border-t-transparent animate-spin" />
           )}
           <span className={isCompleted ? 'text-emerald-400 font-semibold tracking-wider' : ''}>
             {statusText}
@@ -195,19 +185,18 @@ export default function Preloader({ onComplete, onStartExit }) {
         {/* Thin Glowing Laser Progress Bar */}
         <div className="w-64 sm:w-80 md:w-96 h-[2px] bg-white/10 rounded-full mt-8 overflow-hidden relative">
           <div
-            className="h-full bg-gradient-to-r from-purple-500 via-fuchsia-500 to-cyan-400 transition-all duration-75 ease-out relative"
+            className="h-full bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-300 transition-all duration-75 ease-out relative"
             style={{
               width: `${progress}%`,
               boxShadow: isCompleted
-                ? '0 0 25px rgba(34, 211, 238, 0.95), 0 0 10px rgba(168, 85, 247, 0.8)'
-                : '0 0 12px rgba(168, 85, 247, 0.8)'
+                ? '0 0 25px rgba(245, 158, 11, 0.95), 0 0 10px rgba(251, 191, 36, 0.8)'
+                : '0 0 12px rgba(245, 158, 11, 0.8)'
             }}
           >
             {/* Bright leading spark */}
             <span
-              className={`absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-white transition-all duration-300 ${
-                isCompleted ? 'scale-150 shadow-[0_0_14px_white]' : 'shadow-[0_0_10px_white]'
-              }`}
+              className={`absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-white transition-all duration-300 ${isCompleted ? 'scale-150 shadow-[0_0_14px_white]' : 'shadow-[0_0_10px_white]'
+                }`}
             />
           </div>
         </div>
@@ -215,12 +204,11 @@ export default function Preloader({ onComplete, onStartExit }) {
 
       {/* Footer Info in Loader */}
       <div
-        className={`relative z-10 flex flex-col sm:flex-row items-center justify-between gap-3 font-mono text-[10px] text-white/30 uppercase tracking-widest transition-all duration-500 ${
-          isContentFading ? 'opacity-0 translate-y-2' : 'opacity-100 translate-y-0'
-        }`}
+        className={`relative z-10 flex flex-col sm:flex-row items-center justify-between gap-3 font-mono text-[10px] text-white/30 uppercase tracking-widest transition-all duration-500 ${isContentFading ? 'opacity-0 translate-y-2' : 'opacity-100 translate-y-0'
+          }`}
       >
         <div>
-          <span>24-HOUR NATIONAL LEVEL HACKATHON • $150K BOUNTIES</span>
+          <span>24-HOUR NATIONAL LEVEL HACKATHON • ₹50K BOUNTIES</span>
         </div>
         <div className="flex items-center gap-4">
           <span>LAT: 20.59° N</span>

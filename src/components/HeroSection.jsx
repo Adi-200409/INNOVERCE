@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowRight, Eye, Sparkles, Radio, Compass } from 'lucide-react';
+import { ArrowRight, Compass } from 'lucide-react';
 import ThreeEarthGlobe from './ThreeEarthGlobe';
 import confetti from 'canvas-confetti';
 
@@ -8,12 +8,12 @@ export default function HeroSection({ onOpenRegister, onOpenTracks }) {
   const [showArcs, setShowArcs] = useState(true);
   const [atmosphereGlow, setAtmosphereGlow] = useState(true);
 
-  // Live countdown to Hackathon launch
+  // Live countdown to Hackathon launch matching Orbit24
   const [timeLeft, setTimeLeft] = useState({
-    days: 42,
-    hours: 14,
-    minutes: 28,
-    seconds: 53
+    days: 46,
+    hours: 20,
+    minutes: 34,
+    seconds: 40
   });
 
   useEffect(() => {
@@ -30,22 +30,20 @@ export default function HeroSection({ onOpenRegister, onOpenTracks }) {
   }, []);
 
   const handleRegisterClick = () => {
-    // Quick burst of confetti on CTA click
+    // Burst of Golden Amber & Solar Orange confetti
     confetti({
-      particleCount: 80,
-      spread: 60,
-      origin: { y: 0.75 },
-      colors: ['#a855f7', '#e4007c', '#38bdf8']
+      particleCount: 90,
+      spread: 65,
+      origin: { y: 0.72 },
+      colors: ['#f59e0b', '#fbbf24', '#f97316', '#2563eb', '#ffffff']
     });
     if (onOpenRegister) onOpenRegister();
   };
 
   return (
-    <section className="relative w-full h-screen overflow-hidden bg-black flex flex-col justify-between select-none">
+    <section className="relative w-full min-h-screen overflow-hidden bg-[#060608] flex flex-col justify-between select-none pt-20 sm:pt-24">
       {/* =========================================================================
-          REQUIREMENT 2: 3D Background Layer
-          Absolute positioned div (inset-0, z-0) covering the entire screen.
-          Interactive to mouse/touch drag rotation.
+          3D EARTH & DEEP SPACE BACKGROUND LAYER
           ========================================================================= */}
       <div className="absolute inset-0 z-0 w-full h-full">
         <ThreeEarthGlobe
@@ -55,140 +53,136 @@ export default function HeroSection({ onOpenRegister, onOpenTracks }) {
         />
       </div>
 
-      {/* Subtle Matrix Dot Grid Background Overlay (Agency Tech texture) */}
-      <div className="pointer-events-none absolute inset-0 bg-tech-dots opacity-30 z-[1]" />
+      {/* Orbit24 Warm Radiant Sun Corona Glow in Top Right */}
+      <div className="pointer-events-none absolute -top-12 right-0 sm:right-12 w-[460px] h-[460px] bg-[radial-gradient(circle_at_center,rgba(251,191,36,0.22)_0%,rgba(245,158,11,0.12)_42%,transparent_70%)] blur-[75px] z-[1]" />
 
-      {/* Cinematic Vignette Radial Gradient (Darkens edges to focus attention on Earth) */}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_20%,rgba(0,0,0,0.45)_70%,#000000_100%)] z-[2]" />
-
-      {/* Top spacer to accommodate floating navbar */}
-      <div className="h-20 sm:h-24 pointer-events-none" />
+      {/* Cinematic Vignette Radial Gradient */}
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_45%,rgba(6,6,8,0.35)_75%,rgba(6,6,8,0.75)_100%)] z-[2]" />
 
       {/* =========================================================================
-          REQUIREMENT 3: Foreground Content Layer
-          Centered flex-column container (z-10, pointer-events-none so 3D background
-          remains fully interactive to drag and rotate).
+          ORBIT24 HUD AMBIENT OVERLAYS (Bottom Right)
           ========================================================================= */}
-      <div className="relative z-10 flex flex-col items-center justify-center text-center px-4 sm:px-6 md:px-8 pointer-events-none max-w-5xl mx-auto my-auto">
-        
-        {/* WeEvolveIT-Style Pill Badge */}
-        <div className="pointer-events-auto inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-white/15 bg-black/60 backdrop-blur-md mb-6 hover:border-fuchsia-500/50 hover:bg-black/80 transition-all duration-300 shadow-[0_0_20px_rgba(0,0,0,0.8)]">
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#e4007c] opacity-75" />
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-[#e4007c]" />
-          </span>
-          <span className="font-mono text-[11px] sm:text-xs uppercase tracking-[0.2em] text-white/90">
-            24-HOUR NATIONAL LEVEL HACKATHON <span className="text-white/30">•</span> OCT 24-25, 2026
-          </span>
+      {/* Bottom Right: Wireframe & Rotation Controls */}
+      <div className="hidden sm:flex absolute bottom-20 sm:bottom-24 right-6 sm:right-10 z-20 items-center pointer-events-auto select-none">
+        <div className="flex items-center gap-3 px-4 py-1.5 rounded-full border border-white/10 bg-black/60 backdrop-blur-md font-mono text-[11px] text-white/50 tracking-wider shadow-lg">
+          <button
+            onClick={() => setAutoRotate(!autoRotate)}
+            className="hover:text-amber-400 transition-colors cursor-pointer"
+          >
+            {autoRotate ? '— RESET' : '+ RESUME'}
+          </button>
+          <span className="text-white/20">•</span>
+          <button
+            onClick={() => setShowArcs(!showArcs)}
+            className="hover:text-amber-400 transition-colors cursor-pointer"
+          >
+            {showArcs ? 'WIRE OFF' : 'WIRE ON'}
+          </button>
         </div>
+      </div>
 
-        {/* =========================================================================
-            TYPOGRAPHY 1: Headline
-            Extra large, bold, sans-serif font. Text is white with subtle drop shadow.
-            "INNOVERSE" with year "2026" in vibrant electric purple / neon blue accent.
-            ========================================================================= */}
-        <h1 className="font-display font-black text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-white leading-tight select-none drop-shadow-[0_4px_30px_rgba(0,0,0,0.9)]">
-          <span className="glow-text-white inline-block">INNOVERSE</span>
-          <span className="ml-3 sm:ml-5 inline-block bg-gradient-to-r from-purple-400 via-fuchsia-400 to-cyan-400 bg-clip-text text-transparent drop-shadow-[0_0_35px_rgba(168,85,247,0.7)] font-black">
+      {/* =========================================================================
+          ORBIT24 HERO CONTENT LAYER (Centered Alignment)
+          ========================================================================= */}
+      <div className="relative z-10 w-full max-w-4xl mx-auto px-6 sm:px-10 my-auto py-4 sm:py-6 flex flex-col items-center text-center">
+        
+        {/* Innoverse Giant Dual-Tone Headline */}
+        <h1 className="font-display font-black tracking-tight leading-[0.88] select-none text-center mb-8 sm:mb-10 pointer-events-none">
+          <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl text-white font-extrabold drop-shadow-[0_4px_30px_rgba(0,0,0,0.9)]">
+            Innoverse
+          </span>
+          <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-stroke-amber tracking-tight mt-1 drop-shadow-[0_0_40px_rgba(245,158,11,0.35)]">
             2026
           </span>
         </h1>
 
-
-
-        {/* =========================================================================
-            TYPOGRAPHY 3: Call to Action (CTA) Buttons
-            Restore pointer-events (pointer-events-auto) for a flex row of two buttons.
-            - Primary: Solid electric purple, white text, pill shape, glowing box-shadow, slight scale-up.
-            - Secondary: Transparent, thin border, white text, pill shape.
-            ========================================================================= */}
-        <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center gap-4 sm:gap-5 pointer-events-auto w-full sm:w-auto">
-          {/* Primary Button */}
+        {/* Orbit24 Action Buttons */}
+        <div className="flex flex-wrap items-center justify-center gap-4 mb-6 sm:mb-8 pointer-events-auto">
+          {/* Primary Golden Amber Pill: "Get your boarding pass" */}
           <button
             id="hero-register-btn"
             onClick={handleRegisterClick}
-            className="w-full sm:w-auto group relative isolate inline-flex items-center justify-center gap-3 overflow-hidden rounded-full bg-gradient-to-r from-[#9333ea] via-[#a855f7] to-[#9333ea] bg-[length:200%_auto] px-8 sm:px-9 py-3.5 sm:py-4 font-mono text-xs sm:text-sm uppercase tracking-wider font-bold text-white shadow-[0_0_30px_rgba(168,85,247,0.5)] hover:shadow-[0_0_50px_rgba(168,85,247,0.85)] hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer"
+            className="group relative inline-flex items-center justify-center gap-3 rounded-full bg-amber-400 text-black hover:bg-amber-300 px-7 sm:px-8 py-3.5 sm:py-4 font-mono text-xs sm:text-sm font-bold tracking-wide shadow-[0_0_25px_rgba(245,158,11,0.4)] hover:shadow-[0_0_35px_rgba(245,158,11,0.65)] hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer"
           >
-            <Sparkles className="w-4 h-4 text-fuchsia-200 animate-spin" style={{ animationDuration: '4s' }} />
-            <span>Register Now</span>
-            <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+            <span>Get your boarding pass</span>
+            <ArrowRight className="w-4 h-4 text-black group-hover:translate-x-1 transition-transform" />
           </button>
 
-          {/* Secondary Button */}
+          {/* Secondary Dark Frosted Capsule: "Explore tracks" */}
           <button
             id="hero-tracks-btn"
             onClick={onOpenTracks}
-            className="w-full sm:w-auto group inline-flex items-center justify-center gap-2.5 rounded-full border border-white/20 hover:border-white/60 bg-black/40 hover:bg-white/[0.08] backdrop-blur-md px-7 sm:px-8 py-3.5 sm:py-4 font-mono text-xs sm:text-sm uppercase tracking-wider font-semibold text-white hover:text-white transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer shadow-sm"
+            className="group inline-flex items-center justify-center gap-2.5 rounded-full border border-white/15 hover:border-amber-400/50 bg-white/[0.04] hover:bg-white/[0.08] backdrop-blur-xl px-6 sm:px-7 py-3.5 sm:py-4 font-mono text-xs sm:text-sm font-medium text-white/90 hover:text-white transition-all cursor-pointer"
           >
-            <Eye className="w-4 h-4 text-gray-400 group-hover:text-white transition-colors" />
-            <span>View Tracks</span>
-            <span className="font-mono text-[10px] text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded-full border border-purple-500/20">
-              $150K
-            </span>
+            <span>Explore tracks</span>
           </button>
         </div>
 
-        {/* National Key Metrics Row */}
-        <div className="mt-10 sm:mt-12 hidden md:flex items-center gap-8 text-white/50 font-mono text-[11px] uppercase tracking-widest border-t border-white/10 pt-4">
-          <div className="flex items-center gap-2">
-            <span className="text-white font-bold text-sm">$150,000+</span>
-            <span>PRIZE POOL</span>
+        {/* Orbit24 Countdown Timer HUD */}
+        <div className="flex flex-col items-center justify-center gap-2 pointer-events-auto mx-auto">
+          <div className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-widest text-white/50">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_6px_#34d399]" />
+            <span>HACKING BEGINS IN</span>
           </div>
-          <span className="text-white/20">•</span>
-          <div className="flex items-center gap-2">
-            <span className="text-white font-bold text-sm">1,500+</span>
-            <span>NATIONAL HACKERS</span>
-          </div>
-          <span className="text-white/20">•</span>
-          <div className="flex items-center gap-2">
-            <span className="text-white font-bold text-sm">24 HOURS</span>
-            <span>NATIONAL SPRINT</span>
+
+          <div className="flex items-center justify-center gap-2 sm:gap-3 font-mono">
+            <div className="flex flex-col items-center justify-center rounded-xl border border-white/10 bg-[#0d0d12]/90 backdrop-blur-md px-3 sm:px-4 py-2 min-w-[54px] sm:min-w-[62px]">
+              <span className="font-bold text-lg sm:text-xl text-white tracking-wider">
+                {String(timeLeft.days).padStart(2, '0')}
+              </span>
+              <span className="text-[8px] text-white/40 uppercase">DAYS</span>
+            </div>
+            <div className="flex flex-col items-center justify-center rounded-xl border border-white/10 bg-[#0d0d12]/90 backdrop-blur-md px-3 sm:px-4 py-2 min-w-[54px] sm:min-w-[62px]">
+              <span className="font-bold text-lg sm:text-xl text-white tracking-wider">
+                {String(timeLeft.hours).padStart(2, '0')}
+              </span>
+              <span className="text-[8px] text-white/40 uppercase">HRS</span>
+            </div>
+            <div className="flex flex-col items-center justify-center rounded-xl border border-white/10 bg-[#0d0d12]/90 backdrop-blur-md px-3 sm:px-4 py-2 min-w-[54px] sm:min-w-[62px]">
+              <span className="font-bold text-lg sm:text-xl text-white tracking-wider">
+                {String(timeLeft.minutes).padStart(2, '0')}
+              </span>
+              <span className="text-[8px] text-white/40 uppercase">MIN</span>
+            </div>
+            <div className="flex flex-col items-center justify-center rounded-xl border border-white/10 bg-[#0d0d12]/90 backdrop-blur-md px-3 sm:px-4 py-2 min-w-[54px] sm:min-w-[62px]">
+              <span className="font-bold text-lg sm:text-xl text-amber-400 tracking-wider">
+                {String(timeLeft.seconds).padStart(2, '0')}
+              </span>
+              <span className="text-[8px] text-white/40 uppercase">SEC</span>
+            </div>
           </div>
         </div>
 
       </div>
 
       {/* =========================================================================
-          AGENCY HUD FOOTER & 3D CONTROLS (Inspired by WeEvolveIT)
+          AGENCY HUD FOOTER (Orbit24 Navigation Hint & Telemetry)
           ========================================================================= */}
-      <div className="relative z-20 pointer-events-auto px-4 sm:px-8 py-4 sm:py-5 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-white/10 bg-black/60 backdrop-blur-xl">
+      <div className="relative z-20 pointer-events-auto px-4 sm:px-8 py-3.5 sm:py-4 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-white/10 bg-black/70 backdrop-blur-xl">
         
-        {/* Left: Hackathon Countdown Telemetry */}
-        <div className="flex items-center gap-4 sm:gap-6 font-mono">
-          <div className="flex items-center gap-2 text-white/40 text-[10px] uppercase tracking-widest">
-            <Radio className="w-3.5 h-3.5 text-[#e4007c] animate-pulse" />
-            <span className="hidden sm:inline">LAUNCH COUNTDOWN:</span>
-          </div>
-          <div className="flex items-center gap-2.5 text-xs sm:text-sm">
-            <div className="flex flex-col items-center">
-              <span className="font-bold text-white tracking-wider font-mono">{String(timeLeft.days).padStart(2, '0')}</span>
-              <span className="text-[8px] text-white/40 uppercase">DAYS</span>
-            </div>
-            <span className="text-white/30 font-bold">:</span>
-            <div className="flex flex-col items-center">
-              <span className="font-bold text-white tracking-wider font-mono">{String(timeLeft.hours).padStart(2, '0')}</span>
-              <span className="text-[8px] text-white/40 uppercase">HRS</span>
-            </div>
-            <span className="text-white/30 font-bold">:</span>
-            <div className="flex flex-col items-center">
-              <span className="font-bold text-white tracking-wider font-mono">{String(timeLeft.minutes).padStart(2, '0')}</span>
-              <span className="text-[8px] text-white/40 uppercase">MIN</span>
-            </div>
-            <span className="text-white/30 font-bold">:</span>
-            <div className="flex flex-col items-center">
-              <span className="font-bold text-fuchsia-400 tracking-wider font-mono">{String(timeLeft.seconds).padStart(2, '0')}</span>
-              <span className="text-[8px] text-white/40 uppercase">SEC</span>
-            </div>
-          </div>
+        {/* Left: Hub Telemetry */}
+        <div className="flex items-center gap-3 font-mono text-xs text-white/40">
+          <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+          <span className="uppercase text-[11px]">INNOVERSE SYSTEM • KLS GIT ACTIVE NODE</span>
         </div>
 
-        {/* Center: Live Orbit Hint */}
-        <div className="hidden lg:flex items-center gap-2 font-mono text-[11px] text-white/40 uppercase tracking-widest">
-          <Compass className="w-3.5 h-3.5 text-purple-400" />
-          <span>DRAG GLOBE TO ROTATE 3D PERSPECTIVE</span>
+        {/* Center: Scroll to About Section */}
+        <div className="hidden md:flex items-center gap-4 font-mono text-[11px] text-white/40 uppercase tracking-widest">
+          <div className="flex items-center gap-1.5">
+            <Compass className="w-3.5 h-3.5 text-amber-400" />
+            <span>DRAG GLOBE TO ROTATE</span>
+          </div>
+          <span className="text-white/20">•</span>
+          <a
+            href="#about"
+            className="text-white/70 hover:text-amber-400 transition-colors flex items-center gap-1 group cursor-pointer"
+          >
+            <span>ABOUT & TRACKS</span>
+            <span className="group-hover:translate-y-0.5 transition-transform">↓</span>
+          </a>
         </div>
 
-        {/* Right: Telemetry Status */}
+        {/* Right: National Sprint Status */}
         <div className="hidden sm:flex items-center gap-2 font-mono text-[11px] text-white/40 tracking-wider">
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
           <span className="uppercase text-[10px]">3D CORE ACTIVE</span>

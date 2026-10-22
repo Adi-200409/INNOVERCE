@@ -5,14 +5,22 @@
     --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     --font-display: 'Syne', 'Space Grotesk', 'Inter', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
-    --color-electric-purple: #9333ea;
-    --color-neon-purple: #a855f7;
-    --color-neon-pink: #e4007c;
-    --color-neon-blue: #06b6d4;
+    --color-brand-amber: #f59e0b;
+    --color-brand-gold: #fbbf24;
+    --color-brand-blue: #2563eb;
+    --color-brand-orange: #f97316;
+    --color-electric-purple: #f59e0b;
+    --color-neon-purple: #fbbf24;
+    --color-neon-pink: #f59e0b;
+    --color-neon-blue: #3b82f6;
+  }
+
+  html {
+    scroll-behavior: smooth;
   }
 
   body {
-    background-color: #000000;
+    background-color: #060608;
     color: #ffffff;
     font-family: var(--font-sans);
     overflow-x: hidden;
@@ -25,7 +33,7 @@
     min-height: 100vh;
     margin: 0;
     padding: 0;
-    background-color: #000000;
+    background-color: #060608;
   }
 }
 
@@ -38,32 +46,43 @@
   font-family: var(--font-mono);
 }
 
+/* Orbit24 Hollow Amber Text Stroke */
+.text-stroke-amber {
+  -webkit-text-stroke: 2px #f59e0b;
+  color: transparent;
+}
+
+.text-stroke-white {
+  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.85);
+  color: transparent;
+}
+
 /* Subtle Matrix Dot Grid Background */
 .bg-tech-dots {
-  background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(245, 158, 11, 0.12) 1px, transparent 1px);
   background-size: 32px 32px;
 }
 
 .bg-tech-dots-dense {
-  background-image: radial-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(245, 158, 11, 0.18) 1px, transparent 1px);
   background-size: 20px 20px;
 }
 
 /* Glow effects */
-.glow-purple {
-  box-shadow: 0 0 25px -4px rgba(168, 85, 247, 0.45), 0 0 10px -2px rgba(147, 51, 234, 0.3);
+.glow-amber {
+  box-shadow: 0 0 25px -4px rgba(245, 158, 11, 0.45), 0 0 10px -2px rgba(251, 191, 36, 0.3);
 }
 
-.glow-purple-lg {
-  box-shadow: 0 0 50px -10px rgba(168, 85, 247, 0.6), 0 0 20px -5px rgba(228, 0, 124, 0.4);
+.glow-amber-lg {
+  box-shadow: 0 0 45px -8px rgba(245, 158, 11, 0.6), 0 0 20px -4px rgba(249, 115, 22, 0.4);
 }
 
-.glow-pink {
-  box-shadow: 0 0 25px -4px rgba(228, 0, 124, 0.45);
+.glow-blue {
+  box-shadow: 0 0 25px -4px rgba(37, 99, 235, 0.45);
 }
 
-.glow-text-purple {
-  text-shadow: 0 0 20px rgba(168, 85, 247, 0.6), 0 0 40px rgba(147, 51, 234, 0.3);
+.glow-text-amber {
+  text-shadow: 0 0 20px rgba(245, 158, 11, 0.6), 0 0 40px rgba(251, 191, 36, 0.3);
 }
 
 .glow-text-white {

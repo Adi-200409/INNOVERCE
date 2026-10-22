@@ -1,0 +1,13 @@
+{
+  "entries": [
+    {
+      "path": "~/.gemini/config/plugins/get-shit-done"
+    },
+    {
+      "path": "~/.gemini/config/plugins/ponytail"
+    },
+    {
+      "path": "~/.gemini/config/plugins/coderabbit"
+    }
+  ]
+}
