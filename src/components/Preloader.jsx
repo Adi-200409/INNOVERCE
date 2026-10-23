@@ -12,11 +12,12 @@ export default function Preloader({ onComplete, onStartExit }) {
   // Stable references so parent re-renders never restart the animation
   const onStartExitRef = useRef(onStartExit);
   const onCompleteRef = useRef(onComplete);
-  onStartExitRef.current = onStartExit;
-  onCompleteRef.current = onComplete;
+  useEffect(() => {
+    onStartExitRef.current = onStartExit;
+    onCompleteRef.current = onComplete;
+  }, [onStartExit, onComplete]);
 
   useEffect(() => {
-    // Preload 3D Space Shuttle model in background while progress bar runs
     preloadShuttleModel();
 
     let timeoutId;
@@ -57,20 +58,20 @@ export default function Preloader({ onComplete, onStartExit }) {
         setIsCompleted(true);
         setStatusText('SYSTEMS NOMINAL • INITIATING HYPER-LAUNCH');
 
-        // Step 1: Hold at 100% (350ms)
+        // Step 1: Hold at 100% (180ms)
         setTimeout(() => {
           if (isCancelled) return;
           setIsContentFading(true);
           setIsExiting(true);
           if (onStartExitRef.current) onStartExitRef.current();
 
-          // Smooth handoff to spaceship transition (450ms)
+          // Smooth handoff to warp transition (320ms)
           setTimeout(() => {
             if (isCancelled) return;
             setIsDone(true);
             if (onCompleteRef.current) onCompleteRef.current();
-          }, 450);
-        }, 350);
+          }, 320);
+        }, 180);
       }
     };
 
@@ -87,11 +88,10 @@ export default function Preloader({ onComplete, onStartExit }) {
 
   return (
     <div
-      className={`fixed inset-0 z-[100] flex flex-col justify-between p-6 sm:p-12 bg-black text-white select-none transition-all duration-500 ease-[cubic-bezier(0.85,0,0.15,1)] ${
-        isExiting
+      className={`fixed inset-0 z-[100] flex flex-col justify-between p-6 sm:p-12 bg-black text-white select-none transition-all duration-500 ease-[cubic-bezier(0.85,0,0.15,1)] ${isExiting
           ? 'opacity-0 scale-105 pointer-events-none'
           : 'opacity-100 scale-100'
-      }`}
+        }`}
     >
       {/* Background Matrix Dots */}
       <div className="pointer-events-none absolute inset-0 bg-tech-dots opacity-30" />
@@ -143,10 +143,10 @@ export default function Preloader({ onComplete, onStartExit }) {
             />
             <span
               className={`w-2 h-2 rounded-full transition-all duration-300 ${isCompleted
-                  ? 'bg-amber-400 shadow-[0_0_14px_#fbbf24] scale-125'
-                  : progress > 90
-                    ? 'bg-amber-500 shadow-[0_0_12px_#f59e0b] scale-110'
-                    : 'bg-white/20'
+                ? 'bg-amber-400 shadow-[0_0_14px_#fbbf24] scale-125'
+                : progress > 90
+                  ? 'bg-amber-500 shadow-[0_0_12px_#f59e0b] scale-110'
+                  : 'bg-white/20'
                 }`}
             />
           </div>
@@ -156,8 +156,8 @@ export default function Preloader({ onComplete, onStartExit }) {
         <div className="flex items-baseline justify-center gap-1 font-mono select-none">
           <span
             className={`text-6xl sm:text-8xl md:text-9xl font-black tracking-tight tabular-nums transition-all duration-300 ${isCompleted
-                ? 'text-white drop-shadow-[0_0_35px_rgba(245,158,11,0.85)] scale-105'
-                : 'text-white/90'
+              ? 'text-white drop-shadow-[0_0_35px_rgba(245,158,11,0.85)] scale-105'
+              : 'text-white/90'
               }`}
           >
             {String(progress).padStart(3, '0')}

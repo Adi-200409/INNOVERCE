@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
-import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 import { getCachedShuttleModel, preloadShuttleModel } from '../utils/shuttleLoader';
 
 // National hubs with live user node (KLS GIT)

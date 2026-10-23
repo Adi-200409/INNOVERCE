@@ -82,19 +82,53 @@ export default function HeroSection({ onOpenRegister, onOpenTracks }) {
       </div>
 
       {/* =========================================================================
-          ORBIT24 HERO CONTENT LAYER (Centered Alignment)
+          HERO CONTENT LAYER WITH INTEGRATED ASTRONAUT HEADING DESIGN
           ========================================================================= */}
-      <div className="relative z-10 w-full max-w-4xl mx-auto px-6 sm:px-10 my-auto py-4 sm:py-6 flex flex-col items-center text-center">
-        
-        {/* Innoverse Giant Dual-Tone Headline */}
-        <h1 className="font-display font-black tracking-tight leading-[0.88] select-none text-center mb-8 sm:mb-10 pointer-events-none">
-          <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl text-white font-extrabold drop-shadow-[0_4px_30px_rgba(0,0,0,0.9)]">
-            Innoverse
-          </span>
-          <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-stroke-amber tracking-tight mt-1 drop-shadow-[0_0_40px_rgba(245,158,11,0.35)]">
-            2026
-          </span>
-        </h1>
+      <div className="relative z-10 w-full max-w-5xl mx-auto px-4 sm:px-6 my-auto pt-2 pb-6 flex flex-col items-center text-center">
+
+        {/* Integrated Headline Container (Inspired by Reference Design) */}
+        <div className="relative w-full max-w-4xl flex flex-col items-center justify-center mb-6 sm:mb-8">
+
+          {/* Main Title Wrapper */}
+          <div className="relative w-full flex items-center justify-center">
+
+            {/* Floating Spacewalk Astronaut (Layered directly through the center) */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-[51%] -translate-y-[48%] w-[290px] sm:w-[420px] md:w-[520px] lg:w-[600px] xl:w-[650px] pointer-events-none select-none z-0">
+              <img
+                src="/heading-astronaut.png"
+                alt="Floating Spacewalk Astronaut"
+                className="w-full h-auto object-contain animate-astronaut-float transform-gpu drop-shadow-[0_15px_35px_rgba(0,0,0,0.95)]"
+                draggable={false}
+              />
+            </div>
+
+            {/* Giant Title: IN (Solid White) + NOVER (Crisp White Stroke, Transparent Fill) + SE (Solid White) */}
+            <h1 className="relative z-10 font-display font-black tracking-[0.06em] sm:tracking-[0.09em] md:tracking-[0.11em] uppercase text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[6.8rem] leading-none text-center select-none pointer-events-none whitespace-nowrap">
+              <span className="text-white drop-shadow-[0_4px_30px_rgba(0,0,0,0.95)]">
+                IN
+              </span>
+              <span className="text-stroke-white-hero drop-shadow-[0_0_20px_rgba(255,255,255,0.4)]">
+                NOVER
+              </span>
+              <span className="text-white drop-shadow-[0_4px_30px_rgba(0,0,0,0.95)]">
+                SE
+              </span>
+            </h1>
+
+          </div>
+
+          {/* Subtitle Row: Left-aligned "Explore the infinite." matching reference */}
+          <div className="w-full flex items-center justify-between px-1 sm:px-2 md:px-4 mt-2 sm:mt-2.5">
+            <span className="font-sans font-light text-white/85 text-xs sm:text-sm md:text-base tracking-wide select-none drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
+              Explore the infinite.
+            </span>
+            <span className="font-mono text-[9px] sm:text-xs text-amber-400 tracking-widest uppercase flex items-center gap-1.5 drop-shadow-[0_0_10px_rgba(245,158,11,0.5)]">
+              <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+              2026 EDITION
+            </span>
+          </div>
+
+        </div>
 
         {/* Orbit24 Action Buttons */}
         <div className="flex flex-wrap items-center justify-center gap-4 mb-6 sm:mb-8 pointer-events-auto">
@@ -159,7 +193,7 @@ export default function HeroSection({ onOpenRegister, onOpenTracks }) {
           AGENCY HUD FOOTER (Orbit24 Navigation Hint & Telemetry)
           ========================================================================= */}
       <div className="relative z-20 pointer-events-auto px-4 sm:px-8 py-3.5 sm:py-4 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-white/10 bg-black/70 backdrop-blur-xl">
-        
+
         {/* Left: Hub Telemetry */}
         <div className="flex items-center gap-3 font-mono text-xs text-white/40">
           <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />

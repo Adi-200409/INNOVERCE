@@ -14,9 +14,8 @@ export default function Navbar({ onOpenRegister, onOpenTracks, isReady = true })
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 pointer-events-none px-3 pt-3 sm:px-6 transition-all duration-700 ease-out ${
-        isReady ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'
-      }`}
+      className={`fixed inset-x-0 top-0 z-50 pointer-events-none px-3 pt-3 sm:px-6 transition-all duration-700 ease-out ${isReady ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'
+        }`}
     >
       <div className="mx-auto max-w-6xl rounded-full border border-white/15 bg-[#08080c]/92 backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,0,0,0.85),0_0_20px_rgba(168,85,247,0.12)] hover:border-white/30 transition-all duration-300 pointer-events-auto">
         <nav className="flex h-14 sm:h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
