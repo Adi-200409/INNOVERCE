@@ -2,6 +2,12 @@ import React, { useState } from 'react';
 import Navbar from './components/Navbar';
 import HeroSection from './components/HeroSection';
 import AboutSection from './components/AboutSection';
+import TracksSection from './components/TracksSection';
+import TimelineSection from './components/TimelineSection';
+import PrizesSection from './components/PrizesSection';
+import SponsorsSection from './components/SponsorsSection';
+import FaqSection from './components/FaqSection';
+import Footer from './components/Footer';
 import RegisterModal from './components/RegisterModal';
 import TracksModal from './components/TracksModal';
 import Preloader from './components/Preloader';
@@ -45,20 +51,48 @@ function App() {
 
       {/* Main Content with smooth cinematic reveal */}
       <div
-        className={`w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${isReady
-          ? 'opacity-100 scale-100'
-          : 'opacity-0 scale-[0.99] pointer-events-none'
-          }`}
+        className={`w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+          isReady
+            ? 'opacity-100 scale-100'
+            : 'opacity-0 scale-[0.99] pointer-events-none'
+        }`}
       >
-
-        {/* Main Sections */}
-        <main id="main-content" className="w-full">
+        {/* Main Hackathon Mission Sections */}
+        <main id="main-content" className="w-full relative z-20">
+          {/* 1. Hero Section */}
           <HeroSection
             onOpenRegister={() => setIsRegisterOpen(true)}
             onOpenTracks={() => setIsTracksOpen(true)}
           />
 
+          {/* 2. About & Metrics Section */}
           <AboutSection
+            onOpenRegister={() => setIsRegisterOpen(true)}
+            onOpenTracks={() => setIsTracksOpen(true)}
+          />
+
+          {/* 3. 5 Mission Arenas & Problem Tracks */}
+          <TracksSection
+            onOpenRegister={() => setIsRegisterOpen(true)}
+            onSelectTrack={(trackId) => setIsTracksOpen(true)}
+          />
+
+          {/* 4. 24-Hour Event Timeline & Flight Plan */}
+          <TimelineSection />
+
+          {/* 5. Prizes, Cash Podiums & Track Bounties */}
+          <PrizesSection
+            onOpenRegister={() => setIsRegisterOpen(true)}
+          />
+
+          {/* 6. Sponsors, Cloud Compute & Institutional Partners */}
+          <SponsorsSection />
+
+          {/* 7. Comprehensive FAQ Archives */}
+          <FaqSection />
+
+          {/* 8. Mission Control Footer */}
+          <Footer
             onOpenRegister={() => setIsRegisterOpen(true)}
             onOpenTracks={() => setIsTracksOpen(true)}
           />
