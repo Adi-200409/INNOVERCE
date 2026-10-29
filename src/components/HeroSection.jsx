@@ -116,18 +116,6 @@ export default function HeroSection({ onOpenRegister, onOpenTracks }) {
             </h1>
 
           </div>
-
-          {/* Subtitle Row: Left-aligned "Explore the infinite." matching reference */}
-          <div className="w-full flex items-center justify-between px-1 sm:px-2 md:px-4 mt-2 sm:mt-2.5">
-            <span className="font-sans font-light text-white/85 text-xs sm:text-sm md:text-base tracking-wide select-none drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
-              Explore the infinite.
-            </span>
-            <span className="font-mono text-[9px] sm:text-xs text-amber-400 tracking-widest uppercase flex items-center gap-1.5 drop-shadow-[0_0_10px_rgba(245,158,11,0.5)]">
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-              2026 EDITION
-            </span>
-          </div>
-
         </div>
 
         {/* Orbit24 Action Buttons */}

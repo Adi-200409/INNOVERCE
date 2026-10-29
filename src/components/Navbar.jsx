@@ -54,7 +54,7 @@ export default function Navbar({ onOpenRegister, onOpenTracks, isReady = true })
             </li>
             <li>
               <button
-                onClick={onOpenTracks}
+                onClick={() => scrollToSection('tracks')}
                 className="font-mono text-xs uppercase tracking-wider text-white/75 hover:text-white px-2.5 py-1.5 rounded-full hover:bg-white/10 transition-all flex items-center gap-1 cursor-pointer"
               >
                 <span>Tracks</span>
@@ -65,7 +65,7 @@ export default function Navbar({ onOpenRegister, onOpenTracks, isReady = true })
             </li>
             <li>
               <button
-                onClick={() => scrollToSection('about')}
+                onClick={() => scrollToSection('schedule')}
                 className="font-mono text-xs uppercase tracking-wider text-white/75 hover:text-white px-2.5 py-1.5 rounded-full hover:bg-white/10 transition-all cursor-pointer"
               >
                 Schedule
@@ -73,7 +73,7 @@ export default function Navbar({ onOpenRegister, onOpenTracks, isReady = true })
             </li>
             <li>
               <button
-                onClick={() => scrollToSection('about')}
+                onClick={() => scrollToSection('prizes')}
                 className="font-mono text-xs uppercase tracking-wider text-white/75 hover:text-white px-2.5 py-1.5 rounded-full hover:bg-white/10 transition-all flex items-center gap-1.5 cursor-pointer"
               >
                 <span>Prizes</span>
@@ -84,15 +84,15 @@ export default function Navbar({ onOpenRegister, onOpenTracks, isReady = true })
             </li>
             <li>
               <button
-                onClick={() => scrollToSection('about')}
+                onClick={() => scrollToSection('sponsors')}
                 className="font-mono text-xs uppercase tracking-wider text-white/75 hover:text-white px-2.5 py-1.5 rounded-full hover:bg-white/10 transition-all cursor-pointer"
               >
-                Mentors
+                Sponsors
               </button>
             </li>
             <li>
               <button
-                onClick={() => scrollToSection('about')}
+                onClick={() => scrollToSection('faq')}
                 className="font-mono text-xs uppercase tracking-wider text-white/75 hover:text-white px-2.5 py-1.5 rounded-full hover:bg-white/10 transition-all cursor-pointer"
               >
                 FAQ
@@ -140,36 +140,33 @@ export default function Navbar({ onOpenRegister, onOpenTracks, isReady = true })
                 About
               </button>
               <button
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  onOpenTracks();
-                }}
+                onClick={() => scrollToSection('tracks')}
                 className="text-sm uppercase text-left tracking-wider text-white/80 hover:text-white py-1.5 flex items-center justify-between cursor-pointer"
               >
                 <span>Tracks</span>
                 <span className="text-xs px-2 py-0.5 rounded-full bg-amber-400/20 text-amber-300 font-bold">5 Tracks</span>
               </button>
               <button
-                onClick={() => scrollToSection('about')}
+                onClick={() => scrollToSection('schedule')}
                 className="text-sm uppercase text-left tracking-wider text-white/80 hover:text-white py-1.5 transition-colors cursor-pointer"
               >
                 Schedule
               </button>
               <button
-                onClick={() => scrollToSection('about')}
+                onClick={() => scrollToSection('prizes')}
                 className="text-sm uppercase text-left tracking-wider text-white/80 hover:text-white py-1.5 flex items-center justify-between cursor-pointer"
               >
                 <span>Prizes</span>
                 <span className="text-xs px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300">₹50K</span>
               </button>
               <button
-                onClick={() => scrollToSection('about')}
+                onClick={() => scrollToSection('sponsors')}
                 className="text-sm uppercase text-left tracking-wider text-white/80 hover:text-white py-1.5 transition-colors cursor-pointer"
               >
-                Mentors
+                Sponsors
               </button>
               <button
-                onClick={() => scrollToSection('about')}
+                onClick={() => scrollToSection('faq')}
                 className="text-sm uppercase text-left tracking-wider text-white/80 hover:text-white py-1.5 transition-colors cursor-pointer"
               >
                 FAQ
