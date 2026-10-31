@@ -6,6 +6,14 @@ export default function Footer({ onOpenRegister, onOpenTracks }) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const scrollToSection = (e, id) => {
+    e.preventDefault();
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <footer className="relative w-full border-t border-white/10 bg-[#040406] text-white pt-16 pb-12 px-4 sm:px-6 lg:px-8 z-20">
       <div className="max-w-6xl mx-auto">
@@ -18,7 +26,7 @@ export default function Footer({ onOpenRegister, onOpenTracks }) {
                 INNO<span className="text-amber-400">VERSE</span>
               </span>
               <span className="font-mono text-[9px] px-2 py-0.5 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/30">
-                2026
+                3.0
               </span>
             </div>
             <p className="text-xs text-gray-400 leading-relaxed font-sans">
@@ -37,32 +45,32 @@ export default function Footer({ onOpenRegister, onOpenTracks }) {
             </h4>
             <ul className="space-y-2.5 font-mono text-xs text-gray-400">
               <li>
-                <a href="#about" className="hover:text-amber-400 transition-colors">
+                <a href="#about" onClick={(e) => scrollToSection(e, 'about')} className="hover:text-amber-400 transition-colors">
                   About Event
                 </a>
               </li>
               <li>
-                <a href="#tracks" className="hover:text-amber-400 transition-colors">
+                <a href="#tracks" onClick={(e) => scrollToSection(e, 'tracks')} className="hover:text-amber-400 transition-colors">
                   5 Arenas & Tracks
                 </a>
               </li>
               <li>
-                <a href="#schedule" className="hover:text-amber-400 transition-colors">
+                <a href="#schedule" onClick={(e) => scrollToSection(e, 'schedule')} className="hover:text-amber-400 transition-colors">
                   24h Flight Schedule
                 </a>
               </li>
               <li>
-                <a href="#prizes" className="hover:text-amber-400 transition-colors">
+                <a href="#prizes" onClick={(e) => scrollToSection(e, 'prizes')} className="hover:text-amber-400 transition-colors">
                   Prizes & Bounties
                 </a>
               </li>
               <li>
-                <a href="#sponsors" className="hover:text-amber-400 transition-colors">
+                <a href="#sponsors" onClick={(e) => scrollToSection(e, 'sponsors')} className="hover:text-amber-400 transition-colors">
                   Sponsors
                 </a>
               </li>
               <li>
-                <a href="#faq" className="hover:text-amber-400 transition-colors">
+                <a href="#faq" onClick={(e) => scrollToSection(e, 'faq')} className="hover:text-amber-400 transition-colors">
                   FAQ
                 </a>
               </li>
@@ -97,7 +105,7 @@ export default function Footer({ onOpenRegister, onOpenTracks }) {
                 </a>
               </li>
               <li>
-                <a href="#faq" className="hover:text-amber-400 transition-colors">
+                <a href="#faq" onClick={(e) => scrollToSection(e, 'faq')} className="hover:text-amber-400 transition-colors">
                   Hacker Code of Conduct
                 </a>
               </li>
@@ -158,7 +166,7 @@ export default function Footer({ onOpenRegister, onOpenTracks }) {
 
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs text-gray-500">
-          <p>© 2026 INNOVERSE HACKATHON. ALL ORBITAL RIGHTS RESERVED.</p>
+          <p>© 2026 INNOVERSE 3.0 HACKATHON. ALL ORBITAL RIGHTS RESERVED.</p>
           <div className="flex items-center gap-4">
             <button
               onClick={scrollToTop}

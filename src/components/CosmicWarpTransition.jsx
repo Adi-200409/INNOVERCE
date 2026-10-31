@@ -464,7 +464,7 @@ export default function CosmicWarpTransition({ onComplete }) {
         <div className="flex items-center justify-between text-xs tracking-widest uppercase">
           <div className="flex items-center gap-2.5 bg-black/60 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 shadow-[0_0_20px_rgba(245,158,11,0.2)]">
             <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
-            <span className="text-white font-medium">INNOVERSE 2026 // HYPERSPACE TRANSIT</span>
+            <span className="text-white font-medium">INNOVERSE 3.0 // HYPERSPACE TRANSIT</span>
           </div>
 
           {/* Minimalist Skip Prompt */}

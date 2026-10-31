@@ -3,28 +3,32 @@ import { HelpCircle, ChevronDown, MessageSquare } from 'lucide-react';
 
 const FAQS = [
   {
-    q: 'Who is eligible to participate in INNOVERSE 2026?',
-    a: 'INNOVERSE is open to all university undergraduate and postgraduate students, researchers, early-career engineers, and self-taught developers across India. All participants must provide valid student or institution credentials during check-in.'
+    q: 'Who is eligible to participate in INNOVERSE 3.0?',
+    a: 'INNOVERSE 3.0 features separate competitive tracks for MCA (Postgraduate) and BCA (Undergraduate) students across India. Participants must form a squad within their respective academic tier and provide valid college credentials.'
   },
   {
-    q: 'What is the permitted team size? Can I apply solo?',
-    a: 'Teams can consist of 2 to 4 members. You may apply individually or as a pre-formed squad. If you apply solo, our pre-hackathon Discord matchmaking channel will help you team up with complementary builders.'
+    q: 'What is the required team size?',
+    a: 'Team size is strictly 3 members per team (fixed). Neither solo entries nor squads of other sizes are permitted. All 3 members must register together.'
   },
   {
-    q: 'Is registration completely free?',
-    a: 'Yes, 100% free! There is zero registration fee. Selected hacker squads receive complimentary meals, midnight snacks, Red Bull fuel, Wi-Fi access, swag packages, and cloud compute credits.'
+    q: 'What is the registration fee?',
+    a: 'The registration fee is ₹300 per team. This nominal fee covers your preliminary round evaluation. For shortlisted teams advancing to the final round, it covers all on-campus facilities including meals, midnight snacks, Red Bull fuel, Wi-Fi, mentorship, and participation certificates at KLS GIT Belagavi.'
+  },
+  {
+    q: 'How do the competition rounds and selection work?',
+    a: 'INNOVERSE 3.0 is structured in two stages: (1) Preliminary Round: Teams submit their problem statement abstract, tech architecture, and blueprint online with the ₹300 fee. (2) Final Round: Shortlisted squads are invited to KLS GIT, Belagavi for the intense 24-hour on-campus coding sprint.'
+  },
+  {
+    q: 'What is the prize pool and prize distribution?',
+    a: 'The total prize pool is ₹35,000 across the dual competitive leagues (MCA and BCA). In each track, the First Prize winner receives ₹12,000 cash with the Grand Champion Trophy, and the Second Prize runner-up receives ₹6,000 cash with the Runner-Up Trophy and certificates.'
   },
   {
     q: 'Can we build upon pre-existing codebases?',
-    a: 'All project code must be authored during the 24-hour sprint. You are encouraged to use open-source libraries, APIs, pre-trained base model weights, and design templates, but writing application logic in advance is strictly prohibited.'
+    a: 'All project code must be authored during the 24-hour final sprint. You are encouraged to use open-source libraries, APIs, pre-trained base model weights, and design templates, but writing application logic in advance is strictly prohibited.'
   },
   {
-    q: 'What cloud resources and hardware will be provided?',
-    a: 'Shortlisted teams will receive cloud compute grants from our partners, model API tokens (Anthropic, OpenAI, etc.), and high-speed gigabit Wi-Fi. Teams competing in the Intelligent Edge track may bring their own microcontrollers (ESP32, Raspberry Pi, etc.).'
-  },
-  {
-    q: 'Is INNOVERSE in-person or remote? Where is the venue?',
-    a: 'INNOVERSE 2026 is an in-person 24-hour sprint hosted at KLS Gogte Institute of Technology (KLS GIT), Belagavi, Karnataka. Virtual accommodations are available for select remote international squads.'
+    q: 'Where is the hackathon venue?',
+    a: 'The 24-hour Final Round is an in-person marathon hosted at the Department of MCA, KLS Gogte Institute of Technology (KLS GIT), Belagavi, Karnataka, with 24/7 power backup, high-speed Wi-Fi 6, and dedicated hacker pods.'
   },
   {
     q: 'Who owns the intellectual property (IP) of projects built?',
@@ -32,7 +36,7 @@ const FAQS = [
   },
   {
     q: 'What are the judging criteria?',
-    a: 'Projects are evaluated on 4 core pillars: Technical Depth & Complexity (30%), Originality & Innovation (25%), Real-World Impact & Feasibility (25%), and Quality of UI/UX & Demo Presentation (20%).'
+    a: 'Projects are evaluated on 4 core pillars: Technical Depth & Complexity (30%), Originality & Innovation (25%), Real-World Impact & Feasibility (25%), and Quality of UI/UX & Demo Presentation (20%). MCA and BCA tracks are judged by separate evaluation panels under distinct rubrics.'
   }
 ];
 

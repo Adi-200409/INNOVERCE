@@ -617,8 +617,8 @@ export default function ThreeEarthGlobe({
     rimLight.position.set(-5, -2, 4);
     scene.add(rimLight);
 
-    // Warm Golden Sun Corona Light in Upper Right
-    const accentLight = new THREE.DirectionalLight(0xf59e0b, 2.2);
+    // Crisp Neutral Directional Light in Upper Right
+    const accentLight = new THREE.DirectionalLight(0xffffff, 1.8);
     accentLight.position.set(6, 4, 3);
     scene.add(accentLight);
 

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowRight, Compass } from 'lucide-react';
+import { ArrowRight, Compass, Users, Trophy, Ticket, Sparkles } from 'lucide-react';
 import ThreeEarthGlobe from './ThreeEarthGlobe';
 import confetti from 'canvas-confetti';
 
 export default function HeroSection({ onOpenRegister, onOpenTracks }) {
   const [autoRotate, setAutoRotate] = useState(true);
   const [showArcs, setShowArcs] = useState(true);
-  const [atmosphereGlow, setAtmosphereGlow] = useState(true);
+  const [atmosphereGlow] = useState(true);
 
   // Live countdown to Hackathon launch matching Orbit24
   const [timeLeft, setTimeLeft] = useState({
@@ -53,9 +53,6 @@ export default function HeroSection({ onOpenRegister, onOpenTracks }) {
         />
       </div>
 
-      {/* Orbit24 Warm Radiant Sun Corona Glow in Top Right */}
-      <div className="pointer-events-none absolute -top-12 right-0 sm:right-12 w-[460px] h-[460px] bg-[radial-gradient(circle_at_center,rgba(251,191,36,0.22)_0%,rgba(245,158,11,0.12)_42%,transparent_70%)] blur-[75px] z-[1]" />
-
       {/* Cinematic Vignette Radial Gradient */}
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_45%,rgba(6,6,8,0.35)_75%,rgba(6,6,8,0.75)_100%)] z-[2]" />
 
@@ -89,11 +86,33 @@ export default function HeroSection({ onOpenRegister, onOpenTracks }) {
         {/* Integrated Headline Container (Inspired by Reference Design) */}
         <div className="relative w-full max-w-4xl flex flex-col items-center justify-center mb-6 sm:mb-8">
 
+          {/* Presenter Eyebrow: Positioned cleanly above INNOVERSE with zero astronaut overlap */}
+          <div className="relative z-30 flex flex-col items-center justify-center gap-1.5 sm:gap-2 mb-20 sm:mb-28 md:mb-32 lg:mb-36 pointer-events-auto select-none">
+            {/* Institution & City Badge */}
+            <div className="inline-flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 px-5 sm:px-7 py-2 sm:py-2.5 rounded-full border border-white/20 bg-[#08080c]/95 backdrop-blur-2xl shadow-[0_4px_30px_rgba(0,0,0,0.9),0_0_25px_rgba(245,158,11,0.18)] hover:border-amber-400/50 transition-all">
+              <span className="w-2 sm:w-2.5 h-2 sm:h-2.5 rounded-full bg-amber-400 shadow-[0_0_12px_#f59e0b] animate-pulse shrink-0" />
+              <span className="font-mono text-sm sm:text-base md:text-lg font-bold tracking-wide text-white">
+                KLS Gogte Institute of Technology
+              </span>
+              <span className="text-white/40 font-bold">•</span>
+              <span className="font-mono text-sm sm:text-base md:text-lg text-amber-400 font-bold tracking-wider">
+                Belagavi
+              </span>
+            </div>
+
+            {/* Department Presents Text */}
+            <div className="px-4 sm:px-5 py-1 sm:py-1.5 rounded-full bg-black/75 backdrop-blur-md border border-white/10 shadow-[0_2px_12px_rgba(0,0,0,0.8)] mt-1">
+              <p className="font-mono text-[11px] sm:text-xs md:text-sm tracking-[0.22em] sm:tracking-[0.28em] uppercase text-white/90 font-medium">
+                Master Of Computer Applications <span className="text-amber-400 font-semibold">presents</span>
+              </p>
+            </div>
+          </div>
+
           {/* Main Title Wrapper */}
           <div className="relative w-full flex items-center justify-center">
 
-            {/* Floating Spacewalk Astronaut (Layered directly through the center) */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-[51%] -translate-y-[48%] w-[290px] sm:w-[420px] md:w-[520px] lg:w-[600px] xl:w-[650px] pointer-events-none select-none z-0">
+            {/* Floating Spacewalk Astronaut (Layered cleanly through NOVER without overlapping text) */}
+            <div className="absolute top-[52%] sm:top-[50%] left-1/2 -translate-x-[51%] -translate-y-[38%] sm:-translate-y-[40%] w-[270px] sm:w-[380px] md:w-[460px] lg:w-[520px] xl:w-[580px] pointer-events-none select-none z-0">
               <img
                 src="/heading-astronaut.png"
                 alt="Floating Spacewalk Astronaut"
@@ -102,8 +121,8 @@ export default function HeroSection({ onOpenRegister, onOpenTracks }) {
               />
             </div>
 
-            {/* Giant Title: IN (Solid White) + NOVER (Crisp White Stroke, Transparent Fill) + SE (Solid White) */}
-            <h1 className="relative z-10 font-display font-black tracking-[0.06em] sm:tracking-[0.09em] md:tracking-[0.11em] uppercase text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[6.8rem] leading-none text-center select-none pointer-events-none whitespace-nowrap">
+            {/* Giant Title: IN (Solid White) + NOVER (Crisp White Stroke, Transparent Fill) + SE (Solid White) + 3.0 (Golden Amber Accent) */}
+            <h1 className="relative z-10 font-display font-black tracking-[0.04em] sm:tracking-[0.06em] md:tracking-[0.08em] uppercase text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[5.8rem] leading-none text-center select-none pointer-events-none whitespace-nowrap">
               <span className="text-white drop-shadow-[0_4px_30px_rgba(0,0,0,0.95)]">
                 IN
               </span>
@@ -113,8 +132,31 @@ export default function HeroSection({ onOpenRegister, onOpenTracks }) {
               <span className="text-white drop-shadow-[0_4px_30px_rgba(0,0,0,0.95)]">
                 SE
               </span>
+              <span className="font-mono font-black text-amber-400 drop-shadow-[0_0_30px_rgba(245,158,11,0.65)] ml-2 sm:ml-3 md:ml-5 [font-variant-numeric:lining-nums_slashed-zero]">
+                3.0
+              </span>
             </h1>
 
+          </div>
+        </div>
+
+        {/* Quick Key Specifications Strip */}
+        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 mb-6 sm:mb-7 pointer-events-auto max-w-3xl mx-auto px-2">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-white/10 bg-black/60 backdrop-blur-md text-[11px] font-mono text-gray-300 shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
+            <Users className="w-3.5 h-3.5 text-amber-400" />
+            <span>Team Size: <strong className="text-white font-bold">3 Members (Fixed)</strong></span>
+          </div>
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-white/10 bg-black/60 backdrop-blur-md text-[11px] font-mono text-gray-300 shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
+            <Ticket className="w-3.5 h-3.5 text-emerald-400" />
+            <span>Entry Fee: <strong className="text-white font-bold">₹300 / Team</strong></span>
+          </div>
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-white/10 bg-black/60 backdrop-blur-md text-[11px] font-mono text-gray-300 shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
+            <Trophy className="w-3.5 h-3.5 text-amber-300" />
+            <span>Prize Pool: <strong className="text-amber-400 font-bold">₹35,000 (MCA & BCA)</strong></span>
+          </div>
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-white/10 bg-black/60 backdrop-blur-md text-[11px] font-mono text-gray-300 shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
+            <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+            <span>Preliminary Round ➔ Shortlisted Final Round</span>
           </div>
         </div>
 
@@ -141,10 +183,10 @@ export default function HeroSection({ onOpenRegister, onOpenTracks }) {
         </div>
 
         {/* Orbit24 Countdown Timer HUD */}
-        <div className="flex flex-col items-center justify-center gap-2 pointer-events-auto mx-auto">
-          <div className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-widest text-white/50">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_6px_#34d399]" />
-            <span>HACKING BEGINS IN</span>
+        <div className="flex flex-col items-center justify-center gap-2.5 pointer-events-auto mx-auto relative z-20">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-white/12 bg-[#08080c]/90 backdrop-blur-xl shadow-[0_2px_15px_rgba(0,0,0,0.85)] font-mono text-[10px] sm:text-[11px] uppercase tracking-widest">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399] animate-pulse shrink-0" />
+            <span className="font-medium text-white/80">HACKING BEGINS IN</span>
           </div>
 
           <div className="flex items-center justify-center gap-2 sm:gap-3 font-mono">
@@ -185,7 +227,7 @@ export default function HeroSection({ onOpenRegister, onOpenTracks }) {
         {/* Left: Hub Telemetry */}
         <div className="flex items-center gap-3 font-mono text-xs text-white/40">
           <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-          <span className="uppercase text-[11px]">INNOVERSE SYSTEM • KLS GIT ACTIVE NODE</span>
+          <span className="uppercase text-[11px]">INNOVERSE 3.0 SYSTEM • KLS GIT ACTIVE NODE</span>
         </div>
 
         {/* Center: Scroll to About Section */}
@@ -197,10 +239,19 @@ export default function HeroSection({ onOpenRegister, onOpenTracks }) {
           <span className="text-white/20">•</span>
           <a
             href="#about"
-            className="text-white/70 hover:text-amber-400 transition-colors flex items-center gap-1 group cursor-pointer"
+            onClick={(e) => {
+              e.preventDefault();
+              const el = document.getElementById('about');
+              if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className="text-white/70 hover:text-amber-400 transition-colors flex items-center gap-2 group cursor-pointer"
           >
-            <span>ABOUT & TRACKS</span>
-            <span className="group-hover:translate-y-0.5 transition-transform">↓</span>
+            {/* Thematic Sci-Fi Capsule Scroll Indicator */}
+            <span className="relative flex h-4 w-2.5 items-start justify-center rounded-full border border-amber-400/50 p-0.5 bg-amber-400/10">
+              <span className="h-1 w-1 rounded-full bg-amber-400 animate-bounce shadow-[0_0_6px_#f59e0b]" />
+            </span>
+            <span>SCROLL TO EXPLORE</span>
+            <span className="group-hover:translate-y-0.5 transition-transform text-amber-400">↓</span>
           </a>
         </div>
 

@@ -70,13 +70,13 @@ export default function TracksModal({ isOpen, onClose, onSelectTrack }) {
         <div className="mb-6">
           <div className="flex items-center gap-2 mb-2">
             <span className="w-2 h-2 rounded-full bg-amber-400 shadow-[0_0_8px_#f59e0b]" />
-            <p className="font-mono text-xs uppercase tracking-widest text-amber-400">INNOVERSE 2026 COMPETITION TRACKS</p>
+            <p className="font-mono text-xs uppercase tracking-widest text-amber-400">INNOVERSE 3.0 COMPETITION TRACKS</p>
           </div>
           <h2 className="text-2xl sm:text-3xl font-display font-black text-white tracking-tight">
             Choose Your Arena & Bounties
           </h2>
           <p className="text-xs sm:text-sm text-gray-400 mt-1">
-            Over ₹50,000 in pooled bounties. Hackers can submit to one primary track and cross-submit to sponsor bounties.
+            Over ₹35,000 in pooled prize awards across BCA and MCA tracks. Teams of 3 submit preliminary abstracts online.
           </p>
         </div>
 
@@ -98,7 +98,7 @@ export default function TracksModal({ isOpen, onClose, onSelectTrack }) {
                   </div>
                   <div>
                     <div className="flex flex-wrap items-center gap-2 mb-1">
-                      <h3 className="font-display font-bold text-base sm:text-lg text-white group-hover:text-amber-300 transition-colors">
+                      <h3 className="font-display font-bold text-base sm:text-lg text-white">
                         {track.title}
                       </h3>
                       <span

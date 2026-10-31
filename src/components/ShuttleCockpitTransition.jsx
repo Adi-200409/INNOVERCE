@@ -320,7 +320,7 @@ export default function ShuttleCockpitTransition({ onComplete }) {
     // Stage 2: Target Acquisition Lock (at 1600ms)
     timers.push(
       setTimeout(() => {
-        setScanStatus('>> TARGET ACQUIRED: INNOVERSE 2026 // KLS GIT <<');
+        setScanStatus('>> TARGET ACQUIRED: INNOVERSE 3.0 // KLS GIT <<');
         setScanSubStatus('COORDINATES LOCKED • ORBITAL DESCENT CONFIRMED');
         setIsLocked(true);
       }, 1600)
@@ -489,7 +489,7 @@ export default function ShuttleCockpitTransition({ onComplete }) {
             {/* Target Coordinates Tag */}
             <div className="mt-5 px-4 py-2 rounded-full bg-black/80 border border-white/15 backdrop-blur-md flex items-center gap-2.5 font-mono text-xs tracking-widest text-amber-300 shadow-xl">
               <Crosshair className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
-              <span>COORDINATES: 15.8281° N, 74.4889° E // INNOVERSE 2026</span>
+              <span>COORDINATES: 15.8281° N, 74.4889° E // INNOVERSE 3.0</span>
             </div>
           </div>
         </div>

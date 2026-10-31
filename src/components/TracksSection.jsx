@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Bot,
   Cpu,
@@ -7,9 +7,7 @@ import {
   Sparkles,
   ArrowRight,
   Terminal,
-  Layers,
-  ChevronRight,
-  ExternalLink
+  Layers
 } from 'lucide-react';
 
 export const TRACKS_DATA = [
@@ -91,8 +89,6 @@ export const TRACKS_DATA = [
 ];
 
 export default function TracksSection({ onOpenRegister, onSelectTrack }) {
-  const [activeTrack, setActiveTrack] = useState(TRACKS_DATA[0]);
-
   return (
     <section id="tracks" className="relative w-full py-24 sm:py-32 px-4 sm:px-6 lg:px-8 bg-[#060608]/90 z-20">
       {/* Background ambient radial glow */}
@@ -125,7 +121,7 @@ export default function TracksSection({ onOpenRegister, onSelectTrack }) {
             return (
               <div
                 key={track.id}
-                className={`group relative rounded-3xl border ${track.borderColor} ${track.hoverBorder} bg-[#0c0c12]/80 hover:bg-[#101018]/90 backdrop-blur-xl p-6 sm:p-7 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(0,0,0,0.8)] cursor-pointer ${
+                className={`relative rounded-3xl border ${track.borderColor} bg-[#0c0c12]/80 backdrop-blur-xl p-6 sm:p-7 flex flex-col justify-between cursor-pointer ${
                   isFeatured ? 'lg:col-span-1 md:col-span-2' : ''
                 }`}
                 onClick={() => {
@@ -133,12 +129,6 @@ export default function TracksSection({ onOpenRegister, onSelectTrack }) {
                   else if (onOpenRegister) onOpenRegister();
                 }}
               >
-                {/* Glow pill behind card */}
-                <div
-                  className="pointer-events-none absolute -inset-0.5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity blur-xl"
-                  style={{ background: track.glowColor }}
-                />
-
                 <div className="relative z-10">
                   {/* Top Bar: Subsystem Telemetry & Bounty */}
                   <div className="flex items-center justify-between mb-5">
@@ -160,7 +150,7 @@ export default function TracksSection({ onOpenRegister, onSelectTrack }) {
                   {/* Icon & Title */}
                   <div className="flex items-start gap-4 mb-3.5">
                     <div
-                      className="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 border transition-transform group-hover:scale-110"
+                      className="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 border"
                       style={{
                         backgroundColor: `${track.color}18`,
                         borderColor: `${track.color}35`,
@@ -170,7 +160,7 @@ export default function TracksSection({ onOpenRegister, onSelectTrack }) {
                       <Icon className="w-6 h-6" />
                     </div>
                     <div>
-                      <h3 className="font-display font-bold text-lg text-white group-hover:text-amber-300 transition-colors leading-snug">
+                      <h3 className="font-display font-bold text-lg text-white leading-snug">
                         {track.title}
                       </h3>
                     </div>
@@ -196,11 +186,11 @@ export default function TracksSection({ onOpenRegister, onSelectTrack }) {
                   </div>
 
                   <div className="flex items-center justify-between pt-2">
-                    <span className="font-mono text-xs text-white/50 group-hover:text-white transition-colors flex items-center gap-1">
+                    <span className="font-mono text-xs text-white/50 flex items-center gap-1">
                       <span>Apply for Track</span>
-                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                      <ArrowRight className="w-3.5 h-3.5" />
                     </span>
-                    <span className="w-2 h-2 rounded-full bg-white/20 group-hover:bg-amber-400 group-hover:shadow-[0_0_8px_#f59e0b] transition-all" />
+                    <span className="w-2 h-2 rounded-full bg-white/20" />
                   </div>
                 </div>
               </div>

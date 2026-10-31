@@ -6,9 +6,9 @@
   <link rel="icon" type="image/svg+xml"
     href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a855f7'><circle cx='12' cy='12' r='9' stroke='%23a855f7' stroke-width='2' fill='none'/><circle cx='12' cy='12' r='4' fill='%23e4007c'/></svg>" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>INNOVERSE 2026 | National Level AI & Tech Hackathon</title>
+  <title>INNOVERSE 3.0 | National Level AI & Tech Hackathon</title>
   <meta name="description"
-    content="Join 1,500+ builders, hackers, and visionaries for 24 hours of intense creation, autonomous artificial intelligence, and national level innovation." />
+    content="INNOVERSE 3.0 — Join 1,500+ builders, hackers, and visionaries for 24 hours of intense creation, autonomous artificial intelligence, and national level innovation." />
 
   <!-- Google Fonts: Space Grotesk, Syne, Inter, JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,6 +16,16 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Syne:wght@700;800;900&display=swap"
     rel="stylesheet">
+  <!-- Force page to load from the very top on reload -->
+  <script>
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+    if (window.location.hash) {
+      history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
+    window.scrollTo(0, 0);
+  </script>
 </head>
 
 <body class="bg-black text-white antialiased overflow-x-hidden selection:bg-purple-500 selection:text-white">

@@ -1,6 +1,7 @@
 /* Custom App-level scrollbar and utility animations */
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
+  height: 6px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
@@ -9,12 +10,14 @@
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(168, 85, 247, 0.35);
+  background: rgba(245, 158, 11, 0.45);
   border-radius: 9999px;
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.25);
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: rgba(168, 85, 247, 0.7);
+  background: rgba(245, 158, 11, 0.85);
+  box-shadow: 0 0 14px rgba(245, 158, 11, 0.6);
 }
 
 @keyframes fadeIn {

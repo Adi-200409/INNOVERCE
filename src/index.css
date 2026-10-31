@@ -17,6 +17,8 @@
 
   html {
     scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: #f59e0b #060608;
   }
 
   body {
@@ -209,4 +211,33 @@
   background: rgba(18, 18, 22, 0.85);
   border-color: rgba(255, 255, 255, 0.18);
   transform: translateY(-2px);
+}
+
+/* =========================================================================
+   ORBIT24 / CYBER SOLAR THEMED GLOBAL SCROLLBAR
+   ========================================================================= */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #060608;
+  border-left: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #f59e0b 0%, #d97706 100%);
+  border-radius: 9999px;
+  border: 2px solid #060608;
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.35);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #fbbf24 0%, #f59e0b 100%);
+  box-shadow: 0 0 16px rgba(245, 158, 11, 0.7);
+}
+
+::-webkit-scrollbar-corner {
+  background: #060608;
 }

@@ -48,7 +48,7 @@ export default function Preloader({ onComplete, onStartExit }) {
       } else if (current < 99) {
         setStatusText('CALIBRATING ORBITAL TELEMETRY...');
       } else {
-        setStatusText('SYSTEMS NOMINAL • WELCOME TO INNOVERSE');
+        setStatusText('SYSTEMS NOMINAL • WELCOME TO INNOVERSE 3.0');
       }
 
       if (current < 100) {
@@ -109,7 +109,7 @@ export default function Preloader({ onComplete, onStartExit }) {
       >
         <div className="flex items-center gap-2">
           <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse shadow-[0_0_6px_#f59e0b]" />
-          <span>INNOVERSE // 2026</span>
+          <span>INNOVERSE // 3.0</span>
         </div>
         <div>
           <span>NATIONAL LEVEL AI SPRINT</span>
@@ -124,7 +124,7 @@ export default function Preloader({ onComplete, onStartExit }) {
         {/* Brand Logo with Innoverse Animated Dots */}
         <div className="flex flex-col items-center gap-3 mb-8">
           <h1 className="font-display font-black text-4xl sm:text-6xl md:text-7xl tracking-wider text-white">
-            Innoverse<span className="text-stroke-amber ml-2">2026</span>
+            Innoverse<span className="font-mono text-stroke-amber ml-2 [font-variant-numeric:lining-nums_slashed-zero]">3.0</span>
           </h1>
 
           {/* Glowing Animated Sequence Dots */}
@@ -208,7 +208,7 @@ export default function Preloader({ onComplete, onStartExit }) {
           }`}
       >
         <div>
-          <span>24-HOUR NATIONAL LEVEL HACKATHON • ₹50K BOUNTIES</span>
+          <span>24-HOUR NATIONAL LEVEL HACKATHON • ₹35K PRIZE POOL</span>
         </div>
         <div className="flex items-center gap-4">
           <span>LAT: 20.59° N</span>

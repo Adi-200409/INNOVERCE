@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import HeroSection from './components/HeroSection';
 import AboutSection from './components/AboutSection';
@@ -20,11 +20,35 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [isReady, setIsReady] = useState(false);
 
+  // Guarantee that on initial load and reload, the page always starts at top: 0
+  useEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+
+    if (window.location.hash) {
+      window.history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
+
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+
+    const handleBeforeUnload = () => {
+      window.scrollTo(0, 0);
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
+
   const handlePreloaderStartExit = () => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     setIsReady(true);
   };
 
   const handlePreloaderComplete = () => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     setIsLoading(false);
     setIsReady(true);
   };
