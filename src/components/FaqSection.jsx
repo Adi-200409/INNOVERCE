@@ -3,20 +3,28 @@ import { HelpCircle, ChevronDown, MessageSquare } from 'lucide-react';
 
 const FAQS = [
   {
-    q: 'Who is eligible to participate in INNOVERSE 3.0?',
-    a: 'INNOVERSE 3.0 features separate competitive tracks for MCA (Postgraduate) and BCA (Undergraduate) students across India. Participants must form a squad within their respective academic tier and provide valid college credentials.'
+    q: 'Who can participate? 🌐',
+    a: "Anyone passionate about technology, innovation, and problem-solving can participate! Whether you're a student, professional developer, designer, or enthusiast, Innoverse welcomes all skill levels."
   },
   {
-    q: 'What is the required team size?',
-    a: 'Team size is strictly 3 members per team (fixed). Neither solo entries nor squads of other sizes are permitted. All 3 members must register together.'
+    q: 'What if this is my first hackathon?',
+    a: "No worries! innoverse is beginner-friendly. We provide mentorship, workshops, and resources to help first-timers learn and build amazing projects. It's the perfect opportunity to start your hackathon journey!"
   },
   {
-    q: 'What is the registration fee?',
-    a: 'The registration fee is ₹300 per team. This nominal fee covers your preliminary round evaluation. For shortlisted teams advancing to the final round, it covers all on-campus facilities including meals, midnight snacks, Red Bull fuel, Wi-Fi, mentorship, and participation certificates at KLS GIT Belagavi.'
+    q: 'Do I need to pay a registration fee?',
+    a: 'Yes,Just 300Rs To participate. We believe in making innovation accessible to everyone.'
+  },
+  {
+    q:'Who can participate offline?',
+    a:'Offline participation is available for Innoverse and nearby college students.'
   },
   {
     q: 'How do the competition rounds and selection work?',
     a: 'INNOVERSE 3.0 is structured in two stages: (1) Preliminary Round: Teams submit their problem statement abstract, tech architecture, and blueprint online with the ₹300 fee. (2) Final Round: Shortlisted squads are invited to KLS GIT, Belagavi for the intense 24-hour on-campus coding sprint.'
+  },
+  {
+    q:'What should be the team size?',
+    a:'Teams can have 3 members, or you can participate solo. We encourage diverse teams for stronger collaboration!'
   },
   {
     q: 'What is the prize pool and prize distribution?',
@@ -37,6 +45,10 @@ const FAQS = [
   {
     q: 'What are the judging criteria?',
     a: 'Projects are evaluated on 4 core pillars: Technical Depth & Complexity (30%), Originality & Innovation (25%), Real-World Impact & Feasibility (25%), and Quality of UI/UX & Demo Presentation (20%). MCA and BCA tracks are judged by separate evaluation panels under distinct rubrics.'
+  },
+  {
+    q:'Are cross-college teams allowed?',
+    a:'No! Innoverse does not allow cross-college teams — build a diverse team and bring your ideas to life!'
   }
 ];
 
