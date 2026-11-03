@@ -38,7 +38,7 @@ export default function AboutConstellation3D() {
         antialias: true,
         powerPreference: 'high-performance'
       });
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
       renderer.setSize(width, height);
       renderer.setClearColor(0x000000, 0);
     } catch (err) {
@@ -134,8 +134,8 @@ export default function AboutConstellation3D() {
     const sparkleTexture = createSparkleTexture();
     const dotTexture = createDotTexture();
 
-    // 3. Constellation Nodes Data in 3D Space
-    const NODE_COUNT = 150;
+    // 3. Constellation Nodes Data in 3D Space (Optimized count for 60-120fps fluid scrolling)
+    const NODE_COUNT = 55;
     const BOUNDS_X = 750;
     const BOUNDS_Y = 550;
     const BOUNDS_Z = 350;
@@ -332,7 +332,7 @@ export default function AboutConstellation3D() {
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
       renderer.setSize(width, height);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
     };
 
     const resizeObserver = new ResizeObserver(() => handleResize());

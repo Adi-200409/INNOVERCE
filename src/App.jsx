@@ -26,6 +26,12 @@ function App() {
       window.history.scrollRestoration = 'manual';
     }
 
+    // Direct navigation if user bookmarked or entered /register or #register
+    if (window.location.pathname === '/register' || window.location.hash === '#register') {
+      window.location.href = '/register.html';
+      return;
+    }
+
     if (window.location.hash) {
       window.history.replaceState(null, '', window.location.pathname + window.location.search);
     }
@@ -41,6 +47,10 @@ function App() {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
   }, []);
+
+  const handleOpenRegister = () => {
+    window.location.href = '/register.html';
+  };
 
   const handlePreloaderStartExit = () => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
@@ -69,7 +79,7 @@ function App() {
       {/* Sticky Top Navigation Bar */}
       <Navbar
         isReady={isReady}
-        onOpenRegister={() => setIsRegisterOpen(true)}
+        onOpenRegister={handleOpenRegister}
         onOpenTracks={() => setIsTracksOpen(true)}
       />
 
@@ -85,19 +95,19 @@ function App() {
         <main id="main-content" className="w-full relative z-20">
           {/* 1. Hero Section */}
           <HeroSection
-            onOpenRegister={() => setIsRegisterOpen(true)}
+            onOpenRegister={handleOpenRegister}
             onOpenTracks={() => setIsTracksOpen(true)}
           />
 
           {/* 2. About & Metrics Section */}
           <AboutSection
-            onOpenRegister={() => setIsRegisterOpen(true)}
+            onOpenRegister={handleOpenRegister}
             onOpenTracks={() => setIsTracksOpen(true)}
           />
 
           {/* 3. 5 Mission Arenas & Problem Tracks */}
           <TracksSection
-            onOpenRegister={() => setIsRegisterOpen(true)}
+            onOpenRegister={handleOpenRegister}
             onSelectTrack={(trackId) => setIsTracksOpen(true)}
           />
 
@@ -106,7 +116,7 @@ function App() {
 
           {/* 5. Prizes, Cash Podiums & Track Bounties */}
           <PrizesSection
-            onOpenRegister={() => setIsRegisterOpen(true)}
+            onOpenRegister={handleOpenRegister}
           />
 
           {/* 6. Sponsors, Cloud Compute & Institutional Partners */}
@@ -117,13 +127,13 @@ function App() {
 
           {/* 8. Mission Control Footer */}
           <Footer
-            onOpenRegister={() => setIsRegisterOpen(true)}
+            onOpenRegister={handleOpenRegister}
             onOpenTracks={() => setIsTracksOpen(true)}
           />
         </main>
       </div>
 
-      {/* Interactive Registration Modal */}
+      {/* Interactive Registration Modal (Fallback) */}
       <RegisterModal
         isOpen={isRegisterOpen}
         onClose={() => setIsRegisterOpen(false)}
@@ -135,7 +145,7 @@ function App() {
         onClose={() => setIsTracksOpen(false)}
         onSelectTrack={(trackId) => {
           setIsTracksOpen(false);
-          setIsRegisterOpen(true);
+          handleOpenRegister();
         }}
       />
     </div>

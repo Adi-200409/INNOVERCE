@@ -207,7 +207,7 @@ export default function AboutSection({ onOpenRegister, onOpenTracks }) {
   return (
     <section
       id="about"
-      className="relative w-full min-h-screen scroll-mt-20 bg-black/40 backdrop-blur-sm text-white py-24 sm:py-32 px-4 sm:px-6 md:px-12 overflow-hidden border-t border-white/10"
+      className="relative w-full min-h-screen scroll-mt-20 bg-[#060608]/80 text-white py-24 sm:py-32 px-4 sm:px-6 md:px-12 overflow-hidden border-t border-white/10"
     >
       {/* 3D Neural Constellation & Star Plexus Background Layer */}
       <AboutConstellation3D />
@@ -245,7 +245,7 @@ export default function AboutSection({ onOpenRegister, onOpenTracks }) {
               CYBERNETIC MISSION DOSSIER / TERMINAL CARD
               Contains the user's official text formatted with high aesthetic polish
               ===================================================================== */}
-          <div className="w-full text-left rounded-3xl border border-white/15 bg-[#0a0a0e]/90 p-6 sm:p-10 md:p-12 backdrop-blur-2xl shadow-[0_20px_60px_rgba(0,0,0,0.7)] relative overflow-hidden group">
+          <div className="w-full text-left rounded-3xl border border-white/15 bg-[#0a0a0e]/95 p-6 sm:p-10 md:p-12 backdrop-blur-sm shadow-[0_20px_60px_rgba(0,0,0,0.7)] relative overflow-hidden group">
             {/* Ambient inner radial glow */}
             <div className="absolute top-0 right-0 w-96 h-96 bg-amber-500/[0.06] rounded-full blur-3xl pointer-events-none" />
             <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-500/[0.05] rounded-full blur-3xl pointer-events-none" />
@@ -428,7 +428,7 @@ export default function AboutSection({ onOpenRegister, onOpenTracks }) {
               return (
                 <div
                   key={domain.id}
-                  className={`group relative rounded-2xl border ${domain.borderColor} bg-[#0c0c10]/85 p-6 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1.5 shadow-[0_8px_30px_rgba(0,0,0,0.6)] flex flex-col justify-between overflow-hidden`}
+                  className={`group relative rounded-2xl border ${domain.borderColor} bg-[#0c0c10]/95 p-6 transition-all duration-300 hover:-translate-y-1.5 shadow-[0_8px_30px_rgba(0,0,0,0.6)] flex flex-col justify-between overflow-hidden`}
                 >
                   {/* Hover ambient flare */}
                   <div
@@ -486,7 +486,7 @@ export default function AboutSection({ onOpenRegister, onOpenTracks }) {
             SECTION 3: DUAL COMPETITIVE TRACKS (MCA vs BCA LEAGUES)
             Highlights the user's specific note: "separate competitive tracks for MCA and BCA"
             ========================================================================= */}
-        <div className="rounded-3xl border border-white/15 bg-[#0a0a0e]/90 p-8 sm:p-12 backdrop-blur-2xl relative overflow-hidden">
+        <div className="rounded-3xl border border-white/15 bg-[#0a0a0e]/95 p-8 sm:p-12 relative overflow-hidden">
           <div className="absolute top-0 right-1/4 w-96 h-96 bg-amber-500/[0.06] rounded-full blur-3xl pointer-events-none" />
           <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-blue-500/[0.06] rounded-full blur-3xl pointer-events-none" />
 
@@ -511,7 +511,7 @@ export default function AboutSection({ onOpenRegister, onOpenTracks }) {
               return (
                 <div
                   key={div.id}
-                  className="relative rounded-2xl border border-white/15 bg-white/[0.02] p-7 sm:p-8 backdrop-blur-md hover:bg-white/[0.04] transition-all duration-300 flex flex-col justify-between overflow-hidden group"
+                  className="relative rounded-2xl border border-white/15 bg-white/[0.03] p-7 sm:p-8 hover:bg-white/[0.05] transition-all duration-300 flex flex-col justify-between overflow-hidden group"
                 >
                   {/* Gradient top bar */}
                   <div
@@ -614,7 +614,7 @@ export default function AboutSection({ onOpenRegister, onOpenTracks }) {
               return (
                 <div
                   key={metric.id}
-                  className="group relative rounded-2xl border border-white/10 bg-[#0c0c10]/80 p-6 sm:p-7 backdrop-blur-xl transition-all duration-300 hover:border-white/30 hover:bg-[#121218] hover:-translate-y-1 shadow-[0_8px_30px_rgba(0,0,0,0.5)] flex flex-col justify-between overflow-hidden"
+                  className="group relative rounded-2xl border border-white/10 bg-[#0c0c10]/92 p-6 sm:p-7 transition-all duration-300 hover:border-white/30 hover:bg-[#121218] hover:-translate-y-1 shadow-[0_8px_30px_rgba(0,0,0,0.5)] flex flex-col justify-between overflow-hidden"
                 >
                   {/* Subtle Top Gradient Accent */}
                   <div
@@ -680,7 +680,7 @@ export default function AboutSection({ onOpenRegister, onOpenTracks }) {
         {/* =========================================================================
             SECTION 5: HOST ACCREDITATION & CAMPUS SPOTLIGHT (KLS GIT BELAGAVI)
             ========================================================================= */}
-        <div className="rounded-3xl border border-white/10 bg-[#0a0a0e]/90 p-8 sm:p-10 backdrop-blur-xl relative overflow-hidden">
+        <div className="rounded-3xl border border-white/10 bg-[#0a0a0e]/95 p-8 sm:p-10 relative overflow-hidden">
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
             <div className="max-w-2xl">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-400 font-mono text-[11px] uppercase tracking-widest mb-4">
@@ -722,7 +722,7 @@ export default function AboutSection({ onOpenRegister, onOpenTracks }) {
         {/* =========================================================================
             SECTION 6: WHY PARTICIPATE / ECOSYSTEM HIGHLIGHTS
             ========================================================================= */}
-        <div className="rounded-3xl border border-white/10 bg-[#0a0a0e]/90 p-8 sm:p-12 backdrop-blur-xl relative overflow-hidden">
+        <div className="rounded-3xl border border-white/10 bg-[#0a0a0e]/95 p-8 sm:p-12 relative overflow-hidden">
           <div className="absolute inset-0 bg-radial from-amber-500/10 via-transparent to-transparent pointer-events-none" />
 
           <div className="relative z-10 max-w-2xl mb-10">

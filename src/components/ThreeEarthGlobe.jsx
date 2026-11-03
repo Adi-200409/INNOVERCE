@@ -234,25 +234,29 @@ export default function ThreeEarthGlobe({
   showArcs = true
 }) {
   const mountRef = useRef(null);
-  const [activeNode, setActiveNode] = useState(DEFAULT_HUBS[0]);
-  const [badgeScreenPos, setBadgeScreenPos] = useState({ x: 0, y: 0, visible: false });
-  const [isDragging, setIsDragging] = useState(false);
+  const badgeRef = useRef(null);
+  const [activeNode] = useState({
+    id: 'user',
+    name: 'KLS GIT',
+    lat: 15.8281,
+    lng: 74.4889,
+    isUser: true
+  });
   const globeGroupRef = useRef(null);
-
-  // Primary Hackathon Hub: KLS GIT (KLS Gogte Institute of Technology, Belagavi)
-  useEffect(() => {
-    setActiveNode({
-      id: 'user',
-      name: 'KLS GIT',
-      lat: 15.8281,
-      lng: 74.4889,
-      isUser: true
-    });
-  }, []);
 
   useEffect(() => {
     const container = mountRef.current;
     if (!container) return;
+
+    // Viewport Intersection Observer (Pauses rendering when scrolled away from Hero)
+    let isVisible = true;
+    const intersectionObserver = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+      },
+      { threshold: 0.02 }
+    );
+    intersectionObserver.observe(container);
 
     // 1. Scene, Camera, Renderer
     const scene = new THREE.Scene();
@@ -270,7 +274,7 @@ export default function ThreeEarthGlobe({
       powerPreference: 'high-performance'
     });
     renderer.setSize(width, height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.1;
     container.appendChild(renderer.domElement);
@@ -736,6 +740,8 @@ export default function ThreeEarthGlobe({
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
 
+      if (!isVisible) return;
+
       // Spin & Inertia damping for Earth
       if (!pointerDown) {
         if (autoRotate) {
@@ -980,11 +986,13 @@ export default function ThreeEarthGlobe({
       const x = (tempV3.x * 0.5 + 0.5) * container.clientWidth;
       const y = (-(tempV3.y * 0.5) + 0.5) * container.clientHeight;
 
-      setBadgeScreenPos({
-        x,
-        y,
-        visible: dot > 0.05 && tempV3.z < 1
-      });
+      if (badgeRef.current) {
+        const isBadgeVisible = dot > 0.05 && tempV3.z < 1;
+        badgeRef.current.style.display = isBadgeVisible ? 'block' : 'none';
+        if (isBadgeVisible) {
+          badgeRef.current.style.transform = `translate3d(${x}px, ${y}px, 0px) translate(16px, -115%)`;
+        }
+      }
 
       renderer.render(scene, camera);
     };
@@ -1003,6 +1011,7 @@ export default function ThreeEarthGlobe({
     window.addEventListener('resize', handleResize);
 
     return () => {
+      intersectionObserver.disconnect();
       window.removeEventListener('scroll', onWindowScroll);
       window.removeEventListener('pointermove', onWindowPointerMove);
       renderer.domElement.removeEventListener('pointerdown', onPointerDown);
@@ -1025,26 +1034,23 @@ export default function ThreeEarthGlobe({
       <div ref={mountRef} className="absolute inset-0 w-full h-full" />
 
       {/* Orbit24 Pill Badge [ ORB-01 / KLS GIT ] */}
-      {badgeScreenPos.visible && (
-        <div
-          style={{
-            transform: `translate3d(${badgeScreenPos.x}px, ${badgeScreenPos.y}px, 0px) translate(16px, -115%)`
-          }}
-          className="absolute pointer-events-none transition-opacity duration-150 z-20"
-        >
-          <div className="flex items-center gap-2 px-3 py-1 rounded-full border border-blue-400/40 bg-blue-600/90 text-white backdrop-blur-md text-[11px] font-mono tracking-wider shadow-[0_4px_24px_rgba(37,99,235,0.6)]">
-            {/* Glowing Golden Amber Beacon */}
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-400 shadow-[0_0_8px_#f59e0b]" />
-            </span>
+      <div
+        ref={badgeRef}
+        style={{ display: 'none' }}
+        className="absolute pointer-events-none z-20 top-0 left-0"
+      >
+        <div className="flex items-center gap-2 px-3 py-1 rounded-full border border-blue-400/40 bg-blue-600/90 text-white backdrop-blur-md text-[11px] font-mono tracking-wider shadow-[0_4px_24px_rgba(37,99,235,0.6)]">
+          {/* Glowing Golden Amber Beacon */}
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-400 shadow-[0_0_8px_#f59e0b]" />
+          </span>
 
-            <span className="font-bold text-white text-[10px] tracking-widest">INN-01</span>
-            <span className="text-white/60">/</span>
-            <span className="text-white font-semibold">{activeNode.name}</span>
-          </div>
+          <span className="font-bold text-white text-[10px] tracking-widest">INN-01</span>
+          <span className="text-white/60">/</span>
+          <span className="text-white font-semibold">{activeNode.name}</span>
         </div>
-      )}
+      </div>
     </div>
   );
 }

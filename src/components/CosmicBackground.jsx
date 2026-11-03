@@ -40,7 +40,7 @@ export default function CosmicBackground({ paused = false }) {
         antialias: false,
         powerPreference: 'high-performance'
       });
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.25));
       renderer.setSize(width, height);
       renderer.setClearColor(0x000000, 0);
     } catch (e) {
@@ -108,8 +108,8 @@ export default function CosmicBackground({ paused = false }) {
     const starTexture = createStarSprite();
     const dustTexture = createDustSprite();
 
-    // 3. Volumetric 3D Deep Space Starfield (2,800 stars)
-    const STAR_COUNT = Math.min(3200, Math.max(1600, Math.floor((width * height) / 450)));
+    // 3. Volumetric 3D Deep Space Starfield (Optimized particle count for 60-120fps fluid scrolling)
+    const STAR_COUNT = Math.min(1400, Math.max(700, Math.floor((width * height) / 900)));
     const starGeo = new THREE.BufferGeometry();
     const starPositions = new Float32Array(STAR_COUNT * 3);
     const starColors = new Float32Array(STAR_COUNT * 3);
@@ -159,7 +159,7 @@ export default function CosmicBackground({ paused = false }) {
     sceneGroup.add(starPoints);
 
     // 4. Volumetric Stardust Cloud (Foreground motes that drift closer to camera)
-    const DUST_COUNT = 380;
+    const DUST_COUNT = 120;
     const dustGeo = new THREE.BufferGeometry();
     const dustPositions = new Float32Array(DUST_COUNT * 3);
     const dustColors = new Float32Array(DUST_COUNT * 3);
@@ -338,7 +338,7 @@ export default function CosmicBackground({ paused = false }) {
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
       renderer.setSize(width, height);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.25));
     };
 
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
@@ -517,8 +517,8 @@ export default function CosmicBackground({ paused = false }) {
         ref={imgRef}
         src="/cosmic-space-bg.jpg"
         alt="Deep Space Universe"
-        className="absolute inset-0 w-full h-full object-cover filter brightness-[0.70] contrast-[1.14] transition-transform duration-75 ease-out"
-        style={{ transform: 'scale(1.08)' }}
+        className="absolute inset-0 w-full h-full object-cover filter brightness-[0.70] contrast-[1.14] will-change-transform"
+        style={{ transform: 'scale(1.08) translate3d(0, 0, 0)' }}
         draggable={false}
       />
 
