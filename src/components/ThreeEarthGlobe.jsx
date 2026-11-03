@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { getCachedShuttleModel, preloadShuttleModel } from '../utils/shuttleLoader';
 
-// National hubs with live user node (KLS GIT)
+// National hubs with live user node (KLS GIT Belagavi)
 const DEFAULT_HUBS = [
   { id: 'user', name: 'KLS GIT', lat: 15.8281, lng: 74.4889, isUser: true },
   { id: 'blr', name: 'BENGALURU', lat: 12.9716, lng: 77.5946 },
@@ -23,29 +23,6 @@ function latLngToVector3(lat, lng, radius, altitude = 0) {
   );
 }
 
-// Generate circular, antialiased point particle texture matching WeEvolveIT's solid beads
-function createDotTexture() {
-  const canvas = document.createElement('canvas');
-  canvas.width = 64;
-  canvas.height = 64;
-  const ctx = canvas.getContext('2d');
-
-  const gradient = ctx.createRadialGradient(32, 32, 0, 32, 32, 30);
-  gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
-  gradient.addColorStop(0.7, 'rgba(255, 255, 255, 0.95)');
-  gradient.addColorStop(0.9, 'rgba(240, 245, 255, 0.4)');
-  gradient.addColorStop(1, 'rgba(200, 220, 255, 0)');
-
-  ctx.fillStyle = gradient;
-  ctx.beginPath();
-  ctx.arc(32, 32, 30, 0, Math.PI * 2);
-  ctx.fill();
-
-  const texture = new THREE.CanvasTexture(canvas);
-  texture.needsUpdate = true;
-  return texture;
-}
-
 // Generate glowing celestial star sprite texture with soft radial falloff and 4-point cross sparkle
 function createStarTexture() {
   const canvas = document.createElement('canvas');
@@ -55,10 +32,10 @@ function createStarTexture() {
 
   const gradient = ctx.createRadialGradient(32, 32, 0, 32, 32, 30);
   gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
-  gradient.addColorStop(0.18, 'rgba(255, 255, 255, 0.9)');
-  gradient.addColorStop(0.42, 'rgba(235, 245, 255, 0.42)');
-  gradient.addColorStop(0.72, 'rgba(180, 210, 255, 0.12)');
-  gradient.addColorStop(1, 'rgba(150, 180, 255, 0)');
+  gradient.addColorStop(0.20, 'rgba(235, 245, 255, 0.95)');
+  gradient.addColorStop(0.45, 'rgba(147, 197, 253, 0.45)');
+  gradient.addColorStop(0.75, 'rgba(56, 189, 248, 0.12)');
+  gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
 
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, 64, 64);
@@ -82,7 +59,6 @@ function createStarTexture() {
 function createNexus1SpaceShuttle(onLoaded) {
   const ship = new THREE.Group();
 
-  // Texture Loader for PBR textures
   const texLoader = new THREE.TextureLoader();
   const baseColorMap = texLoader.load('/nexus-1-space-shuttle/space_shuttle_3d_model_basecolor.JPEG');
   baseColorMap.colorSpace = THREE.SRGBColorSpace;
@@ -100,13 +76,17 @@ function createNexus1SpaceShuttle(onLoaded) {
     envMapIntensity: 1.6
   });
 
-  // Inner wrapper to orient model: nose along +Z, tail along -Z, wings along X
   const modelWrapper = new THREE.Group();
   ship.add(modelWrapper);
 
   const attachModel = (obj) => {
     if (!obj) return;
     const clone = obj.clone(true);
+    clone.traverse((child) => {
+      if (child.isMesh && (!child.material || !child.material.map)) {
+        child.material = shuttleMaterial;
+      }
+    });
     modelWrapper.add(clone);
     if (onLoaded) onLoaded(clone);
   };
@@ -120,12 +100,12 @@ function createNexus1SpaceShuttle(onLoaded) {
     });
   }
 
-  // Helper to construct realistic multi-layer Red & Yellow fire flame thrusters
+  // Construct realistic multi-layer Red & Yellow fire flame thrusters
   const createFireThruster = (x, y, z) => {
     const engineGroup = new THREE.Group();
     engineGroup.position.set(x, y, z);
 
-    // 1. Core Yellow Incandescent Flame (Hot combustion core)
+    // 1. Core Yellow Incandescent Flame
     const coreGeo = new THREE.ConeGeometry(0.024, 0.28, 16, 1, true);
     coreGeo.translate(0, 0.14, 0);
     coreGeo.rotateX(-Math.PI / 2);
@@ -178,45 +158,32 @@ function createNexus1SpaceShuttle(onLoaded) {
     const discMat = new THREE.MeshBasicMaterial({
       color: 0xffdd44,
       transparent: true,
-      opacity: 0.92,
-      blending: THREE.AdditiveBlending,
-      depthTest: true,
-      depthWrite: false,
-      side: THREE.DoubleSide
+      opacity: 0.95,
+      side: THREE.DoubleSide,
+      blending: THREE.AdditiveBlending
     });
     const discMesh = new THREE.Mesh(discGeo, discMat);
+    discMesh.position.set(0, 0, 0.005);
     engineGroup.add(discMesh);
 
-    // Anchor for trailing exhaust particle emission
     const anchor = new THREE.Object3D();
-    anchor.position.set(0, 0, 0);
+    anchor.position.set(0, 0, 0.24);
     engineGroup.add(anchor);
 
     ship.add(engineGroup);
-
-    return {
-      group: engineGroup,
-      core: coreMesh,
-      mid: midMesh,
-      outer: outerMesh,
-      disc: discMesh,
-      anchor
-    };
+    return { group: engineGroup, core: coreMesh, mid: midMesh, outer: outerMesh, disc: discMesh, anchor };
   };
 
-  // Space Shuttle 3 Main Rocket Engines (Left, Right, Top Center)
-  // Precision aligned with shuttle OBJ rear bulkhead nozzles
-  const leftEngine = createFireThruster(-0.058, -0.12, -0.42);
-  const rightEngine = createFireThruster(0.057, -0.12, -0.42);
-  const topEngine = createFireThruster(0.000, -0.015, -0.41);
+  const leftEngine = createFireThruster(-0.115, -0.045, -0.68);
+  const rightEngine = createFireThruster(0.115, -0.045, -0.68);
+  const topEngine = createFireThruster(0.0, 0.088, -0.68);
 
-  // Dynamic warm firelight illuminating the engine bells and rear tiles
-  const thrusterLight = new THREE.PointLight(0xff5500, 3.2, 4.0);
-  thrusterLight.position.set(0, -0.08, -0.45);
+  const thrusterLight = new THREE.PointLight(0xff6600, 3.2, 5.5);
+  thrusterLight.position.set(0, 0, -0.92);
   ship.add(thrusterLight);
 
-  // Decrease spaceship size to sleek, elegant proportions
-  ship.scale.set(0.48, 0.48, 0.48);
+  ship.scale.set(0.19, 0.19, 0.19);
+  ship.rotation.y = Math.PI;
 
   return {
     group: ship,
@@ -230,8 +197,8 @@ function createNexus1SpaceShuttle(onLoaded) {
 
 export default function ThreeEarthGlobe({
   autoRotate = true,
-  atmosphereGlow = true,
-  showArcs = true
+  atmosphereGlow: _atmosphereGlow = true,
+  showArcs = false
 }) {
   const mountRef = useRef(null);
   const badgeRef = useRef(null);
@@ -242,13 +209,26 @@ export default function ThreeEarthGlobe({
     lng: 74.4889,
     isUser: true
   });
+  const [isDragging, setIsDragging] = useState(false);
   const globeGroupRef = useRef(null);
+  const autoRotateRef = useRef(autoRotate);
+  const showArcsRef = useRef(showArcs);
+  const arcsGroupRef = useRef(null);
+
+  // Smooth real-time prop synchronization without tearing down WebGL context
+  useEffect(() => {
+    autoRotateRef.current = autoRotate;
+  }, [autoRotate]);
+
+  useEffect(() => {
+    showArcsRef.current = showArcs;
+    if (arcsGroupRef.current) arcsGroupRef.current.visible = showArcs;
+  }, [showArcs]);
 
   useEffect(() => {
     const container = mountRef.current;
     if (!container) return;
 
-    // Viewport Intersection Observer (Pauses rendering when scrolled away from Hero)
     let isVisible = true;
     const intersectionObserver = new IntersectionObserver(
       ([entry]) => {
@@ -258,7 +238,7 @@ export default function ThreeEarthGlobe({
     );
     intersectionObserver.observe(container);
 
-    // 1. Scene, Camera, Renderer
+    // 1. Scene, Camera, High-Precision WebGL Renderer
     const scene = new THREE.Scene();
 
     const width = container.clientWidth;
@@ -266,7 +246,7 @@ export default function ThreeEarthGlobe({
 
     const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 1000);
     // Camera positioned with clean cosmic headroom above Earth for the navbar
-    camera.position.set(0, 0.22, 6.2);
+    camera.position.set(0, 0.18, 6.0);
 
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
@@ -274,37 +254,186 @@ export default function ThreeEarthGlobe({
       powerPreference: 'high-performance'
     });
     renderer.setSize(width, height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2.0));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.1;
+    renderer.toneMappingExposure = 1.25;
     container.appendChild(renderer.domElement);
+
+    // =========================================================================
+    // 1.1 ENHANCED 4K PROCEDURAL COSMIC NEBULA & DEEP SPACE BACKGROUND
+    // Rendered mathematically in fragment shader: 0% pixelation, continuous drift, twinkling micro-stars
+    // =========================================================================
+    const cosmosGeo = new THREE.PlaneGeometry(75, 48);
+    const cosmosMat = new THREE.ShaderMaterial({
+      uniforms: {
+        uTime: { value: 0 },
+        uResolution: { value: new THREE.Vector2(width, height) }
+      },
+      vertexShader: `
+        varying vec2 vUv;
+        void main() {
+          vUv = uv;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        uniform float uTime;
+        varying vec2 vUv;
+
+        // High precision hash
+        float hash21(vec2 p) {
+          vec3 p3 = fract(vec3(p.xyx) * 0.1031);
+          p3 += dot(p3, p3.yzx + 33.33);
+          return fract((p3.x + p3.y) * p3.z);
+        }
+
+        // Smooth 2D noise
+        float vnoise(vec2 p) {
+          vec2 i = floor(p);
+          vec2 f = fract(p);
+          vec2 u = f * f * (3.0 - 2.0 * f);
+          return mix(
+            mix(hash21(i + vec2(0.0, 0.0)), hash21(i + vec2(1.0, 0.0)), u.x),
+            mix(hash21(i + vec2(0.0, 1.0)), hash21(i + vec2(1.0, 1.0)), u.x),
+            u.y
+          );
+        }
+
+        // Fractal Brownian Motion for swirling cosmic gas
+        float fbm(vec2 p) {
+          float v = 0.0;
+          float a = 0.5;
+          mat2 rot = mat2(cos(0.48), sin(0.48), -sin(0.48), cos(0.48));
+          for (int i = 0; i < 5; ++i) {
+            v += a * vnoise(p);
+            p = rot * p * 2.04 + vec2(3.14, 1.82);
+            a *= 0.52;
+          }
+          return v;
+        }
+
+        void main() {
+          vec2 uv = vUv;
+          
+          // Coordinate space centered - stable, no mouse moving effect
+          vec2 p = (uv - 0.5) * vec2(2.5, 1.45);
+          float t = uTime * 0.025;
+
+          // Layer 1: Sweeping interstellar dust band
+          vec2 bandCoord = p * 1.6 + vec2(t * 0.35, -t * 0.20);
+          float n1 = fbm(bandCoord);
+          
+          // Layer 2: Radiant stellar gas filaments
+          float n2 = fbm(bandCoord * 2.2 + vec2(n1 * 1.4, t * 0.25));
+
+          // Clean, Deep Obsidian Space Void (Whisper-quiet cosmic depth, no thick blue fog)
+          vec3 deepSpaceVoid = vec3(0.002, 0.003, 0.006);
+          vec3 subtleNavy = vec3(0.008, 0.016, 0.045);
+          vec3 faintCyan = vec3(0.010, 0.026, 0.065);
+
+          // Deep space is overwhelmingly pure dark space; blue fog reduced by >80%
+          vec3 color = deepSpaceVoid;
+          color = mix(color, subtleNavy, smoothstep(0.50, 0.90, n1) * 0.16);
+          color = mix(color, faintCyan, smoothstep(0.60, 0.94, n2) * 0.10);
+
+          // Thousands of micro-stars twinkling in the deep distance
+          vec2 starGrid = uv * 360.0 + vec2(t * 1.5, t * 0.8);
+          vec2 starCell = floor(starGrid);
+          float starSeed = hash21(starCell);
+          if (starSeed > 0.980) {
+            vec2 starPos = fract(starGrid) - 0.5;
+            float dist = length(starPos);
+            float twinkle = 0.45 + 0.55 * sin(uTime * (3.5 + starSeed * 9.0) + starSeed * 6.28);
+            float starGlow = smoothstep(0.16, 0.0, dist) * twinkle;
+            vec3 starTint = mix(vec3(0.75, 0.90, 1.0), vec3(1.0, 0.95, 0.80), fract(starSeed * 19.0));
+            color += starTint * starGlow * 1.45;
+          }
+
+          // Optical vignette for dramatic cinematic focus
+          float vignette = 1.0 - smoothstep(0.40, 1.25, length((uv - 0.5) * vec2(1.25, 1.0)));
+          color *= (0.60 + 0.40 * vignette);
+
+          gl_FragColor = vec4(color, 1.0);
+        }
+      `,
+      depthWrite: false
+    });
+    const cosmosMesh = new THREE.Mesh(cosmosGeo, cosmosMat);
+    cosmosMesh.position.set(0, 0, -26);
+    cosmosMesh.renderOrder = -10;
+    scene.add(cosmosMesh);
+
+    // =========================================================================
+    // 1.2 HYPER-VELOCITY 3D METEORS / SHOOTING STARS
+    // =========================================================================
+    const meteors = [];
+    const MAX_METEORS = 2;
+    let lastMeteorTime = performance.now();
+    let nextMeteorDelay = 2200 + Math.random() * 2800;
+
+    function createMeteor() {
+      const startX = -10 + Math.random() * 20;
+      const startY = 3.5 + Math.random() * 6.5;
+      const startZ = -12 - Math.random() * 8;
+
+      const angle = -Math.PI * 0.24 + (Math.random() - 0.5) * 0.20;
+      const dir = new THREE.Vector3(Math.cos(angle), Math.sin(angle), 0.08).normalize();
+      const speed = 0.45 + Math.random() * 0.30;
+      const length = 2.4 + Math.random() * 1.8;
+
+      const geo = new THREE.BufferGeometry();
+      const pos = new Float32Array(6);
+      geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+
+      const mat = new THREE.LineBasicMaterial({
+        color: 0xbae6fd,
+        transparent: true,
+        opacity: 0.0,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false
+      });
+
+      const line = new THREE.Line(geo, mat);
+      scene.add(line);
+
+      meteors.push({
+        line,
+        geo,
+        mat,
+        head: new THREE.Vector3(startX, startY, startZ),
+        dir,
+        speed,
+        length,
+        life: 0,
+        maxLife: 40 + Math.floor(Math.random() * 25)
+      });
+    }
 
     // Master Globe Group
     const globeGroup = new THREE.Group();
-    // Initial rotation perfectly positions active hub in upper-right quadrant matching screenshot
+    // Axial tilt displaying North America & the Atlantic curving toward the dawn horizon
     globeGroup.rotation.x = 0.28;
-    globeGroup.rotation.y = -0.38;
+    globeGroup.rotation.y = -0.45;
     scene.add(globeGroup);
     globeGroupRef.current = globeGroup;
 
     const globeRadius = 1.95;
 
-    // 1.5 3D Moving Celestial Starfield (1,400 multi-tier cosmic stars with drift & twinkle)
+    // 1.5 3D Moving Celestial Starfield (Drifting & twinkling in deep space)
     const starsGroup = new THREE.Group();
     scene.add(starsGroup);
 
-    const STARS_COUNT = 1800;
+    const STARS_COUNT = 1500;
     const starPositions = new Float32Array(STARS_COUNT * 3);
     const starColors = new Float32Array(STARS_COUNT * 3);
     const starData = [];
 
     const STAR_COLOR_PALETTE = [
       new THREE.Color(1.0, 1.0, 1.0),        // Pure Diamond White
-      new THREE.Color(0.95, 0.98, 1.0),       // Crystal Silver
-      new THREE.Color(1.0, 0.92, 0.65),       // Warm Amber Gold
-      new THREE.Color(0.98, 0.80, 0.40),       // Celestial Gold
-      new THREE.Color(0.55, 0.88, 1.0),       // Ice Cyan
-      new THREE.Color(0.85, 0.70, 1.0)        // Cosmic Lilac
+      new THREE.Color(0.92, 0.96, 1.0),       // Crystal Cyan-White
+      new THREE.Color(0.70, 0.88, 1.0),       // Ice Cyan
+      new THREE.Color(1.0, 0.92, 0.70),       // Warm Starlight Gold
+      new THREE.Color(0.85, 0.75, 1.0)        // Cosmic Lilac
     ];
 
     for (let i = 0; i < STARS_COUNT; i++) {
@@ -331,7 +460,7 @@ export default function ThreeEarthGlobe({
       starColors[i * 3 + 1] = chosenColor.g * baseBright;
       starColors[i * 3 + 2] = chosenColor.b * baseBright;
 
-      const driftSpeed = 0.002 + Math.random() * 0.005;
+      const driftSpeed = 0.012 + Math.random() * 0.022;
       const driftAngle = Math.PI * 0.78 + (Math.random() - 0.5) * 0.5;
 
       starData.push({
@@ -351,11 +480,11 @@ export default function ThreeEarthGlobe({
 
     const starSpriteTexture = createStarTexture();
     const starsMat = new THREE.PointsMaterial({
-      size: 0.16,
+      size: 0.11,
       map: starSpriteTexture,
       vertexColors: true,
       transparent: true,
-      opacity: 0.98,
+      opacity: 0.75,
       blending: THREE.AdditiveBlending,
       depthWrite: false
     });
@@ -364,234 +493,201 @@ export default function ThreeEarthGlobe({
     starsMesh.renderOrder = 0;
     starsGroup.add(starsMesh);
 
-    // 2. Solid Charcoal Smoke Inner Core (Occludes back side points)
-    const coreGeo = new THREE.SphereGeometry(globeRadius * 0.992, 64, 64);
-    const coreMat = new THREE.MeshBasicMaterial({
-      color: 0x08080c,
-      depthWrite: true
-    });
-    const coreMesh = new THREE.Mesh(coreGeo, coreMat);
-    coreMesh.renderOrder = 0;
-    globeGroup.add(coreMesh);
+    // =========================================================================
+    // 2. AAA NOCTURNAL EARTH WITH GOLDEN CITY LIGHTS & SOLAR DAWN HORIZON
+    // Exact match to user reference: glowing golden cities, sunrise flare, deep navy oceans
+    // =========================================================================
+    const texLoader = new THREE.TextureLoader();
 
-    // 3. Crisp Silver-White Atmosphere Rim Halo (Exact match to WeEvolveIT screenshot)
-    const atmosphereGeo = new THREE.SphereGeometry(globeRadius * 1.09, 64, 64);
-    const atmosphereMat = new THREE.ShaderMaterial({
+    const dayTexture = texLoader.load('/earth-blue-marble.jpg');
+    dayTexture.colorSpace = THREE.SRGBColorSpace;
+    dayTexture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+
+    const nightTexture = texLoader.load('/earth-night.jpg');
+    nightTexture.colorSpace = THREE.SRGBColorSpace;
+    nightTexture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+
+    const cloudsTexture = texLoader.load('/earth-clouds.png');
+    cloudsTexture.colorSpace = THREE.SRGBColorSpace;
+    cloudsTexture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+
+    const topoTexture = texLoader.load('/earth-topology.png');
+    topoTexture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+
+    // Solar Sunrise Vector on the UPPER-LEFT HORIZON
+    const sunDirection = new THREE.Vector3(-0.92, 0.44, 0.18).normalize();
+
+    const earthGeo = new THREE.SphereGeometry(globeRadius, 96, 96);
+    const earthMat = new THREE.ShaderMaterial({
+      uniforms: {
+        map: { value: dayTexture },
+        nightMap: { value: nightTexture },
+        bumpMap: { value: topoTexture },
+        cloudMap: { value: cloudsTexture },
+        sunDirection: { value: sunDirection }
+      },
       vertexShader: `
+        varying vec2 vUv;
         varying vec3 vNormal;
+        varying vec3 vWorldPosition;
         void main() {
+          vUv = uv;
           vNormal = normalize(normalMatrix * normal);
-          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          vec4 worldPos = modelMatrix * vec4(position, 1.0);
+          vWorldPosition = worldPos.xyz;
+          gl_Position = projectionMatrix * viewMatrix * worldPos;
         }
       `,
       fragmentShader: `
+        uniform sampler2D map;
+        uniform sampler2D nightMap;
+        uniform sampler2D bumpMap;
+        uniform sampler2D cloudMap;
+        uniform vec3 sunDirection;
+        varying vec2 vUv;
         varying vec3 vNormal;
+        varying vec3 vWorldPosition;
+
         void main() {
-          float intensity = pow(0.72 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 2.6);
-          gl_FragColor = vec4(0.90, 0.92, 0.97, 1.0) * intensity * 1.1;
+          vec3 dayColor = texture2D(map, vUv).rgb;
+          vec3 nightColor = texture2D(nightMap, vUv).rgb;
+          vec4 cloudData = texture2D(cloudMap, vUv);
+
+          // Bump-mapped normal perturbation for realistic mountain relief
+          vec2 texel = vec2(1.0 / 2048.0, 1.0 / 1024.0);
+          float hL = texture2D(bumpMap, vUv - vec2(texel.x, 0.0)).r;
+          float hR = texture2D(bumpMap, vUv + vec2(texel.x, 0.0)).r;
+          float hD = texture2D(bumpMap, vUv - vec2(0.0, texel.y)).r;
+          float hU = texture2D(bumpMap, vUv + vec2(0.0, texel.y)).r;
+          vec3 bumpNorm = normalize(vNormal + vec3((hL - hR) * 0.045, (hD - hU) * 0.045, 0.0));
+          vec3 norm = normalize(mix(vNormal, bumpNorm, 0.60));
+
+          vec3 sunDir = normalize(sunDirection);
+          vec3 viewDir = normalize(cameraPosition - vWorldPosition);
+
+          // Sunlight incidence angle
+          float NdotL = dot(norm, sunDir);
+
+          // Smooth day-to-night terminator (mostly night with sunrise at upper-left)
+          float dayFactor = smoothstep(-0.06, 0.32, NdotL);
+
+          // Spectral separation for water vs land
+          float isOcean = clamp((dayColor.b - max(dayColor.r, dayColor.g) * 0.80) * 4.5, 0.0, 1.0);
+
+          // 1. NIGHT SIDE: Deep midnight navy ocean & dark charcoal land (no orange wash!)
+          vec3 nightOcean = vec3(0.005, 0.012, 0.026);
+          vec3 nightLand = vec3(0.007, 0.010, 0.015);
+          vec3 darkSurface = mix(nightLand, nightOcean, isOcean);
+
+          // Real pinpoint golden city lights (strictly masked to land and real city brightness)
+          float rawCity = max(nightColor.r, max(nightColor.g, nightColor.b));
+          // Strict threshold so background compression artifacts never tint oceans or dark land
+          float cityMask = smoothstep(0.12, 0.38, rawCity);
+          vec3 goldenTint = vec3(1.30, 0.95, 0.36);
+          vec3 goldenLights = nightColor * goldenTint * 3.4 * cityMask * (1.0 - isOcean * 0.95);
+          // Core bright bloom for dense cities
+          goldenLights += vec3(0.50, 0.45, 0.25) * smoothstep(0.50, 0.95, rawCity) * 1.6 * (1.0 - isOcean);
+
+          vec3 nightSide = darkSurface + goldenLights;
+
+          // 2. DAY/DAWN SIDE
+          vec3 deepDayOcean = vec3(0.04, 0.16, 0.42);
+          vec3 shallowTurquoise = vec3(0.06, 0.54, 0.74);
+          float isShallow = clamp((dayColor.g * 1.25 + dayColor.b * 1.10 - dayColor.r * 2.20 - 0.10) * 3.6, 0.0, 1.0) * isOcean;
+          vec3 dayOcean = mix(deepDayOcean, shallowTurquoise, isShallow * 0.55);
+
+          vec3 dayLand = dayColor * vec3(0.85, 0.95, 0.85);
+          vec3 daySurface = mix(dayLand, dayOcean, isOcean);
+
+          // Delicate cloud shadow cast on daytime side
+          vec2 shadowOffset = -sunDir.xy * 0.0028;
+          float cloudShadow = texture2D(cloudMap, vUv + shadowOffset).a;
+          daySurface = mix(daySurface, daySurface * 0.65, cloudShadow * 0.75 * dayFactor);
+
+          // Natural smooth day-to-night blend - no muddy orange terminator wash
+          vec3 surface = mix(nightSide, daySurface, dayFactor);
+
+          // 3. UNIFIED 4K NASA CLOUDS (clean natural white with moonlight tint at night)
+          float cloudSun = smoothstep(-0.10, 0.35, NdotL);
+          vec3 dayClouds = vec3(0.96, 0.98, 1.0);
+          vec3 nightClouds = vec3(0.015, 0.025, 0.045);
+          vec3 cloudCol = mix(nightClouds, dayClouds, cloudSun);
+          float cloudCoverage = cloudData.a * mix(0.15, 0.80, cloudSun);
+          surface = mix(surface, cloudCol, cloudCoverage * 0.60);
+
+          // 4. Ocean Specular Sun Reflection
+          vec3 halfVec = normalize(sunDir + viewDir);
+          float specPower = pow(max(0.0, dot(norm, halfVec)), 42.0);
+          float oceanSpec = specPower * isOcean * (1.0 - cloudData.a * 0.92) * smoothstep(-0.05, 0.30, NdotL);
+          surface += vec3(0.85, 0.92, 1.0) * oceanSpec * 0.85;
+
+          // 5. Clean Electric Blue Atmospheric Limb (Rayleigh scattering - clean blue, no yellow rim)
+          float rim = 1.0 - max(0.0, dot(vNormal, viewDir));
+          float rimPower = pow(rim, 3.6);
+          float sunFacing = max(0.0, dot(vNormal, sunDir));
+          vec3 electricCyanLimb = vec3(0.20, 0.65, 1.0);
+          vec3 atmoLimb = electricCyanLimb * rimPower * (0.30 + 0.90 * pow(sunFacing, 1.6)) * 1.6;
+
+          vec3 finalColor = surface + atmoLimb;
+          gl_FragColor = vec4(finalColor, 1.0);
         }
       `,
-      blending: THREE.AdditiveBlending,
-      side: THREE.BackSide,
-      transparent: true
+      depthWrite: true
     });
-    const atmosphereMesh = new THREE.Mesh(atmosphereGeo, atmosphereMat);
-    atmosphereMesh.renderOrder = 4;
-    scene.add(atmosphereMesh);
+    const earthMesh = new THREE.Mesh(earthGeo, earthMat);
+    earthMesh.renderOrder = 0;
+    globeGroup.add(earthMesh);
 
-    // 4. Pure Silver/White Dotted Continents (High Density & High Brilliance)
-    const dotTexture = createDotTexture();
-    const particleMaterial = new THREE.PointsMaterial({
-      size: 0.028,
-      vertexColors: true,
-      map: dotTexture,
-      transparent: true,
-      opacity: 0.95,
-      depthWrite: false,
-      depthTest: true,
-      blending: THREE.AdditiveBlending
-    });
-
-    let particlesMesh = null;
-
-    const buildMeshFromData = (imgData, imgW, imgH) => {
-      const positions = [];
-      const colors = [];
-
-      const numLat = 280;
-      const numLng = 560;
-
-      for (let i = 0; i < numLat; i++) {
-        const lat = 90 - (i / numLat) * 180;
-        const phi = (90 - lat) * (Math.PI / 180);
-        const circumferenceFactor = Math.sin(phi);
-        const stepsLng = Math.max(16, Math.floor(numLng * circumferenceFactor));
-
-        for (let j = 0; j < stepsLng; j++) {
-          const lng = -180 + (j / stepsLng) * 360;
-          let isLand = false;
-
-          if (imgData && imgW > 0 && imgH > 0) {
-            const x = Math.min(imgW - 1, Math.max(0, Math.floor(((lng + 180) / 360) * imgW)));
-            const y = Math.min(imgH - 1, Math.max(0, Math.floor(((90 - lat) / 180) * imgH)));
-            const pixelIndex = (y * imgW + x) * 4;
-            const r = imgData[pixelIndex];
-            const g = imgData[pixelIndex + 1];
-            const b = imgData[pixelIndex + 2];
-            const brightness = (r + g + b) / 3;
-            // Land is black in earth-water.png (< 120), so isLand is true for land and water is black (no dots)
-            isLand = brightness < 120;
-          } else {
-            // High-detail procedural continental coordinates
-            const isNA = lat > 15 && lat < 72 && lng > -168 && lng < -50;
-            const isSA = lat > -56 && lat < 12 && lng > -82 && lng < -34;
-            const isEU = lat > 36 && lat < 72 && lng > -10 && lng < 45;
-            const isAF = lat > -36 && lat < 38 && lng > -18 && lng < 52;
-            const isAS = lat > 5 && lat < 75 && lng > 45 && lng < 152;
-            const isAU = lat > -45 && lat < -10 && lng > 112 && lng < 155;
-            const isAntarctica = lat < -65;
-            isLand = isNA || isSA || isEU || isAF || isAS || isAU || isAntarctica;
-          }
-
-          if (isLand) {
-            const pos = latLngToVector3(lat, lng, globeRadius);
-            positions.push(pos.x, pos.y, pos.z);
-
-            // Glistening pure white/silver dots
-            const bVal = 0.92 + Math.random() * 0.08;
-            colors.push(bVal, bVal, bVal);
-          }
-        }
-      }
-
-      console.log('Rendered continent particles:', positions.length / 3);
-
-      const geom = new THREE.BufferGeometry();
-      geom.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-      geom.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
-
-      if (particlesMesh) {
-        globeGroup.remove(particlesMesh);
-        particlesMesh.geometry.dispose();
-      }
-
-      particlesMesh = new THREE.Points(geom, particleMaterial);
-      particlesMesh.renderOrder = 2;
-      globeGroup.add(particlesMesh);
-    };
-
-    // 1. Build procedural immediately so screen is never empty
-    buildMeshFromData(null, 0, 0);
-
-    // 2. Load actual high-res landmask and rebuild geometry cleanly
-    const maskImg = new Image();
-    maskImg.crossOrigin = 'anonymous';
-    maskImg.src = '/earth-water.png';
-    maskImg.onload = () => {
-      try {
-        const offscreen = document.createElement('canvas');
-        offscreen.width = maskImg.width || 1600;
-        offscreen.height = maskImg.height || 800;
-        const ctx = offscreen.getContext('2d');
-        ctx.drawImage(maskImg, 0, 0);
-        const imgData = ctx.getImageData(0, 0, offscreen.width, offscreen.height).data;
-        buildMeshFromData(imgData, offscreen.width, offscreen.height);
-      } catch (err) {
-        console.warn('Canvas mask build error:', err);
-      }
-    };
-
-    // 5. Active Node, Magnetic Radiating Loops & Laser Beam (Exact WeEvolveIT Feature)
+    // =========================================================================
+    // 3. CLEAN CYBER NETWORK OVERLAY (Toggled by WIRE ON / WIRE OFF)
+    // =========================================================================
     const arcsGroup = new THREE.Group();
+    arcsGroup.visible = showArcsRef.current;
+    arcsGroupRef.current = arcsGroup;
     globeGroup.add(arcsGroup);
 
     const userNodePos = latLngToVector3(activeNode.lat, activeNode.lng, globeRadius);
 
-    // Glowing Golden Amber Beacon Pin (Orbit24 Active Node)
+    // Clean glowing golden amber beacon pin at KLS GIT Belagavi
     const beaconGeo = new THREE.SphereGeometry(0.038, 16, 16);
     const beaconMat = new THREE.MeshBasicMaterial({ color: 0xf59e0b });
     const beaconMesh = new THREE.Mesh(beaconGeo, beaconMat);
     beaconMesh.position.copy(userNodePos);
     arcsGroup.add(beaconMesh);
 
-    // Radiating vertical laser beam shooting up into space
+    // Radiating vertical laser beam shooting up into space in cyan
     const beamTarget = userNodePos.clone().normalize().multiplyScalar(globeRadius * 1.35);
     const beamGeo = new THREE.BufferGeometry().setFromPoints([userNodePos, beamTarget]);
     const beamMat = new THREE.LineBasicMaterial({
-      color: 0xf59e0b,
+      color: 0x00e5ff,
       transparent: true,
-      opacity: 0.85,
+      opacity: 0.88,
       blending: THREE.AdditiveBlending
     });
     const beamLine = new THREE.Line(beamGeo, beamMat);
     arcsGroup.add(beamLine);
 
-    // Fan of Concentric 3D Elliptical Orbital Loops radiating from the Node in Golden Amber
-    const normal = userNodePos.clone().normalize();
-    const tangent = new THREE.Vector3(0, 1, 0).cross(normal).normalize();
-    const bitangent = normal.clone().cross(tangent).normalize();
-
-    const loopAngles = [-0.35, -0.18, 0, 0.18, 0.35];
-    const loopScales = [0.18, 0.32, 0.46, 0.62, 0.80];
-
-    loopScales.forEach((scale, idx) => {
-      const angle = loopAngles[idx];
-      const curvePoints = [];
-      const numSegments = 72;
-
-      for (let s = 0; s <= numSegments; s++) {
-        const t = (s / numSegments) * Math.PI * 2;
-        const radiusX = scale * 0.36;
-        const radiusY = scale * 0.65;
-
-        const lx = Math.cos(t) * radiusX;
-        const ly = Math.sin(t) * radiusY;
-        const lz = (1 - Math.cos(t)) * 0.18 * scale;
-
-        const rotatedTangent = tangent.clone().applyAxisAngle(normal, angle);
-        const rotatedBitangent = bitangent.clone().applyAxisAngle(normal, angle);
-
-        const pt = userNodePos
-          .clone()
-          .add(rotatedTangent.clone().multiplyScalar(lx))
-          .add(rotatedBitangent.clone().multiplyScalar(ly))
-          .add(normal.clone().multiplyScalar(lz));
-
-        curvePoints.push(pt);
-      }
-
-      const loopGeo = new THREE.BufferGeometry().setFromPoints(curvePoints);
-      const loopMat = new THREE.LineBasicMaterial({
-        color: idx === 2 ? 0xfbbf24 : 0xf59e0b,
-        transparent: true,
-        opacity: 0.45 + (idx % 2) * 0.25,
-        blending: THREE.AdditiveBlending
-      });
-      const loopMesh = new THREE.Line(loopGeo, loopMat);
-      arcsGroup.add(loopMesh);
-    });
-
-    // Connecting Great-Circle Arcs across the globe
+    // Clean Great-Circle Arcs across national hubs
     const pulseData = [];
     DEFAULT_HUBS.slice(1).forEach((hub) => {
       const hubPos = latLngToVector3(hub.lat, hub.lng, globeRadius);
       const dist = userNodePos.distanceTo(hubPos);
       const mid = new THREE.Vector3().addVectors(userNodePos, hubPos).multiplyScalar(0.5);
-      mid.normalize().multiplyScalar(globeRadius + dist * 0.4);
+      mid.normalize().multiplyScalar(globeRadius + dist * 0.35);
 
       const curve = new THREE.QuadraticBezierCurve3(userNodePos, mid, hubPos);
       const arcPoints = curve.getPoints(50);
       const arcGeo = new THREE.BufferGeometry().setFromPoints(arcPoints);
       const arcMat = new THREE.LineBasicMaterial({
-        color: 0xf59e0b,
+        color: 0x38bdf8,
         transparent: true,
-        opacity: 0.35,
+        opacity: 0.42,
         blending: THREE.AdditiveBlending
       });
       const arcLine = new THREE.Line(arcGeo, arcMat);
       arcsGroup.add(arcLine);
 
-      // Light pulse traveling on arc
+      // Light pulse traveling along arc
       const pulseGeo = new THREE.SphereGeometry(0.024, 12, 12);
       const pulseMat = new THREE.MeshBasicMaterial({
         color: 0xfffbeb,
@@ -609,22 +705,19 @@ export default function ThreeEarthGlobe({
       });
     });
 
-    // 6. Cyber Spaceship Scene Lighting & Mesh Setup (Warm Solar Lighting)
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.6);
+    // =========================================================================
+    // 4. SCENE LIGHTING (Natural Sunlight from Upper-Left + Cosmic Ambient)
+    // =========================================================================
+    const ambientLight = new THREE.AmbientLight(0x0a1120, 1.6);
     scene.add(ambientLight);
 
-    const keyLight = new THREE.DirectionalLight(0xfff6e5, 2.4);
-    keyLight.position.set(5, 4, 6);
+    const keyLight = new THREE.DirectionalLight(0xfff7ed, 2.5);
+    keyLight.position.set(-5.5, 3.5, 4.5);
     scene.add(keyLight);
 
-    const rimLight = new THREE.DirectionalLight(0x2563eb, 1.5);
-    rimLight.position.set(-5, -2, 4);
-    scene.add(rimLight);
-
-    // Crisp Neutral Directional Light in Upper Right
-    const accentLight = new THREE.DirectionalLight(0xffffff, 1.8);
-    accentLight.position.set(6, 4, 3);
-    scene.add(accentLight);
+    const fillLight = new THREE.DirectionalLight(0x1e293b, 1.0);
+    fillLight.position.set(5, -2, 3.0);
+    scene.add(fillLight);
 
     // Instantiate Nexus-1 Space Shuttle 3D Model
     const spaceshipData = createNexus1SpaceShuttle();
@@ -671,26 +764,18 @@ export default function ThreeEarthGlobe({
     exhaustPoints.renderOrder = 1;
     scene.add(exhaustPoints);
 
-    // Scroll & Mouse Parallax Listeners
+    // Scroll Listeners
     let targetScrollProgress = 0;
     let currentScrollProgress = 0;
-    let mouseNormX = 0;
-    let mouseNormY = 0;
 
     const onWindowScroll = () => {
       const maxScroll = Math.max(1, window.innerHeight * 0.95);
       targetScrollProgress = Math.min(1.2, Math.max(0, window.scrollY / maxScroll));
     };
 
-    const onWindowPointerMove = (e) => {
-      mouseNormX = (e.clientX / window.innerWidth) * 2 - 1;
-      mouseNormY = -(e.clientY / window.innerHeight) * 2 + 1;
-    };
-
     window.addEventListener('scroll', onWindowScroll, { passive: true });
-    window.addEventListener('pointermove', onWindowPointerMove, { passive: true });
 
-    // 7. Interactive Dragging & Momentum Controls for Earth
+    // 5. Interactive Dragging & Momentum Controls for Earth
     let pointerDown = false;
     let prevMouseX = 0;
     let prevMouseY = 0;
@@ -733,7 +818,7 @@ export default function ThreeEarthGlobe({
     window.addEventListener('pointermove', onPointerMove);
     window.addEventListener('pointerup', onPointerUp);
 
-    // 8. Animation Loop
+    // 6. Animation Loop
     let animationFrameId;
     const tempV3 = new THREE.Vector3();
 
@@ -742,9 +827,11 @@ export default function ThreeEarthGlobe({
 
       if (!isVisible) return;
 
+      const animTime = performance.now() * 0.001;
+
       // Spin & Inertia damping for Earth
       if (!pointerDown) {
-        if (autoRotate) {
+        if (autoRotateRef.current) {
           globeGroup.rotation.y += 0.0016;
         }
         globeGroup.rotation.y += velocityX;
@@ -756,19 +843,16 @@ export default function ThreeEarthGlobe({
       // Constrain tilt
       globeGroup.rotation.x = Math.max(-0.65, Math.min(0.65, globeGroup.rotation.x));
 
-      // Animate pulses
+      // Animate pulses along great-circle arcs
       pulseData.forEach((p) => {
         p.progress += p.speed;
         if (p.progress > 1) p.progress = 0;
         p.mesh.position.copy(p.curve.getPoint(p.progress));
       });
 
-      // =========================================================================
-      // Animate 3D Moving Stars & Twinkle
-      // =========================================================================
+      // Animate 3D Stars & Twinkle
       const starPosArr = starsGeo.attributes.position.array;
       const starColArr = starsGeo.attributes.color.array;
-      const animTime = performance.now() * 0.001;
 
       for (let i = 0; i < STARS_COUNT; i++) {
         const sd = starData[i];
@@ -777,13 +861,11 @@ export default function ThreeEarthGlobe({
         starPosArr[i * 3 + 1] += sd.vy;
         starPosArr[i * 3 + 2] += sd.vz;
 
-        // Wrap around 3D celestial boundaries
         if (starPosArr[i * 3] < -29) starPosArr[i * 3] = 29;
         if (starPosArr[i * 3] > 29) starPosArr[i * 3] = -29;
         if (starPosArr[i * 3 + 1] < -22) starPosArr[i * 3 + 1] = 22;
         if (starPosArr[i * 3 + 1] > 22) starPosArr[i * 3 + 1] = -22;
 
-        // Twinkle luminance
         const tw = 0.65 + 0.35 * Math.sin(animTime * 1000 * sd.twinkleSpeed + sd.twinklePhase);
         starColArr[i * 3] = sd.baseColor.r * sd.baseBright * tw;
         starColArr[i * 3 + 1] = sd.baseColor.g * sd.baseBright * tw;
@@ -792,40 +874,72 @@ export default function ThreeEarthGlobe({
       starsGeo.attributes.position.needsUpdate = true;
       starsGeo.attributes.color.needsUpdate = true;
 
-      // Celestial rotation & scroll/mouse parallax
       starsGroup.rotation.z += 0.0001;
-      starsGroup.position.x = mouseNormX * 0.3;
-      starsGroup.position.y = mouseNormY * 0.2 - currentScrollProgress * 1.5;
+      starsGroup.position.x = 0;
+      starsGroup.position.y = -currentScrollProgress * 1.5;
 
-      // =========================================================================
+      // Animate Procedural Cosmos Nebula & Micro-Stars (Time-driven only, no mouse moving effect)
+      cosmosMat.uniforms.uTime.value = animTime;
+
+      // Animate 3D Hyper-Velocity Shooting Meteors
+      if (animTime * 1000 - lastMeteorTime > nextMeteorDelay && meteors.length < MAX_METEORS) {
+        createMeteor();
+        lastMeteorTime = animTime * 1000;
+        nextMeteorDelay = 2200 + Math.random() * 2800;
+      }
+
+      for (let i = meteors.length - 1; i >= 0; i--) {
+        const m = meteors[i];
+        m.life++;
+
+        m.head.addScaledVector(m.dir, m.speed);
+        const tail = m.head.clone().addScaledVector(m.dir, -m.length);
+
+        const posArr = m.geo.attributes.position.array;
+        posArr[0] = m.head.x;
+        posArr[1] = m.head.y;
+        posArr[2] = m.head.z;
+        posArr[3] = tail.x;
+        posArr[4] = tail.y;
+        posArr[5] = tail.z;
+        m.geo.attributes.position.needsUpdate = true;
+
+        const halfLife = m.maxLife * 0.5;
+        let alpha = 0;
+        if (m.life < halfLife) {
+          alpha = m.life / halfLife;
+        } else {
+          alpha = Math.max(0, (m.maxLife - m.life) / halfLife);
+        }
+        m.mat.opacity = alpha * 0.95;
+
+        if (m.life >= m.maxLife) {
+          scene.remove(m.line);
+          m.geo.dispose();
+          m.mat.dispose();
+          meteors.splice(i, 1);
+        }
+      }
+
       // Dynamic Spaceship Flight: Hero Section Orbit & Scroll Descent
-      // =========================================================================
+      const time = performance.now() * 0.001;
       const prevScroll = currentScrollProgress;
       currentScrollProgress += (targetScrollProgress - currentScrollProgress) * 0.08;
       const scrollVelocity = Math.abs(currentScrollProgress - prevScroll);
 
-      const time = performance.now() * 0.001;
-
-      // 1. Grand 3D Planetary Orbit (Sweeps outside the frame & passes behind Earth)
-      // When user is not scrolling, the shuttle executes a complete 3D orbit around Earth:
-      // - Swings across the foreground in front of Earth (y < -1.2, completely clear of text)
-      // - Glides outside the frame on the sides (x reaches +/- 4.45, sweeping past the viewport edges)
-      // - Dives behind the dark solid core of Earth (z reaches -2.75, where Earth naturally occludes it)
-      // - Re-emerges dynamically from behind the glowing atmosphere rim!
+      // Grand 3D Planetary Orbit (Sweeps outside the frame & passes behind Earth)
       const isMobile = window.innerWidth < 768;
-      const aX = isMobile ? 2.35 : 4.25; // Sweeps outside viewport frame edges
-      const aY_front = isMobile ? -1.05 : -0.95; // Foreground clearance beneath title & CTA buttons
-      const aY_back = isMobile ? 1.15 : 1.25; // Directly behind Earth's solid core (radius 1.95)
-      const aZ = 2.30; // Foreground +2.30 in front of Earth, Rear -2.30 behind Earth
+      const aX = isMobile ? 2.35 : 4.25;
+      const aY_front = isMobile ? -1.05 : -0.95;
+      const aY_back = isMobile ? 1.15 : 1.25;
+      const aZ = 2.30;
 
-      // Cinematic orbital period (~25s per complete planetary revolution)
       const orbitSpeed = 0.25;
       const theta = time * orbitSpeed;
 
       const cosT = Math.cos(theta);
       const sinT = Math.sin(theta);
 
-      // Smooth elevation interpolation: front when cosT = +1, rear when cosT = -1
       const frontWeight = (1.0 + cosT) * 0.5;
       const backWeight = (1.0 - cosT) * 0.5;
 
@@ -833,25 +947,21 @@ export default function ThreeEarthGlobe({
       const heroPatrolY = frontWeight * aY_front + backWeight * aY_back;
       const heroPatrolZ = aZ * cosT;
 
-      // Analytical velocity vector for flight tangent
       const heroVx = aX * cosT;
       const heroVy = 0.5 * (aY_back - aY_front) * sinT;
       const heroVz = -aZ * sinT;
       const heroTangent = new THREE.Vector3(heroVx, heroVy, heroVz).normalize();
 
-      // Inward banking roll into the turn
       const heroBank = -0.45 * cosT;
 
-      // 2. Scroll Flight Descent Trajectory (Diving across Earth into About section)
+      // Scroll Flight Descent Trajectory (Diving across Earth into About section)
       const s = currentScrollProgress;
       const scrollP1 = new THREE.Vector3(0.20, -0.15, 3.25);
       const scrollP2 = new THREE.Vector3(-1.65, -1.35, 3.55);
 
-      // Transition factor: 1.0 when at Hero (s=0), drops to 0.0 as user scrolls past 0.28
       const heroWeight = Math.max(0, 1.0 - s * 3.6);
       const scrollWeight = 1.0 - heroWeight;
 
-      // Bezier curve from hero position to scrollP1 to scrollP2
       const scrollCurveT = Math.min(1.0, s * 1.4);
       const invT = 1.0 - scrollCurveT;
 
@@ -865,7 +975,6 @@ export default function ThreeEarthGlobe({
         2 * invT * (scrollP1.z - heroPatrolZ) + 2 * scrollCurveT * (scrollP2.z - scrollP1.z)
       ).normalize();
 
-      // Blended position and orientation
       const posX = heroPatrolX * heroWeight + scrollX * scrollWeight;
       const posY = heroPatrolY * heroWeight + scrollY * scrollWeight;
       const posZ = heroPatrolZ * heroWeight + scrollZ * scrollWeight;
@@ -880,45 +989,31 @@ export default function ThreeEarthGlobe({
       const lookTarget = spaceshipData.group.position.clone().add(blendedTangent);
       spaceshipData.group.lookAt(lookTarget);
 
-      // Aerodynamic banking
       const scrollBank = -0.55 * Math.sin(Math.min(1, s) * Math.PI);
       const finalBank = heroBank * heroWeight + scrollBank * scrollWeight + Math.sin(time * 1.5) * 0.03;
       spaceshipData.group.rotateZ(finalBank);
 
-      // Interactive mouse tilt parallax
-      spaceshipData.group.rotateX(mouseNormY * 0.12);
-      spaceshipData.group.rotateY(mouseNormX * 0.12);
-
-      // Dynamic Red & Yellow Fire Thrusters & Flicker Animation
+      // Dynamic Fire Combustion Thrusters & Flicker
       const throttle = 1.0 + Math.min(3.2, scrollVelocity * 60.0);
       spaceshipData.thrusterLight.intensity = 2.4 + throttle * 1.6;
 
-      // Realistic fire combustion flicker (high-frequency wave composition)
-      const fireFlicker1 = Math.sin(time * 38.0) * 0.08 + Math.cos(time * 54.0) * 0.05;
-      const fireFlicker2 = Math.cos(time * 42.0 + 1.2) * 0.07;
-
-      // Scale yellow core, orange mid, and red outer flame meshes for all 3 engines
       spaceshipData.engines.forEach((eng, idx) => {
         const offset = idx * 1.3;
         const flk1 = Math.sin(time * 35.0 + offset) * 0.08;
         const flk2 = Math.cos(time * 48.0 + offset) * 0.07;
 
-        // Core yellow cone: high heat, tight jet
         const coreScaleZ = (1.0 + flk1) * (0.95 + throttle * 0.45);
         const coreScaleXY = 1.0 + flk2 * 0.3;
         eng.core.scale.set(coreScaleXY, coreScaleXY, coreScaleZ);
 
-        // Mid orange cone: trailing fire plume
         const midScaleZ = (1.0 + flk2) * (1.0 + throttle * 0.65);
         const midScaleXY = 1.0 + flk1 * 0.4;
         eng.mid.scale.set(midScaleXY, midScaleXY, midScaleZ);
 
-        // Outer red plume: expanding exhaust envelope
         const outerScaleZ = (1.0 + flk1 * 0.8) * (1.05 + throttle * 0.85);
         const outerScaleXY = 1.0 + flk2 * 0.5;
         eng.outer.scale.set(outerScaleXY, outerScaleXY, outerScaleZ);
 
-        // Nozzle glowing disc pulsing with combustion
         const discScale = 1.0 + Math.sin(time * 25.0 + offset) * 0.12 + throttle * 0.2;
         eng.disc.scale.set(discScale, discScale, 1.0);
       });
@@ -952,20 +1047,16 @@ export default function ThreeEarthGlobe({
           posAttr.array[i * 3 + 2] += backward.z;
         }
 
-        // Fiery Ember Color Gradient: Yellow-white -> Fiery Orange -> Deep Red Embers
         const alpha = p.life;
         if (alpha > 0.65) {
-          // Fresh incandescent yellow spark
           colAttr.array[i * 3] = 1.0;
           colAttr.array[i * 3 + 1] = 0.92;
           colAttr.array[i * 3 + 2] = 0.35;
         } else if (alpha > 0.3) {
-          // Burning orange fire
           colAttr.array[i * 3] = 1.0;
           colAttr.array[i * 3 + 1] = 0.45 * (alpha / 0.65);
           colAttr.array[i * 3 + 2] = 0.05;
         } else {
-          // Cooling red ember
           colAttr.array[i * 3] = 0.85 * (alpha / 0.3);
           colAttr.array[i * 3 + 1] = 0.08 * (alpha / 0.3);
           colAttr.array[i * 3 + 2] = 0.0;
@@ -987,7 +1078,7 @@ export default function ThreeEarthGlobe({
       const y = (-(tempV3.y * 0.5) + 0.5) * container.clientHeight;
 
       if (badgeRef.current) {
-        const isBadgeVisible = dot > 0.05 && tempV3.z < 1;
+        const isBadgeVisible = dot > 0.05 && tempV3.z < 1 && showArcsRef.current;
         badgeRef.current.style.display = isBadgeVisible ? 'block' : 'none';
         if (isBadgeVisible) {
           badgeRef.current.style.transform = `translate3d(${x}px, ${y}px, 0px) translate(16px, -115%)`;
@@ -1006,6 +1097,7 @@ export default function ThreeEarthGlobe({
       camera.aspect = w / h;
       camera.updateProjectionMatrix();
       renderer.setSize(w, h);
+      cosmosMat.uniforms.uResolution.value.set(w, h);
     };
 
     window.addEventListener('resize', handleResize);
@@ -1013,12 +1105,18 @@ export default function ThreeEarthGlobe({
     return () => {
       intersectionObserver.disconnect();
       window.removeEventListener('scroll', onWindowScroll);
-      window.removeEventListener('pointermove', onWindowPointerMove);
       renderer.domElement.removeEventListener('pointerdown', onPointerDown);
       window.removeEventListener('pointermove', onPointerMove);
       window.removeEventListener('pointerup', onPointerUp);
       window.removeEventListener('resize', handleResize);
       cancelAnimationFrame(animationFrameId);
+      meteors.forEach((m) => {
+        scene.remove(m.line);
+        m.geo.dispose();
+        m.mat.dispose();
+      });
+      cosmosGeo.dispose();
+      cosmosMat.dispose();
       if (starsGeo) starsGeo.dispose();
       if (starsMat) starsMat.dispose();
       if (container.contains(renderer.domElement)) {
@@ -1026,20 +1124,20 @@ export default function ThreeEarthGlobe({
       }
       renderer.dispose();
     };
-  }, [activeNode, autoRotate, atmosphereGlow, showArcs]);
+  }, [activeNode]);
 
   return (
-    <div className="relative w-full h-full cursor-grab active:cursor-grabbing select-none">
+    <div className={`relative w-full h-full select-none ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}>
       {/* 3D WebGL Canvas */}
       <div ref={mountRef} className="absolute inset-0 w-full h-full" />
 
-      {/* Orbit24 Pill Badge [ ORB-01 / KLS GIT ] */}
+      {/* Orbit24 Pill Badge [ INN-01 / KLS GIT ] */}
       <div
         ref={badgeRef}
         style={{ display: 'none' }}
         className="absolute pointer-events-none z-20 top-0 left-0"
       >
-        <div className="flex items-center gap-2 px-3 py-1 rounded-full border border-blue-400/40 bg-blue-600/90 text-white backdrop-blur-md text-[11px] font-mono tracking-wider shadow-[0_4px_24px_rgba(37,99,235,0.6)]">
+        <div className="flex items-center gap-2 px-3 py-1 rounded-full border border-cyan-400/50 bg-blue-600/90 text-white backdrop-blur-md text-[11px] font-mono tracking-wider shadow-[0_4px_24px_rgba(0,229,255,0.6)]">
           {/* Glowing Golden Amber Beacon */}
           <span className="relative flex h-2 w-2">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75" />

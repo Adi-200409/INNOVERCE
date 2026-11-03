@@ -5,7 +5,7 @@ import confetti from 'canvas-confetti';
 
 export default function HeroSection({ onOpenRegister, onOpenTracks }) {
   const [autoRotate, setAutoRotate] = useState(true);
-  const [showArcs, setShowArcs] = useState(true);
+  const [showArcs, setShowArcs] = useState(false);
   const [atmosphereGlow] = useState(true);
 
   // Live countdown to Hackathon launch matching Orbit24
@@ -35,7 +35,7 @@ export default function HeroSection({ onOpenRegister, onOpenTracks }) {
       particleCount: 90,
       spread: 65,
       origin: { y: 0.72 },
-      colors: ['#f59e0b', '#fbbf24', '#f97316', '#2563eb', '#ffffff']
+      colors: ['#00e5ff', '#38bdf8', '#f59e0b', '#fbbf24', '#ffffff']
     });
     if (onOpenRegister) onOpenRegister();
   };
@@ -43,7 +43,7 @@ export default function HeroSection({ onOpenRegister, onOpenTracks }) {
   return (
     <section className="relative w-full min-h-screen overflow-hidden bg-[#060608] flex flex-col justify-between select-none pt-20 sm:pt-24">
       {/* =========================================================================
-          3D EARTH & DEEP SPACE BACKGROUND LAYER
+          3D EARTH & ENHANCED AAA DEEP SPACE COSMOS LAYER
           ========================================================================= */}
       <div className="absolute inset-0 z-0 w-full h-full">
         <ThreeEarthGlobe
@@ -54,7 +54,7 @@ export default function HeroSection({ onOpenRegister, onOpenTracks }) {
       </div>
 
       {/* Cinematic Vignette Radial Gradient */}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_45%,rgba(6,6,8,0.35)_75%,rgba(6,6,8,0.75)_100%)] z-[2]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_55%,rgba(6,6,8,0.20)_80%,rgba(6,6,8,0.85)_100%)] z-[2]" />
 
       {/* =========================================================================
           ORBIT24 HUD AMBIENT OVERLAYS (Bottom Right)
