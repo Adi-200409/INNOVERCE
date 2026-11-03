@@ -4,11 +4,34 @@ import { Menu, X, ArrowUpRight, Sparkles } from 'lucide-react';
 export default function Navbar({ onOpenRegister, _onOpenTracks, isReady = true }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  const navigationLinks = [
+    { label: 'Home', id: null, href: '#home' },
+    { label: 'About', id: 'about', href: '#about' },
+    { label: 'Domains', id: 'domains', href: '#domains' },
+    { label: 'Tracks', id: 'tracks', href: '#tracks' },
+    { label: 'Timelines', id: 'schedule', href: '#schedule' },
+    { label: 'Prizes', id: 'prizes', href: '#prizes' },
+    { label: 'FAQ', id: 'faq', href: '#faq' },
+    { label: 'Contact', id: 'contact', href: '#contact' },
+    { label: 'Rules', href: '/rules' },
+  ];
+
   const scrollToSection = (id) => {
     setMobileMenuOpen(false);
+    if (!id) {
+      if (window.location.pathname !== '/') {
+        window.location.assign('/');
+        return;
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      window.location.assign(`/#${id}`);
     }
   };
 
@@ -24,7 +47,11 @@ export default function Navbar({ onOpenRegister, _onOpenTracks, isReady = true }
             href="#"
             onClick={(e) => {
               e.preventDefault();
-              window.scrollTo({ top: 0, behavior: 'smooth' });
+              if (window.location.pathname !== '/') {
+                window.location.assign('/');
+              } else {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }
             }}
             className="flex items-center gap-3 group shrink-0"
           >
@@ -44,67 +71,29 @@ export default function Navbar({ onOpenRegister, _onOpenTracks, isReady = true }
           </a>
 
           {/* Desktop Navigation Links (Responsive Gaps & Crystal Clear High Contrast) */}
-          <ul className="hidden md:flex items-center gap-1 lg:gap-2.5 xl:gap-4">
-            <li>
-              <button
-                onClick={() => scrollToSection('about')}
-                className="font-mono text-xs uppercase tracking-wider text-white/75 hover:text-white px-2.5 py-1.5 rounded-full hover:bg-white/10 transition-all cursor-pointer"
-              >
-                About
-              </button>
-            </li>
-            <li>
-              <button
-                onClick={() => scrollToSection('tracks')}
-                className="font-mono text-xs uppercase tracking-wider text-white/75 hover:text-white px-2.5 py-1.5 rounded-full hover:bg-white/10 transition-all flex items-center gap-1 cursor-pointer"
-              >
-                <span>Tracks</span>
-                <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/30 font-bold">
-                  5
-                </span>
-              </button>
-            </li>
-            <li>
-              <button
-                onClick={() => scrollToSection('schedule')}
-                className="font-mono text-xs uppercase tracking-wider text-white/75 hover:text-white px-2.5 py-1.5 rounded-full hover:bg-white/10 transition-all cursor-pointer"
-              >
-                Schedule
-              </button>
-            </li>
-            <li>
-              <button
-                onClick={() => scrollToSection('prizes')}
-                className="font-mono text-xs uppercase tracking-wider text-white/75 hover:text-white px-2.5 py-1.5 rounded-full hover:bg-white/10 transition-all flex items-center gap-1.5 cursor-pointer"
-              >
-                <span>Prizes</span>
-                <span className="px-1.5 py-0.2 rounded-full bg-blue-500/20 border border-blue-500/40 text-[9px] text-blue-300 font-mono font-semibold">
-                  ₹35K
-                </span>
-              </button>
-            </li>
-            <li>
-              <button
-                onClick={() => scrollToSection('sponsors')}
-                className="font-mono text-xs uppercase tracking-wider text-white/75 hover:text-white px-2.5 py-1.5 rounded-full hover:bg-white/10 transition-all cursor-pointer"
-              >
-                Sponsors
-              </button>
-            </li>
-            <li>
-              <button
-                onClick={() => scrollToSection('faq')}
-                className="font-mono text-xs uppercase tracking-wider text-white/75 hover:text-white px-2.5 py-1.5 rounded-full hover:bg-white/10 transition-all cursor-pointer"
-              >
-                FAQ
-              </button>
-            </li>
+          <ul className="hidden xl:flex items-center gap-0.5">
+            {navigationLinks.map((link) => (
+              <li key={link.label}>
+                <a
+                  href={link.href}
+                  onClick={(event) => {
+                    if (link.id !== undefined) {
+                      event.preventDefault();
+                      scrollToSection(link.id);
+                    }
+                  }}
+                  className="font-mono text-[10px] uppercase tracking-wider text-white/75 hover:text-white px-2 py-1.5 rounded-full hover:bg-white/10 transition-all whitespace-nowrap"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))}
           </ul>
 
           {/* Right Action Items */}
           <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
             {/* Live Registration Telemetry Badge (Visible on xl+ to maintain clean breathing room) */}
-            <div className="hidden xl:flex items-center gap-2 px-3 py-1 rounded-full border border-amber-500/25 bg-amber-500/10 text-amber-300 font-mono text-[11px] tracking-wide whitespace-nowrap shadow-[0_0_12px_rgba(245,158,11,0.15)]">
+            <div className="hidden 2xl:flex items-center gap-2 px-3 py-1 rounded-full border border-amber-500/25 bg-amber-500/10 text-amber-300 font-mono text-[11px] tracking-wide whitespace-nowrap shadow-[0_0_12px_rgba(245,158,11,0.15)]">
               <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse shadow-[0_0_6px_#f59e0b]" />
               <span>REGISTRATIONS OPEN</span>
             </div>
@@ -122,8 +111,9 @@ export default function Navbar({ onOpenRegister, _onOpenTracks, isReady = true }
             {/* Mobile Hamburger Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-white/80 hover:text-white bg-white/5 active:scale-95 cursor-pointer transition-all"
+              className="xl:hidden flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-white/80 hover:text-white bg-white/5 active:scale-95 cursor-pointer transition-all"
               aria-label="Toggle Navigation"
+              aria-expanded={mobileMenuOpen}
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
@@ -132,46 +122,25 @@ export default function Navbar({ onOpenRegister, _onOpenTracks, isReady = true }
 
         {/* Mobile Dropdown Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden border-t border-white/10 px-6 py-5 bg-[#08080c]/98 rounded-b-[24px] backdrop-blur-2xl">
+          <div className="xl:hidden border-t border-white/10 px-6 py-5 bg-[#08080c]/98 rounded-b-[24px] backdrop-blur-2xl">
             <div className="flex flex-col gap-3 font-mono">
-              <button
-                onClick={() => scrollToSection('about')}
-                className="text-sm uppercase text-left tracking-wider text-white/80 hover:text-white py-1.5 transition-colors cursor-pointer"
-              >
-                About
-              </button>
-              <button
-                onClick={() => scrollToSection('tracks')}
-                className="text-sm uppercase text-left tracking-wider text-white/80 hover:text-white py-1.5 flex items-center justify-between cursor-pointer"
-              >
-                <span>Tracks</span>
-                <span className="text-xs px-2 py-0.5 rounded-full bg-amber-400/20 text-amber-300 font-bold">5 Tracks</span>
-              </button>
-              <button
-                onClick={() => scrollToSection('schedule')}
-                className="text-sm uppercase text-left tracking-wider text-white/80 hover:text-white py-1.5 transition-colors cursor-pointer"
-              >
-                Schedule
-              </button>
-              <button
-                onClick={() => scrollToSection('prizes')}
-                className="text-sm uppercase text-left tracking-wider text-white/80 hover:text-white py-1.5 flex items-center justify-between cursor-pointer"
-              >
-                <span>Prizes</span>
-                <span className="text-xs px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300">₹35K</span>
-              </button>
-              <button
-                onClick={() => scrollToSection('sponsors')}
-                className="text-sm uppercase text-left tracking-wider text-white/80 hover:text-white py-1.5 transition-colors cursor-pointer"
-              >
-                Sponsors
-              </button>
-              <button
-                onClick={() => scrollToSection('faq')}
-                className="text-sm uppercase text-left tracking-wider text-white/80 hover:text-white py-1.5 transition-colors cursor-pointer"
-              >
-                FAQ
-              </button>
+              {navigationLinks.map((link) => (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  onClick={(event) => {
+                    if (link.id !== undefined) {
+                      event.preventDefault();
+                      scrollToSection(link.id);
+                    } else {
+                      setMobileMenuOpen(false);
+                    }
+                  }}
+                  className="text-sm uppercase tracking-wider text-white/80 hover:text-white py-1.5 transition-colors"
+                >
+                  {link.label}
+                </a>
+              ))}
               <button
                 onClick={() => {
                   setMobileMenuOpen(false);
