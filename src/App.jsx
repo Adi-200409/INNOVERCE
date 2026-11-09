@@ -2,10 +2,14 @@ import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import HeroSection from './components/HeroSection';
 import AboutSection from './components/AboutSection';
+import DomainSection from './components/DomainSection';
+import Rules from './components/Rules';
+import Contact from './components/Contact';
 import TracksSection from './components/TracksSection';
 import TimelineSection from './components/TimelineSection';
 import PrizesSection from './components/PrizesSection';
 import SponsorsSection from './components/SponsorsSection';
+import GallerySection from './components/GallerySection';
 import FaqSection from './components/FaqSection';
 import Footer from './components/Footer';
 import RegisterModal from './components/RegisterModal';
@@ -63,6 +67,8 @@ function App() {
     setIsReady(true);
   };
 
+  const isRulesPage = window.location.pathname.replace(/\/+$/, '') === '/rules';
+
   return (
     <div className="relative w-full min-h-screen bg-[#060608] text-white overflow-x-hidden selection:bg-amber-400 selection:text-black">
       {/* Moving Cosmic Starfield Background */}
@@ -92,7 +98,12 @@ function App() {
         }`}
       >
         {/* Main Hackathon Mission Sections */}
-        <main id="main-content" className="w-full relative z-20">
+        {isRulesPage ? (
+          <main className="w-full relative z-20">
+            <Rules />
+          </main>
+        ) : (
+          <main id="main-content" className="w-full relative z-20">
           {/* 1. Hero Section */}
           <HeroSection
             onOpenRegister={handleOpenRegister}
@@ -105,51 +116,66 @@ function App() {
             onOpenTracks={() => setIsTracksOpen(true)}
           />
 
-          {/* 3. 5 Mission Arenas & Problem Tracks */}
+          {/* 3. Hackathon Domains */}
+          <DomainSection />
+
+          {/* 4. 5 Mission Arenas & Problem Tracks */}
           <TracksSection
             onOpenRegister={handleOpenRegister}
             onSelectTrack={(trackId) => setIsTracksOpen(true)}
           />
 
-          {/* 4. 24-Hour Event Timeline & Flight Plan */}
+          {/* 5. 24-Hour Event Timeline & Flight Plan */}
           <TimelineSection />
 
-          {/* 5. Prizes, Cash Podiums & Track Bounties */}
+          {/* 6. Prizes, Cash Podiums & Track Bounties */}
           <PrizesSection
             onOpenRegister={handleOpenRegister}
           />
 
-          {/* 6. Sponsors, Cloud Compute & Institutional Partners */}
+          {/* 7. Sponsors, Cloud Compute & Institutional Partners */}
           <SponsorsSection />
 
-          {/* 7. Comprehensive FAQ Archives */}
+          {/* 8. Comprehensive FAQ Archives */}
           <FaqSection />
 
-          {/* 8. Mission Control Footer */}
+          {/* 9. The Journey So Far */}
+          <GallerySection />
+
+          {/* 10. Contact Details */}
+          <Contact />
+
+          {/* 11. Mission Control Footer */}
           <Footer
             onOpenRegister={handleOpenRegister}
             onOpenTracks={() => setIsTracksOpen(true)}
           />
-        </main>
+          </main>
+        )}
       </div>
 
       {/* Interactive Registration Modal (Fallback) */}
-      <RegisterModal
-        isOpen={isRegisterOpen}
-        onClose={() => setIsRegisterOpen(false)}
-      />
+      {!isRulesPage && (
+        <RegisterModal
+          isOpen={isRegisterOpen}
+          onClose={() => setIsRegisterOpen(false)}
+        />
+      )}
 
       {/* Interactive Tracks Modal */}
-      <TracksModal
-        isOpen={isTracksOpen}
-        onClose={() => setIsTracksOpen(false)}
-        onSelectTrack={(trackId) => {
-          setIsTracksOpen(false);
-          handleOpenRegister();
-        }}
-      />
+      {!isRulesPage && (
+        <TracksModal
+          isOpen={isTracksOpen}
+          onClose={() => setIsTracksOpen(false)}
+          onSelectTrack={(trackId) => {
+            setIsTracksOpen(false);
+            handleOpenRegister();
+          }}
+        />
+      )}
     </div>
   );
 }
 
 export default App;
+
