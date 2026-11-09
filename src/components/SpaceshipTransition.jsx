@@ -809,7 +809,7 @@ export default function SpaceshipTransition({ onComplete }) {
           </div>
 
           <div className="text-[10px] text-white/30 tracking-widest uppercase text-right">
-            <span>DESTINATION: INNOVERSE EARTH SPHERE // BELAGAVI</span>
+            <span>DESTINATION: INNOVERSE EARTH SPHERE // LIVE GLOBAL NODE</span>
           </div>
         </div>
       </div>

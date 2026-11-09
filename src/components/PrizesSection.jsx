@@ -55,7 +55,7 @@ export default function PrizesSection({ onOpenRegister }) {
         'Official Runner-Up Certificates (for all 3 members)',
         'Cloud Compute Credits & Tooling Passes',
         'Fast-Track Technical Interview Screening',
-        'Recognition on KLS GIT Innovation Wall'
+        'Recognition on the Innovation Wall'
       ]
     }
   ];
@@ -79,7 +79,7 @@ export default function PrizesSection({ onOpenRegister }) {
     {
       icon: Sparkles,
       title: 'Recognized Credentials',
-      desc: 'Cryptographically verifiable completion certificates endorsed by KLS GIT Department of MCA & partner tech organizations.'
+      desc: 'Cryptographically verifiable completion certificates endorsed by partner tech organizations.'
     }
   ];
 
@@ -100,7 +100,7 @@ export default function PrizesSection({ onOpenRegister }) {
             Prizes & <span className="text-amber-400">Honors</span>
           </h2>
           <p className="mt-4 text-sm sm:text-base text-gray-300 max-w-2xl font-sans">
-            Separate competitive tracks for <strong className="text-white">MCA (Postgraduate)</strong> and <strong className="text-white">BCA (Undergraduate)</strong> students. Preliminary round screening leads to the intense 24-hour on-campus sprint at KLS GIT Belagavi.
+            Separate competitive tracks for <strong className="text-white">MCA (Postgraduate)</strong> and <strong className="text-white">BCA (Undergraduate)</strong> students. Preliminary round screening leads to the intense 24-hour sprint.
           </p>
 
           {/* Quick Specifications Pill Bar */}
@@ -287,7 +287,7 @@ export default function PrizesSection({ onOpenRegister }) {
                 Shortlisted Final Round (24h Marathon)
               </h5>
               <p className="text-xs text-gray-300 font-sans leading-relaxed">
-                Top shortlisted squads are invited to the KLS GIT campus in Belagavi for the intense 24-hour coding sprint with 24/7 power, Wi-Fi, food, mentorship, and live jury demos to win the ₹35,000 prize pool.
+                Top shortlisted squads are invited for the intense 24-hour coding sprint with mentorship and live jury demos to win the ₹35,000 prize pool.
               </p>
             </div>
           </div>

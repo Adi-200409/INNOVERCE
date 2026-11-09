@@ -20,7 +20,7 @@ const FAQS = [
   },
   {
     q: 'How do the competition rounds and selection work?',
-    a: 'INNOVERSE 3.0 is structured in two stages: (1) Preliminary Round: Teams submit their problem statement abstract, tech architecture, and blueprint online with the ₹300 fee. (2) Final Round: Shortlisted squads are invited to KLS GIT, Belagavi for the intense 24-hour on-campus coding sprint.'
+    a: 'INNOVERSE 3.0 is structured in two stages: (1) Preliminary Round: Teams submit their problem statement abstract, tech architecture, and blueprint online with the ₹300 fee. (2) Final Round: Shortlisted squads are invited for the intense 24-hour coding sprint.'
   },
   {
     q:'What should be the team size?',
@@ -36,7 +36,7 @@ const FAQS = [
   },
   {
     q: 'Where is the hackathon venue?',
-    a: 'The 24-hour Final Round is an in-person marathon hosted at the Department of MCA, KLS Gogte Institute of Technology (KLS GIT), Belagavi, Karnataka, with 24/7 power backup, high-speed Wi-Fi 6, and dedicated hacker pods.'
+    a: 'The 24-hour Final Round is an in-person marathon hosted at the official event venue for the competition.'
   },
   {
     q: 'Who owns the intellectual property (IP) of projects built?',

@@ -320,7 +320,7 @@ export default function ShuttleCockpitTransition({ onComplete }) {
     // Stage 2: Target Acquisition Lock (at 1600ms)
     timers.push(
       setTimeout(() => {
-        setScanStatus('>> TARGET ACQUIRED: INNOVERSE 3.0 // KLS GIT <<');
+        setScanStatus('>> TARGET ACQUIRED: INNOVERSE 3.0 // LIVE NODE <<');
         setScanSubStatus('COORDINATES LOCKED • ORBITAL DESCENT CONFIRMED');
         setIsLocked(true);
       }, 1600)
@@ -438,7 +438,7 @@ export default function ShuttleCockpitTransition({ onComplete }) {
               </div>
               <div className="flex flex-col text-[10px]">
                 <span className="text-white/40 uppercase">SCANNER GRID</span>
-                <span className="text-amber-400 font-bold">LOCKED: KLS GIT</span>
+                <span className="text-amber-400 font-bold">LOCKED: LIVE NODE</span>
               </div>
             </div>
           </div>

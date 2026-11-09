@@ -76,7 +76,7 @@ export default function RegisterModal({ isOpen, onClose }) {
               Register Your 3-Member Squad
             </h2>
             <p className="text-xs sm:text-sm text-gray-400 mt-1 mb-4">
-              Submit your team details for the Preliminary Round. Shortlisted teams advance to the 24-hour on-campus finale at KLS GIT Belagavi to compete for the ₹35,000 prize pool.
+              Submit your team details for the Preliminary Round. Shortlisted teams advance to the 24-hour finale to compete for the ₹35,000 prize pool.
             </p>
 
             {/* Quick Specs Strip */}
@@ -255,7 +255,7 @@ export default function RegisterModal({ isOpen, onClose }) {
               <div className="p-3.5 rounded-xl border border-emerald-500/25 bg-emerald-500/[0.06] flex items-start gap-2.5 text-xs text-emerald-300">
                 <Ticket className="w-4 h-4 shrink-0 mt-0.5 text-emerald-400" />
                 <div>
-                  <strong>Registration Fee: ₹300 per team</strong>. Covers preliminary round evaluation. Shortlisted teams qualifying for the final round receive full on-campus amenities at KLS GIT Belagavi. Payment instructions will be emailed to the team leader.
+                  <strong>Registration Fee: ₹300 per team</strong>. Covers preliminary round evaluation. Shortlisted teams qualifying for the final round receive full event support. Payment instructions will be emailed to the team leader.
                 </div>
               </div>
 
@@ -279,6 +279,59 @@ export default function RegisterModal({ isOpen, onClose }) {
             <p className="text-sm text-gray-300 max-w-sm mt-2 mb-6">
               Welcome squad <strong className="text-white">{formData.teamName || 'Innovators'}</strong>! Your preliminary entry has been received for the <strong className="text-amber-400">{formData.category === 'mca' ? 'MCA Track' : 'BCA Track'}</strong>.
             </p>
+
+            <section
+              aria-label="Your Innoverse boarding pass"
+              className="w-full overflow-hidden rounded-2xl border border-white/15 bg-[#111114] text-left shadow-[0_12px_40px_rgba(0,0,0,0.35)] mb-5"
+            >
+              <div className="flex items-center justify-between gap-3 p-4">
+                <div>
+                  <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-gray-400">
+                    INNOVERSE 3.0 // LAUNCH SERVICES
+                  </p>
+                  <p className="mt-1 text-sm font-bold text-white">Digital boarding pass</p>
+                </div>
+                <span className="shrink-0 rounded-full border border-amber-400/40 bg-amber-400/10 px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-amber-300">
+                  Draft
+                </span>
+              </div>
+
+              <div className="relative h-40 overflow-hidden sm:h-52">
+                <img
+                  src="/innoverce-theme-poster.png"
+                  alt="Astronaut looking out over a planet in deep space"
+                  className="h-full w-full object-cover object-center"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/15 to-transparent" />
+                <div className="absolute inset-x-4 bottom-4">
+                  <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-amber-300">
+                    Preliminary round // Passenger
+                  </p>
+                  <p className="mt-1 truncate text-xl font-bold text-white sm:text-2xl">
+                    {formData.leaderName || 'Team leader'}
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-x-4 gap-y-3 p-4">
+                <div className="min-w-0">
+                  <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-gray-500">Team</p>
+                  <p className="truncate text-sm text-gray-100">{formData.teamName || 'Your team name'}</p>
+                </div>
+                <div className="min-w-0">
+                  <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-gray-500">Track</p>
+                  <p className="truncate text-sm text-gray-100">{formData.category.toUpperCase()}</p>
+                </div>
+                <div className="min-w-0">
+                  <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-gray-500">Passenger email</p>
+                  <p className="truncate text-sm text-gray-100">{formData.leaderEmail || 'Your email'}</p>
+                </div>
+                <div className="min-w-0">
+                  <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-gray-500">Crew</p>
+                  <p className="truncate text-sm text-gray-100">3 squad members</p>
+                </div>
+              </div>
+            </section>
 
             <div className="px-5 py-4 rounded-2xl bg-white/[0.03] border border-white/10 font-mono text-xs text-gray-400 mb-6 w-full text-left space-y-2">
               <div className="flex justify-between py-1 border-b border-white/5">
@@ -304,7 +357,7 @@ export default function RegisterModal({ isOpen, onClose }) {
             </div>
 
             <p className="text-xs text-gray-400 mb-6 max-w-md">
-              Shortlisted squads will receive official invitations for the 24-hour on-campus hackathon at KLS GIT Belagavi to battle for the ₹35,000 prize pool!
+              Shortlisted squads will receive official invitations for the 24-hour hackathon to battle for the ₹35,000 prize pool!
             </p>
 
             <button

@@ -17,6 +17,7 @@ import {
   AlertCircle
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import BoardingPass from './BoardingPass';
 
 export default function RegistrationPage({ onBackToHome }) {
   const [formData, setFormData] = useState({
@@ -128,7 +129,7 @@ export default function RegistrationPage({ onBackToHome }) {
                       Presented by:
                     </span>
                     <strong className="text-white font-semibold">
-                      Department of MCA, KLS Gogte Institute of Technology, Belagavi
+                      Official Event Venue
                     </strong>
                     <div className="text-amber-400 font-medium text-xs mt-0.5">
                       in collaboration with <strong className="text-amber-300 font-bold">Prodhee Technologies</strong>
@@ -155,7 +156,7 @@ export default function RegistrationPage({ onBackToHome }) {
                   </div>
                   <div>
                     <span className="text-white/40 text-[10px] uppercase block">Venue</span>
-                    <span className="text-white font-bold truncate block">IT Block, KLS GIT</span>
+                    <span className="text-white font-bold truncate block">Event Campus</span>
                   </div>
                 </div>
 
@@ -466,6 +467,14 @@ export default function RegistrationPage({ onBackToHome }) {
                 </button>
               </div>
             </form>
+
+            <BoardingPass
+              teamName={formData.teamName}
+              leaderName={formData.leaderName}
+              leaderEmail={formData.leaderEmail}
+              institutionName={formData.institutionName}
+              stream={formData.stream}
+            />
           </div>
         ) : (
           /* =========================================================================
@@ -487,44 +496,16 @@ export default function RegistrationPage({ onBackToHome }) {
               Thank you for registering squad <strong className="text-white">{formData.teamName}</strong> for <strong className="text-amber-400">INNOVERSE 3.0</strong>! Your response has been recorded.
             </p>
 
-            {/* Official Digital Boarding Pass Card */}
-            <div className="max-w-xl mx-auto rounded-2xl border border-white/15 bg-white/[0.03] p-6 text-left font-mono text-xs space-y-3 mb-8">
-              <div className="flex justify-between items-center pb-3 border-b border-white/10">
-                <span className="text-white/50">BOARDING PASS ID:</span>
-                <span className="text-amber-400 font-bold text-sm">{confirmationId}</span>
-              </div>
-              <div className="flex justify-between items-center py-1 border-b border-white/5">
-                <span className="text-white/50">TEAM NAME:</span>
-                <span className="text-white font-bold">{formData.teamName}</span>
-              </div>
-              <div className="flex justify-between items-center py-1 border-b border-white/5">
-                <span className="text-white/50">STREAM:</span>
-                <span className="text-amber-300 font-bold">{formData.stream}</span>
-              </div>
-              <div className="flex justify-between items-center py-1 border-b border-white/5">
-                <span className="text-white/50">TEAM LEADER:</span>
-                <span className="text-white">{formData.leaderName} ({formData.leaderContact})</span>
-              </div>
-              <div className="flex justify-between items-center py-1 border-b border-white/5">
-                <span className="text-white/50">TEAM MEMBER 1:</span>
-                <span className="text-white">{formData.member1Name}</span>
-              </div>
-              <div className="flex justify-between items-center py-1 border-b border-white/5">
-                <span className="text-white/50">TEAM MEMBER 2:</span>
-                <span className="text-white">{formData.member2Name}</span>
-              </div>
-              <div className="flex justify-between items-center py-1 border-b border-white/5">
-                <span className="text-white/50">INSTITUTION:</span>
-                <span className="text-white truncate max-w-[240px]">{formData.institutionName}</span>
-              </div>
-              <div className="flex justify-between items-center py-1 border-b border-white/5">
-                <span className="text-white/50">REGISTRATION FEE:</span>
-                <span className="text-emerald-400 font-bold">₹300 per team</span>
-              </div>
-              <div className="flex justify-between items-center pt-2">
-                <span className="text-white/50">VENUE:</span>
-                <span className="text-white font-semibold">IT Block, KLS GIT Belagavi</span>
-              </div>
+            <div className="mb-8">
+              <BoardingPass
+                teamName={formData.teamName}
+                leaderName={formData.leaderName}
+                leaderEmail={formData.leaderEmail}
+                institutionName={formData.institutionName}
+                stream={formData.stream}
+                confirmationId={confirmationId}
+                submitted
+              />
             </div>
 
             {/* Queries Reminder */}
@@ -556,4 +537,3 @@ export default function RegistrationPage({ onBackToHome }) {
     </div>
   );
 }
-

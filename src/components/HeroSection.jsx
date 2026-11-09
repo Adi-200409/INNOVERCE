@@ -62,18 +62,18 @@ export default function HeroSection({ onOpenRegister, onOpenTracks }) {
             <div className="inline-flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 px-5 sm:px-7 py-2 sm:py-2.5 rounded-full border border-white/20 bg-[#08080c]/95 backdrop-blur-2xl shadow-[0_4px_30px_rgba(0,0,0,0.9),0_0_25px_rgba(245,158,11,0.18)] hover:border-amber-400/50 transition-all">
               <span className="w-2 sm:w-2.5 h-2 sm:h-2.5 rounded-full bg-amber-400 shadow-[0_0_12px_#f59e0b] animate-pulse shrink-0" />
               <span className="font-mono text-sm sm:text-base md:text-lg font-bold tracking-wide text-white">
-                KLS Gogte Institute of Technology
+                National Hackathon
               </span>
               <span className="text-white/40 font-bold">•</span>
               <span className="font-mono text-sm sm:text-base md:text-lg text-amber-400 font-bold tracking-wider">
-                Belagavi
+                Global Build Sprint
               </span>
             </div>
 
             {/* Department Presents Text */}
             <div className="px-4 sm:px-5 py-1 sm:py-1.5 rounded-full bg-black/75 backdrop-blur-md border border-white/10 shadow-[0_2px_12px_rgba(0,0,0,0.8)] mt-1">
               <p className="font-mono text-[11px] sm:text-xs md:text-sm tracking-[0.22em] sm:tracking-[0.28em] uppercase text-white/90 font-medium">
-                Master Of Computer Applications <span className="text-amber-400 font-semibold">presents</span>
+                Tech Challenge <span className="text-amber-400 font-semibold">presents</span>
               </p>
             </div>
           </div>
@@ -197,7 +197,7 @@ export default function HeroSection({ onOpenRegister, onOpenTracks }) {
         {/* Left: Hub Telemetry */}
         <div className="flex items-center gap-3 font-mono text-xs text-white/40">
           <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-          <span className="uppercase text-[11px]">INNOVERSE 3.0 SYSTEM • KLS GIT ACTIVE NODE</span>
+          <span className="uppercase text-[11px]">INNOVERSE 3.0 SYSTEM • LIVE NODE</span>
         </div>
 
         {/* Center: Scroll to About Section */}

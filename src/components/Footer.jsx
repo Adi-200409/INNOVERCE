@@ -34,7 +34,7 @@ export default function Footer({ onOpenRegister, onOpenTracks }) {
             </p>
             <div className="flex items-center gap-2 font-mono text-[11px] text-white/50">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span>NODE: KLS GIT BELAGAVI</span>
+              <span>NODE: LIVE HACKATHON</span>
             </div>
           </div>
 
@@ -69,11 +69,6 @@ export default function Footer({ onOpenRegister, onOpenTracks }) {
                   Sponsors
                 </a>
               </li>
-              <li>
-                <a href="#faq" onClick={(e) => scrollToSection(e, 'faq')} className="hover:text-amber-400 transition-colors">
-                  FAQ
-                </a>
-              </li>
             </ul>
           </div>
 
@@ -102,11 +97,6 @@ export default function Footer({ onOpenRegister, onOpenTracks }) {
               <li>
                 <a href="https://github.com" target="_blank" rel="noreferrer" className="hover:text-amber-400 transition-colors">
                   Starter Template GitHub
-                </a>
-              </li>
-              <li>
-                <a href="#faq" onClick={(e) => scrollToSection(e, 'faq')} className="hover:text-amber-400 transition-colors">
-                  Hacker Code of Conduct
                 </a>
               </li>
             </ul>
@@ -156,10 +146,10 @@ export default function Footer({ onOpenRegister, onOpenTracks }) {
             <div className="p-3.5 rounded-xl border border-white/10 bg-black/60 font-mono text-[11px] text-gray-400 space-y-1">
               <div className="text-white font-semibold flex items-center gap-1.5">
                 <Compass className="w-3.5 h-3.5 text-amber-400" />
-                <span>VENUE COORDINATES</span>
+                <span>CONTACT POINT</span>
               </div>
-              <p>KLS Gogte Institute of Technology</p>
-              <p className="text-white/40">15.8497° N, 74.4977° E • Belagavi</p>
+              <p>Innovation Hub</p>
+              <p className="text-white/40">Remote-ready sprint support</p>
             </div>
           </div>
         </div>

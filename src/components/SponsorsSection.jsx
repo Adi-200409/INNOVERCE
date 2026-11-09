@@ -9,7 +9,7 @@ const SPONSORS = [
   { name: 'GitHub', tier: 'DEVELOPER SUITE', badge: 'OPEN SOURCE', logo: '🐙' },
   { name: 'Postman', tier: 'API PLATFORM', badge: 'INTEGRATION', logo: '🚀' },
   { name: 'Vercel', tier: 'DEPLOYMENT', badge: 'FRONTEND', logo: '▲' },
-  { name: 'KLS GIT', tier: 'HOST INSTITUTION', badge: 'ACADEMIC NODE', logo: '🏛️' }
+  { name: 'Academic Partner', tier: 'HOST INSTITUTION', badge: 'ACADEMIC NODE', logo: '🏛️' }
 ];
 
 export default function SponsorsSection() {
@@ -24,10 +24,10 @@ export default function SponsorsSection() {
           </div>
 
           <h2 className="font-display font-black text-3xl sm:text-5xl text-white tracking-tight uppercase">
-            Powered By <span className="text-amber-400">Industry Leaders</span>
+            Innovation Partners
           </h2>
           <p className="mt-3 text-sm sm:text-base text-gray-400 max-w-xl font-sans">
-            Backed by premier cloud providers, AI labs, and academic institutions fueling the next generation of builders.
+            Backed by premier cloud providers, AI labs, and academic institutions supporting the next generation of builders.
           </p>
         </div>
 

@@ -1,0 +1,27 @@
+@media print {
+  @page {
+    margin: 12mm;
+  }
+
+  body * {
+    visibility: hidden !important;
+  }
+
+  .boarding-pass-print,
+  .boarding-pass-print * {
+    visibility: visible !important;
+  }
+
+  .boarding-pass-print {
+    position: fixed !important;
+    inset: 0 0 auto !important;
+    width: 100% !important;
+    max-width: none !important;
+    border: 1px solid #444 !important;
+    background: #0d0e11 !important;
+    color: #fff !important;
+    box-shadow: none !important;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+}

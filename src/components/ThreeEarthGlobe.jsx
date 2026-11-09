@@ -2,9 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { getCachedShuttleModel, preloadShuttleModel } from '../utils/shuttleLoader';
 
-// National hubs with live user node (KLS GIT Belagavi)
+// National hubs with live user node
 const DEFAULT_HUBS = [
-  { id: 'user', name: 'KLS GIT', lat: 15.8281, lng: 74.4889, isUser: true },
+  { id: 'user', name: 'Innovation Hub', lat: 15.8281, lng: 74.4889, isUser: true },
   { id: 'blr', name: 'BENGALURU', lat: 12.9716, lng: 77.5946 },
   { id: 'mum', name: 'MUMBAI', lat: 19.0760, lng: 72.8777 },
   { id: 'del', name: 'DELHI NCR', lat: 28.6139, lng: 77.2090 },
@@ -230,7 +230,7 @@ function ThreeEarthGlobe({
   const badgeRef = useRef(null);
   const [activeNode] = useState({
     id: 'user',
-    name: 'KLS GIT',
+    name: 'Innovation Hub',
     lat: 15.8281,
     lng: 74.4889,
     isUser: true
@@ -556,7 +556,7 @@ function ThreeEarthGlobe({
 
     const userNodePos = latLngToVector3(activeNode.lat, activeNode.lng, globeRadius);
 
-    // Clean glowing golden amber beacon pin at KLS GIT Belagavi
+    // Clean glowing golden amber beacon pin
     const beaconGeo = new THREE.SphereGeometry(0.038, 16, 16);
     const beaconMat = new THREE.MeshBasicMaterial({ color: 0xf59e0b });
     const beaconMesh = new THREE.Mesh(beaconGeo, beaconMat);
@@ -1026,7 +1026,7 @@ function ThreeEarthGlobe({
       {/* 3D WebGL Canvas */}
       <div ref={mountRef} className="absolute inset-0 w-full h-full" />
 
-      {/* Orbit24 Pill Badge [ INN-01 / KLS GIT ] */}
+      {/* Orbit24 Pill Badge [ INN-01 / LIVE NODE ] */}
       <div
         ref={badgeRef}
         style={{ display: 'none' }}

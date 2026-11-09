@@ -43,8 +43,8 @@ const TIMELINE_PRELIMINARY = [
   },
   {
     time: 'PHASE 04',
-    title: 'Finalist Briefing & On-Campus Arrival Plan',
-    desc: 'Logistics guidance, travel advisories, and lab allocation schedules shared with finalists traveling to KLS GIT, Belagavi.',
+    title: 'Finalist Briefing & Event Readiness',
+    desc: 'Logistics guidance and final prep details shared with finalists for the 24-hour sprint.',
     category: 'LOGISTICS',
     icon: Sparkles,
     active: false
@@ -55,7 +55,7 @@ const TIMELINE_DAY_1 = [
   {
     time: '08:00 AM',
     title: 'Hacker Check-In & Breakfast',
-    desc: 'Shortlisted squads arrive at KLS GIT campus. Verify digital boarding passes, collect hacker kits, badges, and breakfast.',
+    desc: 'Shortlisted squads arrive on campus. Verify digital boarding passes, collect hacker kits, badges, and breakfast.',
     category: 'LOGISTICS',
     icon: Coffee,
     active: true
@@ -63,7 +63,7 @@ const TIMELINE_DAY_1 = [
   {
     time: '09:30 AM',
     title: 'Opening Ceremony & Track Briefing',
-    desc: 'Welcome keynote by Department of MCA faculty and guest tech leaders. Track problem statements and evaluation criteria revealed.',
+    desc: 'Welcome keynote by faculty and guest tech leaders. Track problem statements and evaluation criteria revealed.',
     category: 'KEYNOTE',
     icon: Compass,
     active: true
@@ -71,7 +71,7 @@ const TIMELINE_DAY_1 = [
   {
     time: '10:00 AM',
     title: 'HACKING COMMENCES (T-00:00:00)',
-    desc: '24-hour marathon timer begins! GitHub repositories initialize. High-speed campus Wi-Fi and compute environments activate.',
+    desc: '24-hour marathon timer begins! GitHub repositories initialize and compute environments activate.',
     category: 'HACKING',
     icon: Zap,
     highlight: true,
@@ -79,7 +79,7 @@ const TIMELINE_DAY_1 = [
   },
   {
     time: '01:30 PM',
-    title: 'Networking Lunch & Hacker Fuel',
+    title: 'Networking Lunch & Team Connect',
     desc: 'Catered lunch at the dining hall. Connect with fellow builders, organizers, and tech communities.',
     category: 'MEALS',
     icon: Coffee,
@@ -96,7 +96,7 @@ const TIMELINE_DAY_1 = [
   {
     time: '11:00 PM',
     title: 'Midnight Lightning Sprints & Snacks',
-    desc: 'Midnight snacks, coffee, energy fuel, and mini technical lightning demos to keep adrenaline pumping.',
+    desc: 'Midnight snacks, coffee, and mini technical lightning demos to keep adrenaline pumping.',
     category: 'NIGHT SPRINT',
     icon: Sparkles,
     active: false
@@ -107,7 +107,7 @@ const TIMELINE_DAY_2 = [
   {
     time: '03:00 AM',
     title: 'The Witching Hour Code Sprint',
-    desc: 'Late-night flow state coding sessions with curated ambient tunes and continuous caffeine refuels.',
+    desc: 'Late-night flow state coding sessions with curated ambient tunes and continuous coding momentum.',
     category: 'FLOW STATE',
     icon: Zap,
     active: false
@@ -180,7 +180,7 @@ export default function TimelineSection() {
             Hackathon <span className="text-amber-400">Roadmap</span>
           </h2>
           <p className="mt-4 text-sm sm:text-base text-gray-300 max-w-2xl font-sans">
-            From the online Preliminary Round abstract review to the 24-hour on-campus finale at KLS GIT Belagavi.
+            From the online Preliminary Round abstract review to the 24-hour finale sprint.
           </p>
 
           {/* Quick Specifications Pill Strip */}
@@ -245,7 +245,7 @@ export default function TimelineSection() {
         )}
         {(activeTab === 'day1' || activeTab === 'day2') && (
           <div className="mb-8 p-4 rounded-2xl border border-emerald-500/20 bg-emerald-500/[0.04] text-center font-mono text-xs text-emerald-300">
-            ⚡ <strong>Final Round (On-Campus):</strong> Shortlisted squads assemble at KLS GIT Belagavi for the 24-hour non-stop sprint to win ₹35,000 in cash prizes.
+            ⚡ <strong>Final Round:</strong> Shortlisted squads assemble for the 24-hour non-stop sprint to win ₹35,000 in cash prizes.
           </div>
         )}
 
