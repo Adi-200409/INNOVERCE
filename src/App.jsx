@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import HeroSection from './components/HeroSection';
 import AboutSection from './components/AboutSection';
-import DomainSection from './components/DomainSection';
 import Rules from './components/Rules';
 import Contact from './components/Contact';
 import TracksSection from './components/TracksSection';
@@ -10,7 +9,6 @@ import TimelineSection from './components/TimelineSection';
 import PrizesSection from './components/PrizesSection';
 import SponsorsSection from './components/SponsorsSection';
 import GallerySection from './components/GallerySection';
-import FaqSection from './components/FaqSection';
 import Footer from './components/Footer';
 import RegisterModal from './components/RegisterModal';
 import TracksModal from './components/TracksModal';
@@ -117,10 +115,7 @@ function App() {
             onOpenTracks={() => setIsTracksOpen(true)}
           />
 
-          {/* 3. Hackathon Domains */}
-          <DomainSection />
-
-          {/* 4. 5 Mission Arenas & Problem Tracks */}
+          {/* 3. 5 Mission Arenas & Problem Tracks */}
           <TracksSection
             onOpenRegister={handleOpenRegister}
             onSelectTrack={(trackId) => setIsTracksOpen(true)}
@@ -137,16 +132,13 @@ function App() {
           {/* 7. Sponsors, Cloud Compute & Institutional Partners */}
           <SponsorsSection />
 
-          {/* 8. Comprehensive FAQ Archives */}
-          <FaqSection />
-
-          {/* 9. The Journey So Far */}
+          {/* 8. The Journey So Far */}
           <GallerySection />
 
-          {/* 10. Contact Details */}
+          {/* 9. Contact Details */}
           <Contact />
 
-          {/* 11. Mission Control Footer */}
+          {/* 10. Mission Control Footer */}
           <Footer
             onOpenRegister={handleOpenRegister}
             onOpenTracks={() => setIsTracksOpen(true)}

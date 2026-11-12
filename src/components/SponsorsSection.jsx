@@ -1,23 +1,12 @@
 import React from 'react';
-import { ShieldCheck, Cpu, Terminal, Zap, Globe, Sparkles, Mail } from 'lucide-react';
-
-const SPONSORS = [
-  { name: 'Google Cloud', tier: 'COMPUTE PARTNER', badge: 'CLOUD INFRA', logo: '☁️' },
-  { name: 'NVIDIA Inception', tier: 'AI ACCELERATOR', badge: 'HARDWARE', logo: '⚡' },
-  { name: 'Anthropic', tier: 'API PARTNER', badge: 'FRONTIER LLM', logo: '🧠' },
-  { name: 'Solana Foundation', tier: 'ECOSYSTEM', badge: 'DISTRIBUTED', logo: '🌐' },
-  { name: 'GitHub', tier: 'DEVELOPER SUITE', badge: 'OPEN SOURCE', logo: '🐙' },
-  { name: 'Postman', tier: 'API PLATFORM', badge: 'INTEGRATION', logo: '🚀' },
-  { name: 'Vercel', tier: 'DEPLOYMENT', badge: 'FRONTEND', logo: '▲' },
-  { name: 'Academic Partner', tier: 'HOST INSTITUTION', badge: 'ACADEMIC NODE', logo: '🏛️' }
-];
+import { ShieldCheck, Mail } from 'lucide-react';
 
 export default function SponsorsSection() {
   return (
     <section id="sponsors" className="relative w-full py-20 sm:py-28 px-4 sm:px-6 lg:px-8 bg-[#060608] z-20">
       <div className="relative max-w-6xl mx-auto">
         {/* Header */}
-        <div className="flex flex-col items-start md:items-center md:text-center mb-14">
+        <div className="flex flex-col items-start md:items-center md:text-center mb-10">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-purple-500/30 bg-purple-500/10 text-purple-300 font-mono text-xs uppercase tracking-widest mb-4">
             <ShieldCheck className="w-3.5 h-3.5" />
             <span>INNOVERSE 3.0 • ECOSYSTEM ALLIANCE</span>
@@ -29,29 +18,6 @@ export default function SponsorsSection() {
           <p className="mt-3 text-sm sm:text-base text-gray-400 max-w-xl font-sans">
             Backed by premier cloud providers, AI labs, and academic institutions supporting the next generation of builders.
           </p>
-        </div>
-
-        {/* Sponsor Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 mb-12">
-          {SPONSORS.map((sp, idx) => (
-            <div
-              key={idx}
-              className="group relative rounded-2xl border border-white/10 bg-[#0c0c14]/70 backdrop-blur-md p-6 flex flex-col items-center text-center justify-center hover:border-amber-400/40 hover:bg-[#12121c] transition-all duration-300 hover:-translate-y-1"
-            >
-              <div className="text-3xl mb-3 group-hover:scale-110 transition-transform">
-                {sp.logo}
-              </div>
-              <h3 className="font-display font-bold text-white text-base tracking-wide mb-1">
-                {sp.name}
-              </h3>
-              <span className="font-mono text-[9px] uppercase tracking-wider text-amber-400/80 mb-2">
-                {sp.tier}
-              </span>
-              <span className="font-mono text-[8px] uppercase tracking-widest px-2 py-0.5 rounded-full bg-white/5 text-white/40 border border-white/10">
-                {sp.badge}
-              </span>
-            </div>
-          ))}
         </div>
 
         {/* Sponsor Inquiries Capsule */}

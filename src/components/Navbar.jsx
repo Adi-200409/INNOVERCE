@@ -7,11 +7,9 @@ export default function Navbar({ onOpenRegister, _onOpenTracks, isReady = true }
   const navigationLinks = [
     { label: 'Home', id: null, href: '#home' },
     { label: 'About', id: 'about', href: '#about' },
-    { label: 'Domains', id: 'domains', href: '#domains' },
     { label: 'Tracks', id: 'tracks', href: '#tracks' },
     { label: 'Timelines', id: 'schedule', href: '#schedule' },
     { label: 'Prizes', id: 'prizes', href: '#prizes' },
-    { label: 'FAQ', id: 'faq', href: '#faq' },
     { label: 'Contact', id: 'contact', href: '#contact' },
     { label: 'Rules', href: '/rules' },
   ];

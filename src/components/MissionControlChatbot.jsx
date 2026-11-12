@@ -91,7 +91,7 @@ const KNOWLEDGE_BASE = [
     response: {
       text: "Official squad telemetry specifications:\n\n• **Team Size**: Exactly **3 members per team (Fixed)**.\n• **Cross-College**: **Not permitted** — all 3 members must belong to the same institution.\n• **Competitive Leagues**: Open to undergrads & postgrads with separate podiums for **BCA** and **MCA** squads!",
       actions: [
-        { label: '📋 View Rules in FAQ', type: 'faq' }
+        { label: '📋 View Rules', type: 'rules' }
       ]
     }
   },
@@ -137,7 +137,7 @@ const KNOWLEDGE_BASE = [
     response: {
       text: "⚠️ **Core Flight Directives**:\n\n• **Fresh Codebase**: All project code must be developed from scratch during the 24-hour sprint. Pre-built apps are strictly prohibited.\n• **Allowed Tools**: Open-source libraries, APIs, and pre-trained LLMs (Gemini, Claude, GPT, Ollama) are fully allowed.\n• **Judging Rubric**: Technical Depth (30%), Originality (25%), Practical Impact (25%), and Demo Polish (20%).\n• **IP Ownership**: 100% retained by your team.",
       actions: [
-        { label: '📖 Full Rules & FAQ', type: 'faq' }
+        { label: '📖 Full Rules', type: 'rules' }
       ]
     }
   },
@@ -373,9 +373,8 @@ export default function MissionControlChatbot({ onOpenRegister, onOpenTracks }) 
     } else if (action.type === 'prizes') {
       const el = document.getElementById('prizes');
       if (el) el.scrollIntoView({ behavior: 'smooth' });
-    } else if (action.type === 'faq') {
-      const el = document.getElementById('faq');
-      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    } else if (action.type === 'rules') {
+      window.location.assign('/rules');
     } else if (action.type === 'timeline') {
       const el = document.getElementById('timeline');
       if (el) el.scrollIntoView({ behavior: 'smooth' });
