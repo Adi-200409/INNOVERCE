@@ -14,12 +14,38 @@ import {
   ExternalLink,
   ShieldCheck,
   Sparkles,
-  AlertCircle
+  AlertCircle,
+  LogIn
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import BoardingPass from './BoardingPass';
 
-export default function RegistrationPage({ onBackToHome }) {
+const API_BASE = (import.meta.env.VITE_API_URL || '').replace(/\/+$/, '');
+const LOCAL_REGISTRATIONS_KEY = 'innoverce_local_registrations';
+
+function saveLocalRegistration(formData, confirmationId) {
+  try {
+    const existing = JSON.parse(localStorage.getItem(LOCAL_REGISTRATIONS_KEY) || '[]');
+    const record = {
+      confirmation_id: confirmationId,
+      team_name: formData.teamName,
+      leader_name: formData.leaderName,
+      leader_email: formData.leaderEmail,
+      leader_contact: formData.leaderContact,
+      member1_name: formData.member1Name,
+      member2_name: formData.member2Name,
+      institution_name: formData.institutionName,
+      college_address: formData.collegeAddress,
+      stream: formData.stream,
+      payment_status: 'PENDING'
+    };
+    localStorage.setItem(LOCAL_REGISTRATIONS_KEY, JSON.stringify([record, ...existing]));
+  } catch {
+    // Ignore storage errors
+  }
+}
+
+export default function RegistrationPage({ onBackToHome, embedded = false, onSwitchToLogin }) {
   const [formData, setFormData] = useState({
     teamName: '',
     leaderName: '',
@@ -34,15 +60,55 @@ export default function RegistrationPage({ onBackToHome }) {
 
   const [submitted, setSubmitted] = useState(false);
   const [confirmationId, setConfirmationId] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   const googleFormUrl =
     'https://docs.google.com/forms/d/e/1FAIpQLSfPgaUONQ7VBSQ3rNObDOquTU1d7RGHTIsHHEvIsVa2JNRKzQ/viewform';
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setSubmitError('');
+    setSubmitting(true);
 
-    const uniqueId = `INN-3.0-${Math.floor(100000 + Math.random() * 900000)}`;
-    setConfirmationId(uniqueId);
+    let resolvedId = `INN-3.0-${Math.floor(100000 + Math.random() * 900000)}`;
+    let savedToServer = false;
+    try {
+      const response = await fetch(`${API_BASE}/api/register/`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+
+      if (!response.ok) {
+        const errPayload = await response.json().catch(() => null);
+        if (errPayload && Object.keys(errPayload).length > 0) {
+          const firstMsg =
+            errPayload.message ||
+            errPayload.detail ||
+            Object.values(errPayload).flat()[0] ||
+            'Please verify all required registration fields.';
+          setSubmitError(String(firstMsg));
+          return;
+        }
+      } else {
+        const payload = await response.json().catch(() => ({}));
+        if (payload.confirmationId) {
+          resolvedId = payload.confirmationId;
+          savedToServer = true;
+        }
+      }
+    } catch {
+      // Allow static preview fallback when Django backend is not running
+    } finally {
+      setSubmitting(false);
+    }
+
+    if (!savedToServer) {
+      saveLocalRegistration(formData, resolvedId);
+    }
+
+    setConfirmationId(resolvedId);
     setSubmitted(true);
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
@@ -71,35 +137,9 @@ export default function RegistrationPage({ onBackToHome }) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  return (
-    <div className="relative min-h-screen w-full bg-[#060608] text-white selection:bg-amber-400 selection:text-black py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
-      {/* Background Ambience */}
-      <div className="pointer-events-none fixed -top-40 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-amber-500/10 blur-[150px] rounded-full z-0" />
-      <div className="pointer-events-none fixed top-1/2 -right-40 w-[600px] h-[600px] bg-blue-600/10 blur-[170px] rounded-full z-0" />
-
-      <div className="relative z-10 max-w-4xl mx-auto">
-        {/* Top Navigation Bar */}
-        <div className="flex items-center justify-between gap-4 mb-8 sm:mb-12">
-          <button
-            onClick={onBackToHome || (() => { window.location.href = '/'; })}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/15 bg-white/5 hover:bg-white/10 text-white/80 hover:text-white transition-all text-xs font-mono uppercase tracking-wider cursor-pointer"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            <span>Back to Home</span>
-          </button>
-
-          <a
-            href={googleFormUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-amber-500/30 bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 transition-all text-xs font-mono uppercase tracking-wider"
-          >
-            <span>Open in Google Forms</span>
-            <ExternalLink className="w-3.5 h-3.5" />
-          </a>
-        </div>
-
-        {!submitted ? (
+  const formContent = (
+    <>
+      {!submitted ? (
           <div className="space-y-8">
             {/* =========================================================================
                 EVENT HEADER & DOSSIER CARD
@@ -263,6 +303,15 @@ export default function RegistrationPage({ onBackToHome }) {
                 THE REGISTRATION FORM
                 ========================================================================= */}
             <form onSubmit={handleSubmit} className="space-y-6">
+              {submitError && (
+                <div
+                  role="alert"
+                  className="flex items-start gap-2.5 rounded-2xl border border-red-500/35 bg-red-500/10 px-4 py-3 text-xs sm:text-sm text-red-200"
+                >
+                  <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+                  <span>{submitError}</span>
+                </div>
+              )}
               <div className="text-right text-xs font-mono text-amber-400">
                 * Indicates required question
               </div>
@@ -459,22 +508,14 @@ export default function RegistrationPage({ onBackToHome }) {
 
                 <button
                   type="submit"
-                  disabled={!formData.stream}
+                  disabled={!formData.stream || submitting}
                   className="w-full sm:w-auto px-10 py-4 rounded-full bg-amber-400 hover:bg-amber-300 disabled:opacity-50 disabled:cursor-not-allowed text-black font-mono text-xs uppercase tracking-wider font-bold shadow-[0_0_25px_rgba(245,158,11,0.4)] hover:shadow-[0_0_35px_rgba(245,158,11,0.65)] hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <Rocket className="w-4 h-4 text-black" />
-                  <span>Submit Registration (₹300)</span>
+                  <span>{submitting ? 'Submitting Registration...' : 'Submit Registration (₹300)'}</span>
                 </button>
               </div>
             </form>
-
-            <BoardingPass
-              teamName={formData.teamName}
-              leaderName={formData.leaderName}
-              leaderEmail={formData.leaderEmail}
-              institutionName={formData.institutionName}
-              stream={formData.stream}
-            />
           </div>
         ) : (
           /* =========================================================================
@@ -518,6 +559,24 @@ export default function RegistrationPage({ onBackToHome }) {
 
             {/* Action Buttons */}
             <div className="flex flex-wrap items-center justify-center gap-4">
+              {onSwitchToLogin ? (
+                <button
+                  type="button"
+                  onClick={() => onSwitchToLogin(formData.leaderEmail, confirmationId)}
+                  className="px-6 py-2.5 rounded-full border border-emerald-400/40 bg-emerald-500/10 text-emerald-300 font-mono text-xs uppercase tracking-wider hover:bg-emerald-500/20 transition-colors inline-flex items-center gap-2 cursor-pointer"
+                >
+                  <LogIn className="w-3.5 h-3.5" />
+                  <span>Go to Squad Login</span>
+                </button>
+              ) : (
+                <a
+                  href="/login.html"
+                  className="px-6 py-2.5 rounded-full border border-emerald-400/40 bg-emerald-500/10 text-emerald-300 font-mono text-xs uppercase tracking-wider hover:bg-emerald-500/20 transition-colors inline-flex items-center gap-2"
+                >
+                  <LogIn className="w-3.5 h-3.5" />
+                  <span>Squad Login</span>
+                </a>
+              )}
               <button
                 onClick={handleReset}
                 className="px-6 py-2.5 rounded-full border border-white/20 text-white font-mono text-xs uppercase tracking-wider hover:bg-white/10 transition-colors cursor-pointer"
@@ -533,6 +592,52 @@ export default function RegistrationPage({ onBackToHome }) {
             </div>
           </div>
         )}
+    </>
+  );
+
+  if (embedded) {
+    return formContent;
+  }
+
+  return (
+    <div className="relative min-h-screen w-full bg-[#060608] text-white selection:bg-amber-400 selection:text-black py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
+      {/* Background Ambience */}
+      <div className="pointer-events-none fixed -top-40 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-amber-500/10 blur-[150px] rounded-full z-0" />
+      <div className="pointer-events-none fixed top-1/2 -right-40 w-[600px] h-[600px] bg-blue-600/10 blur-[170px] rounded-full z-0" />
+
+      <div className="relative z-10 max-w-4xl mx-auto">
+        {/* Top Navigation Bar */}
+        <div className="flex items-center justify-between gap-4 mb-8 sm:mb-12">
+          <button
+            onClick={onBackToHome || (() => { window.location.href = '/'; })}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/15 bg-white/5 hover:bg-white/10 text-white/80 hover:text-white transition-all text-xs font-mono uppercase tracking-wider cursor-pointer"
+          >
+            <ArrowLeft className="w-3.5 h-3.5" />
+            <span>Back to Home</span>
+          </button>
+
+          <div className="flex flex-wrap items-center gap-2.5">
+            <a
+              href="/login.html"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-white/15 bg-white/5 hover:bg-white/10 text-white/85 hover:text-white transition-all text-xs font-mono uppercase tracking-wider"
+            >
+              <LogIn className="w-3.5 h-3.5 text-amber-400" />
+              <span>Squad Login</span>
+            </a>
+
+            <a
+              href={googleFormUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-amber-500/30 bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 transition-all text-xs font-mono uppercase tracking-wider"
+            >
+              <span>Open in Google Forms</span>
+              <ExternalLink className="w-3.5 h-3.5" />
+            </a>
+          </div>
+        </div>
+
+        {formContent}
       </div>
     </div>
   );

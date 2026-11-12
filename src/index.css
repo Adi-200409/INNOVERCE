@@ -16,9 +16,20 @@
   }
 
   html {
+    color-scheme: dark;
     scroll-behavior: auto;
     scrollbar-width: thin;
     scrollbar-color: #f59e0b #060608;
+  }
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  textarea:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px #101016 inset;
+    -webkit-text-fill-color: #ffffff;
+    caret-color: #ffffff;
+    transition: background-color 5000s ease-in-out 0s;
   }
 
   body {

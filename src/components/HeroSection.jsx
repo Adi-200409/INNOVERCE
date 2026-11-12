@@ -37,7 +37,7 @@ export default function HeroSection({ onOpenRegister, onOpenTracks }) {
   };
 
   return (
-    <section className="relative w-full min-h-screen overflow-hidden bg-[#060608] flex flex-col justify-between select-none pt-20 sm:pt-24">
+    <section className="relative w-full min-h-screen overflow-hidden bg-[#060608] flex flex-col justify-between select-none pt-16 sm:pt-20">
       {/* =========================================================================
           3D EARTH & ENHANCED AAA DEEP SPACE COSMOS LAYER
           ========================================================================= */}
@@ -51,29 +51,29 @@ export default function HeroSection({ onOpenRegister, onOpenTracks }) {
       {/* =========================================================================
           HERO CONTENT LAYER WITH INTEGRATED ASTRONAUT HEADING DESIGN
           ========================================================================= */}
-      <div className="relative z-10 w-full max-w-5xl mx-auto px-4 sm:px-6 my-auto pt-2 pb-6 flex flex-col items-center text-center">
+      <div className="relative z-10 w-full max-w-5xl mx-auto px-4 sm:px-6 my-auto pt-1 pb-2 flex flex-col items-center text-center">
 
         {/* Integrated Headline Container (Inspired by Reference Design) */}
-        <div className="relative w-full max-w-4xl flex flex-col items-center justify-center mb-6 sm:mb-8">
+        <div className="relative w-full max-w-4xl flex flex-col items-center justify-center mb-3 sm:mb-4">
 
           {/* Presenter Eyebrow: Positioned cleanly above INNOVERSE with zero astronaut overlap */}
-          <div className="relative z-30 flex flex-col items-center justify-center gap-1.5 sm:gap-2 mb-20 sm:mb-28 md:mb-32 lg:mb-36 pointer-events-auto select-none">
+          <div className="relative z-30 flex flex-col items-center justify-center gap-1.5 sm:gap-2 mb-14 sm:mb-20 md:mb-24 lg:mb-24 pointer-events-auto select-none">
             {/* Institution & City Badge */}
             <div className="inline-flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 px-5 sm:px-7 py-2 sm:py-2.5 rounded-full border border-white/20 bg-[#08080c]/95 backdrop-blur-2xl shadow-[0_4px_30px_rgba(0,0,0,0.9),0_0_25px_rgba(245,158,11,0.18)] hover:border-amber-400/50 transition-all">
               <span className="w-2 sm:w-2.5 h-2 sm:h-2.5 rounded-full bg-amber-400 shadow-[0_0_12px_#f59e0b] animate-pulse shrink-0" />
               <span className="font-mono text-sm sm:text-base md:text-lg font-bold tracking-wide text-white">
-                National Hackathon
+                KLS Gogte Institute of Technology
               </span>
               <span className="text-white/40 font-bold">•</span>
               <span className="font-mono text-sm sm:text-base md:text-lg text-amber-400 font-bold tracking-wider">
-                Global Build Sprint
+                Belagavi
               </span>
             </div>
 
             {/* Department Presents Text */}
             <div className="px-4 sm:px-5 py-1 sm:py-1.5 rounded-full bg-black/75 backdrop-blur-md border border-white/10 shadow-[0_2px_12px_rgba(0,0,0,0.8)] mt-1">
               <p className="font-mono text-[11px] sm:text-xs md:text-sm tracking-[0.22em] sm:tracking-[0.28em] uppercase text-white/90 font-medium">
-                Tech Challenge <span className="text-amber-400 font-semibold">presents</span>
+                Master Of Computer Applications <span className="text-amber-400 font-semibold">presents</span>
               </p>
             </div>
           </div>
@@ -111,32 +111,32 @@ export default function HeroSection({ onOpenRegister, onOpenTracks }) {
         </div>
 
         {/* Quick Key Specifications Strip */}
-        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 mb-6 sm:mb-7 pointer-events-auto max-w-3xl mx-auto px-2">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-white/10 bg-black/60 backdrop-blur-md text-[11px] font-mono text-gray-300 shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
-            <Users className="w-3.5 h-3.5 text-amber-400" />
+        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 mb-4 sm:mb-5 pointer-events-auto max-w-4xl mx-auto px-2">
+          <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3.5 py-1.5 rounded-full border border-white/15 bg-black/65 backdrop-blur-md text-xs sm:text-[13px] font-mono text-gray-200 shadow-[0_2px_12px_rgba(0,0,0,0.55)]">
+            <Users className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-400 shrink-0" />
             <span>Team Size: <strong className="text-white font-bold">3 Members (Fixed)</strong></span>
           </div>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-white/10 bg-black/60 backdrop-blur-md text-[11px] font-mono text-gray-300 shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
-            <Ticket className="w-3.5 h-3.5 text-emerald-400" />
+          <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3.5 py-1.5 rounded-full border border-white/15 bg-black/65 backdrop-blur-md text-xs sm:text-[13px] font-mono text-gray-200 shadow-[0_2px_12px_rgba(0,0,0,0.55)]">
+            <Ticket className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-400 shrink-0" />
             <span>Entry Fee: <strong className="text-white font-bold">₹300 / Team</strong></span>
           </div>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-white/10 bg-black/60 backdrop-blur-md text-[11px] font-mono text-gray-300 shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
-            <Trophy className="w-3.5 h-3.5 text-amber-300" />
+          <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3.5 py-1.5 rounded-full border border-white/15 bg-black/65 backdrop-blur-md text-xs sm:text-[13px] font-mono text-gray-200 shadow-[0_2px_12px_rgba(0,0,0,0.55)]">
+            <Trophy className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-300 shrink-0" />
             <span>Prize Pool: <strong className="text-amber-400 font-bold">₹35,000 (MCA & BCA)</strong></span>
           </div>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-white/10 bg-black/60 backdrop-blur-md text-[11px] font-mono text-gray-300 shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
-            <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+          <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3.5 py-1.5 rounded-full border border-white/15 bg-black/65 backdrop-blur-md text-xs sm:text-[13px] font-mono text-gray-200 shadow-[0_2px_12px_rgba(0,0,0,0.55)]">
+            <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-cyan-400 shrink-0" />
             <span>Preliminary Round ➔ Shortlisted Final Round</span>
           </div>
         </div>
 
         {/* Orbit24 Action Buttons */}
-        <div className="flex flex-wrap items-center justify-center gap-4 mb-6 sm:mb-8 pointer-events-auto">
+        <div className="flex flex-wrap items-center justify-center gap-4 mb-4 sm:mb-5 pointer-events-auto">
           {/* Primary Golden Amber Pill: "Get your boarding pass" */}
           <button
             id="hero-register-btn"
             onClick={handleRegisterClick}
-            className="group relative inline-flex items-center justify-center gap-3 rounded-full bg-amber-400 text-black hover:bg-amber-300 px-7 sm:px-8 py-3.5 sm:py-4 font-mono text-xs sm:text-sm font-bold tracking-wide shadow-[0_0_25px_rgba(245,158,11,0.4)] hover:shadow-[0_0_35px_rgba(245,158,11,0.65)] hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer"
+            className="group relative inline-flex items-center justify-center gap-3 rounded-full bg-amber-400 text-black hover:bg-amber-300 px-7 sm:px-8 py-3 sm:py-3.5 font-mono text-xs sm:text-sm font-bold tracking-wide shadow-[0_0_25px_rgba(245,158,11,0.4)] hover:shadow-[0_0_35px_rgba(245,158,11,0.65)] hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer"
           >
             <span>Get your boarding pass</span>
             <ArrowRight className="w-4 h-4 text-black group-hover:translate-x-1 transition-transform" />
@@ -146,14 +146,14 @@ export default function HeroSection({ onOpenRegister, onOpenTracks }) {
           <button
             id="hero-tracks-btn"
             onClick={onOpenTracks}
-            className="group inline-flex items-center justify-center gap-2.5 rounded-full border border-white/15 hover:border-amber-400/50 bg-white/[0.04] hover:bg-white/[0.08] backdrop-blur-xl px-6 sm:px-7 py-3.5 sm:py-4 font-mono text-xs sm:text-sm font-medium text-white/90 hover:text-white transition-all cursor-pointer"
+            className="group inline-flex items-center justify-center gap-2.5 rounded-full border border-white/15 hover:border-amber-400/50 bg-white/[0.04] hover:bg-white/[0.08] backdrop-blur-xl px-6 sm:px-7 py-3 sm:py-3.5 font-mono text-xs sm:text-sm font-medium text-white/90 hover:text-white transition-all cursor-pointer"
           >
             <span>Explore tracks</span>
           </button>
         </div>
 
         {/* Orbit24 Countdown Timer HUD */}
-        <div className="flex flex-col items-center justify-center gap-2.5 pointer-events-auto mx-auto relative z-20">
+        <div className="flex flex-col items-center justify-center gap-2 pointer-events-auto mx-auto relative z-20">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-white/12 bg-[#08080c]/90 backdrop-blur-xl shadow-[0_2px_15px_rgba(0,0,0,0.85)] font-mono text-[10px] sm:text-[11px] uppercase tracking-widest">
             <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399] animate-pulse shrink-0" />
             <span className="font-medium text-white/80">HACKING BEGINS IN</span>
@@ -192,7 +192,7 @@ export default function HeroSection({ onOpenRegister, onOpenTracks }) {
       {/* =========================================================================
           AGENCY HUD FOOTER (Orbit24 Navigation Hint & Telemetry)
           ========================================================================= */}
-      <div className="relative z-20 pointer-events-auto px-4 sm:px-8 py-3.5 sm:py-4 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-white/10 bg-black/70 backdrop-blur-xl">
+      <div className="relative z-20 pointer-events-auto px-4 sm:px-8 py-2.5 sm:py-3 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-white/10 bg-black/70 backdrop-blur-xl">
 
         {/* Left: Hub Telemetry */}
         <div className="flex items-center gap-3 font-mono text-xs text-white/40">

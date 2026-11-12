@@ -8,6 +8,16 @@ import { defineConfig } from 'vite';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+const rewriteEntryRoutes = (req, _res, next) => {
+  const pathname = (req.url || '').split('?')[0];
+  if (pathname === '/register' || pathname === '/register/') {
+    req.url = '/register.html';
+  } else if (pathname === '/login' || pathname === '/login/') {
+    req.url = '/login.html';
+  }
+  next();
+};
+
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
@@ -16,20 +26,27 @@ export default defineConfig({
     {
       name: 'register-page-rewrites',
       configureServer(server) {
-        server.middlewares.use((req, res, next) => {
-          if (req.url === '/register' || req.url === '/register/') {
-            req.url = '/register.html';
-          }
-          next();
-        });
+        server.middlewares.use(rewriteEntryRoutes);
+      },
+      configurePreviewServer(server) {
+        server.middlewares.use(rewriteEntryRoutes);
       },
     },
   ],
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://127.0.0.1:8000',
+        changeOrigin: true,
+      },
+    },
+  },
   build: {
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
         register: resolve(__dirname, 'register.html'),
+        login: resolve(__dirname, 'login.html'),
       },
     },
   },

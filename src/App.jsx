@@ -15,13 +15,27 @@ import TracksModal from './components/TracksModal';
 import Preloader from './components/Preloader';
 import CosmicBackground from './components/CosmicBackground';
 import MissionControlChatbot from './components/MissionControlChatbot';
+import LoginPage from './components/LoginPage';
+import AuthGate from './components/AuthGate';
 import './App.css';
+
+const AUTH_SESSION_KEY = 'innoverce_auth_user';
+
+function readStoredAuthUser() {
+  try {
+    const raw = sessionStorage.getItem(AUTH_SESSION_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
 
 function App() {
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
   const [isTracksOpen, setIsTracksOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isReady, setIsReady] = useState(false);
+  const [authUser, setAuthUser] = useState(readStoredAuthUser);
 
   // Guarantee that on initial load and reload, the page always starts at top: 0
   useEffect(() => {
@@ -29,8 +43,9 @@ function App() {
       window.history.scrollRestoration = 'manual';
     }
 
-    // Direct navigation if user bookmarked or entered /register or #register
-    if (window.location.pathname === '/register' || window.location.hash === '#register') {
+    // Direct navigation if user bookmarked or entered /register
+    const cleanPath = window.location.pathname.replace(/\/+$/, '');
+    if (cleanPath === '/register' || window.location.hash === '#register') {
       window.location.href = '/register.html';
       return;
     }
@@ -55,18 +70,47 @@ function App() {
     window.location.href = '/register.html';
   };
 
+  const normalizedPath = window.location.pathname.replace(/\/+$/, '');
+  const isRulesPage = normalizedPath === '/rules';
+  const isLoginPage = normalizedPath === '/login' || window.location.hash === '#login';
+  const showAuthGate = !isLoading && !authUser && !isRulesPage;
+
   const handlePreloaderStartExit = () => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-    setIsReady(true);
+    if (authUser || isRulesPage) {
+      setIsReady(true);
+    }
   };
 
   const handlePreloaderComplete = () => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     setIsLoading(false);
-    setIsReady(true);
+    if (authUser || isRulesPage) {
+      setIsReady(true);
+    }
   };
 
-  const isRulesPage = window.location.pathname.replace(/\/+$/, '') === '/rules';
+  const handleAuthenticated = (user) => {
+    try {
+      sessionStorage.setItem(AUTH_SESSION_KEY, JSON.stringify(user));
+    } catch {
+      // Ignore storage quota errors
+    }
+    setAuthUser(user);
+    setIsReady(true);
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  };
+
+  if (isLoginPage) {
+    return (
+      <div className="relative min-h-screen w-full bg-[#060608] text-white overflow-x-hidden selection:bg-amber-400 selection:text-black">
+        <CosmicBackground />
+        <div className="relative z-10 w-full min-h-screen">
+          <LoginPage onBackToHome={() => window.location.assign('/')} />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative w-full min-h-screen bg-[#060608] text-white overflow-x-hidden selection:bg-amber-400 selection:text-black">
@@ -81,21 +125,29 @@ function App() {
         />
       )}
 
+      {/* Login / Sign Up Gate immediately after Preloader completes */}
+      {showAuthGate && (
+        <AuthGate onAuthenticated={handleAuthenticated} />
+      )}
+
       {/* Sticky Top Navigation Bar */}
-      <Navbar
-        isReady={isReady}
-        onOpenRegister={handleOpenRegister}
-        onOpenTracks={() => setIsTracksOpen(true)}
-      />
+      {!showAuthGate && (
+        <Navbar
+          isReady={isReady}
+          onOpenRegister={handleOpenRegister}
+          onOpenTracks={() => setIsTracksOpen(true)}
+        />
+      )}
 
       {/* Main Content with smooth cinematic reveal */}
-      <div
-        className={`w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-          isReady
-            ? 'opacity-100 scale-100'
-            : 'opacity-0 scale-[0.99] pointer-events-none'
-        }`}
-      >
+      {!showAuthGate && (
+        <div
+          className={`w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+            isReady
+              ? 'opacity-100 scale-100'
+              : 'opacity-0 scale-[0.99] pointer-events-none'
+          }`}
+        >
         {/* Main Hackathon Mission Sections */}
         {isRulesPage ? (
           <main className="w-full relative z-20">
@@ -145,7 +197,8 @@ function App() {
           />
           </main>
         )}
-      </div>
+        </div>
+      )}
 
       {/* Interactive Registration Modal (Fallback) */}
       {!isRulesPage && (
@@ -168,10 +221,12 @@ function App() {
       )}
 
       {/* Interactive Mission Control AI Chatbot (Theme-aligned Copilot) */}
-      <MissionControlChatbot
-        onOpenRegister={handleOpenRegister}
-        onOpenTracks={() => setIsTracksOpen(true)}
-      />
+      {!showAuthGate && (
+        <MissionControlChatbot
+          onOpenRegister={handleOpenRegister}
+          onOpenTracks={() => setIsTracksOpen(true)}
+        />
+      )}
     </div>
   );
 }

@@ -69,7 +69,7 @@ export default function Navbar({ onOpenRegister, _onOpenTracks, isReady = true }
           </a>
 
           {/* Desktop Navigation Links (Responsive Gaps & Crystal Clear High Contrast) */}
-          <ul className="hidden xl:flex items-center gap-0.5">
+          <ul className="hidden xl:flex items-center gap-1">
             {navigationLinks.map((link) => (
               <li key={link.label}>
                 <a
@@ -80,7 +80,7 @@ export default function Navbar({ onOpenRegister, _onOpenTracks, isReady = true }
                       scrollToSection(link.id);
                     }
                   }}
-                  className="font-mono text-[10px] uppercase tracking-wider text-white/75 hover:text-white px-2 py-1.5 rounded-full hover:bg-white/10 transition-all whitespace-nowrap"
+                  className="font-mono text-[13px] font-medium uppercase tracking-wider text-white/80 hover:text-white px-2.5 py-2 rounded-full hover:bg-white/10 transition-all whitespace-nowrap"
                 >
                   {link.label}
                 </a>
@@ -90,7 +90,7 @@ export default function Navbar({ onOpenRegister, _onOpenTracks, isReady = true }
 
           {/* Right Action Items */}
           <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
-            {/* Live Registration Telemetry Badge (Visible on xl+ to maintain clean breathing room) */}
+            {/* Live Registration Telemetry Badge (Visible on 2xl+ to maintain clean breathing room) */}
             <div className="hidden 2xl:flex items-center gap-2 px-3 py-1 rounded-full border border-amber-500/25 bg-amber-500/10 text-amber-300 font-mono text-[11px] tracking-wide whitespace-nowrap shadow-[0_0_12px_rgba(245,158,11,0.15)]">
               <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse shadow-[0_0_6px_#f59e0b]" />
               <span>REGISTRATIONS OPEN</span>
