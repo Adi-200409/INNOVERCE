@@ -193,6 +193,7 @@
 
 .animate-astronaut-float {
   animation: astronaut-zero-g 7s ease-in-out infinite;
+  will-change: transform;
 }
 
 /* Glassmorphism styling */

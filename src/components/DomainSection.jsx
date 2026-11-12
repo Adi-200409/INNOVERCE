@@ -29,11 +29,14 @@ export default function DomainSection() {
       className="relative w-full bg-[#060608] px-4 py-20 sm:px-6 sm:py-28 lg:px-8"
     >
       <div className="mx-auto max-w-6xl">
-        <h2 className="mb-14 text-center font-display text-3xl font-black tracking-tight sm:mb-16 sm:text-5xl md:text-6xl">
-          <span className="bg-gradient-to-r from-purple-400 via-fuchsia-500 to-pink-500 bg-clip-text text-transparent">
-            Domains
-          </span>
-        </h2>
+        <div className="flex flex-col items-center text-center mb-14 sm:mb-16">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-purple-500/30 bg-purple-500/10 text-purple-300 font-mono text-xs uppercase tracking-widest mb-4">
+            <span>INNOVERSE 3.0 CORE DOMAINS</span>
+          </div>
+          <h2 className="font-display text-3xl font-black tracking-tight sm:text-5xl md:text-6xl uppercase text-white">
+            Hackathon <span className="bg-gradient-to-r from-purple-400 via-fuchsia-500 to-pink-500 bg-clip-text text-transparent">Domains</span>
+          </h2>
+        </div>
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3 sm:gap-8">
           {DOMAINS.map(({ title, description, icon: Icon }) => (

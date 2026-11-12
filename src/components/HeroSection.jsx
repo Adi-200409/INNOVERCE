@@ -4,10 +4,6 @@ import ThreeEarthGlobe from './ThreeEarthGlobe';
 import confetti from 'canvas-confetti';
 
 export default function HeroSection({ onOpenRegister, onOpenTracks }) {
-  const [autoRotate, setAutoRotate] = useState(true);
-  const [showArcs, setShowArcs] = useState(false);
-  const [atmosphereGlow] = useState(true);
-
   // Live countdown to Hackathon launch matching Orbit24
   const [timeLeft, setTimeLeft] = useState({
     days: 46,
@@ -46,37 +42,11 @@ export default function HeroSection({ onOpenRegister, onOpenTracks }) {
           3D EARTH & ENHANCED AAA DEEP SPACE COSMOS LAYER
           ========================================================================= */}
       <div className="absolute inset-0 z-0 w-full h-full">
-        <ThreeEarthGlobe
-          autoRotate={autoRotate}
-          atmosphereGlow={atmosphereGlow}
-          showArcs={showArcs}
-        />
+        <ThreeEarthGlobe />
       </div>
 
       {/* Cinematic Vignette Radial Gradient */}
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_55%,rgba(6,6,8,0.20)_80%,rgba(6,6,8,0.85)_100%)] z-[2]" />
-
-      {/* =========================================================================
-          ORBIT24 HUD AMBIENT OVERLAYS (Bottom Right)
-          ========================================================================= */}
-      {/* Bottom Right: Wireframe & Rotation Controls */}
-      <div className="hidden sm:flex absolute bottom-20 sm:bottom-24 right-6 sm:right-10 z-20 items-center pointer-events-auto select-none">
-        <div className="flex items-center gap-3 px-4 py-1.5 rounded-full border border-white/10 bg-black/60 backdrop-blur-md font-mono text-[11px] text-white/50 tracking-wider shadow-lg">
-          <button
-            onClick={() => setAutoRotate(!autoRotate)}
-            className="hover:text-amber-400 transition-colors cursor-pointer"
-          >
-            {autoRotate ? '— RESET' : '+ RESUME'}
-          </button>
-          <span className="text-white/20">•</span>
-          <button
-            onClick={() => setShowArcs(!showArcs)}
-            className="hover:text-amber-400 transition-colors cursor-pointer"
-          >
-            {showArcs ? 'WIRE OFF' : 'WIRE ON'}
-          </button>
-        </div>
-      </div>
 
       {/* =========================================================================
           HERO CONTENT LAYER WITH INTEGRATED ASTRONAUT HEADING DESIGN

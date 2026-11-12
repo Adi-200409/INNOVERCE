@@ -16,6 +16,7 @@ import RegisterModal from './components/RegisterModal';
 import TracksModal from './components/TracksModal';
 import Preloader from './components/Preloader';
 import CosmicBackground from './components/CosmicBackground';
+import MissionControlChatbot from './components/MissionControlChatbot';
 import './App.css';
 
 function App() {
@@ -173,6 +174,12 @@ function App() {
           }}
         />
       )}
+
+      {/* Interactive Mission Control AI Chatbot (Theme-aligned Copilot) */}
+      <MissionControlChatbot
+        onOpenRegister={handleOpenRegister}
+        onOpenTracks={() => setIsTracksOpen(true)}
+      />
     </div>
   );
 }

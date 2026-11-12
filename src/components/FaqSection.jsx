@@ -4,11 +4,11 @@ import { HelpCircle, ChevronDown, MessageSquare } from 'lucide-react';
 const FAQS = [
   {
     q: 'Who can participate? 🌐',
-    a: "Anyone passionate about technology, innovation, and problem-solving can participate! Whether you're a student, professional developer, designer, or enthusiast, Innoverse welcomes all skill levels."
+    a: "Anyone passionate about technology, innovation, and problem-solving can participate! Whether you're a student, professional developer, designer, or enthusiast, INNOVERSE 3.0 welcomes all skill levels."
   },
   {
     q: 'What if this is my first hackathon?',
-    a: "No worries! innoverse is beginner-friendly. We provide mentorship, workshops, and resources to help first-timers learn and build amazing projects. It's the perfect opportunity to start your hackathon journey!"
+    a: "No worries! INNOVERSE 3.0 is beginner-friendly. We provide mentorship, workshops, and resources to help first-timers learn and build amazing projects. It's the perfect opportunity to start your hackathon journey!"
   },
   {
     q: 'Do I need to pay a registration fee?',
@@ -16,7 +16,7 @@ const FAQS = [
   },
   {
     q:'Who can participate offline?',
-    a:'Offline participation is available for Innoverse and nearby college students.'
+    a:'Offline participation is available for INNOVERSE 3.0 and nearby college students.'
   },
   {
     q: 'How do the competition rounds and selection work?',
@@ -48,7 +48,7 @@ const FAQS = [
   },
   {
     q:'Are cross-college teams allowed?',
-    a:'No! Innoverse does not allow cross-college teams — build a diverse team and bring your ideas to life!'
+    a:'No! INNOVERSE 3.0 does not allow cross-college teams — build a diverse team and bring your ideas to life!'
   }
 ];
 
@@ -66,7 +66,7 @@ export default function FaqSection() {
         <div className="flex flex-col items-start md:items-center md:text-center mb-16">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-amber-400/30 bg-amber-400/10 text-amber-300 font-mono text-xs uppercase tracking-widest mb-4">
             <HelpCircle className="w-3.5 h-3.5" />
-            <span>TRANSMISSION ARCHIVES</span>
+            <span>INNOVERSE 3.0 • TRANSMISSION ARCHIVES</span>
           </div>
 
           <h2 className="font-display font-black text-3xl sm:text-5xl text-white tracking-tight uppercase">

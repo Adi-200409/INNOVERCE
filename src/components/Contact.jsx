@@ -15,6 +15,9 @@ export default function Contact() {
 
       <div className="relative z-10 mx-auto max-w-4xl">
         <header className="mb-14 text-center">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-amber-400/30 bg-amber-400/10 text-amber-300 font-mono text-xs uppercase tracking-widest mb-4">
+            <span>INNOVERSE 3.0 HELPDESK</span>
+          </div>
           <h1 className="font-display text-3xl font-black tracking-tight uppercase sm:text-5xl md:text-6xl">
             Get in{' '}
             <span className="text-amber-400">
@@ -22,7 +25,7 @@ export default function Contact() {
             </span>
           </h1>
           <p className="mx-auto mt-4 max-w-2xl font-sans text-sm leading-relaxed text-gray-400 sm:text-base">
-            Have questions? We’re here to help! Reach out to our team for any inquiries.
+            Have questions about INNOVERSE 3.0? We’re here to help! Reach out to our team for any inquiries.
           </p>
         </header>
 

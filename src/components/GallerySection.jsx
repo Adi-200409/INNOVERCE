@@ -81,16 +81,19 @@ const GallerySection = () => {
 
   return (
    <section id="journey" className="w-full mx-auto px-2 relative overflow-hidden bg-[#060608] py-20 sm:py-28">
-      <div className="container mx-auto overflow-hidden">
+      <div className="container mx-auto overflow-hidden text-center">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-amber-400/30 bg-amber-400/10 text-amber-300 font-mono text-xs uppercase tracking-widest mb-4">
+          <span>INNOVERSE LEGACY ARCHIVES</span>
+        </div>
         <h2 className="mb-2 text-center font-display text-3xl font-black uppercase tracking-tight text-white sm:text-5xl md:text-6xl">
           The Journey <span className="text-amber-400">So Far</span>
         </h2>
         <p className="mb-12 text-center font-sans text-sm leading-relaxed text-gray-400 sm:text-base">
           Highlights{" "}
           <span className="text-amber-400">
-            from the Last
+            from Past Editions
           </span>{" "}
-          Hackathon
+          leading up to INNOVERSE 3.0
         </p>
 
         <div className="slider overflow-hidden relative w-full lg:w-4/5 mx-auto rounded-xl py-3 sm:py-10">

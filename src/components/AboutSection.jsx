@@ -53,13 +53,16 @@ export default function AboutSection({ bgImage = '/about-bg.jpg' }) {
 
       <div className="relative z-10 max-w-6xl mx-auto space-y-20 sm:space-y-28">
         {/* =========================================================================
-            WHAT IS INNOVERSE 2.0?  (HEADING + STATS + DESCRIPTION + RULES)
+            WHAT IS INNOVERSE 3.0?  (HEADING + STATS + DESCRIPTION + RULES)
             ========================================================================= */}
         <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-amber-400/30 bg-amber-400/10 text-amber-300 font-mono text-xs uppercase tracking-widest mb-4">
+            <span>ABOUT INNOVERSE 3.0</span>
+          </div>
           <h2 className="font-display font-black text-3xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tight text-white leading-[1.08] mb-12">
             What is{' '}
             <span className="bg-gradient-to-r from-amber-200 via-amber-400 to-yellow-500 bg-clip-text text-transparent">
-              INNOVERSE 2.0?
+              INNOVERSE 3.0?
             </span>
           </h2>
 
@@ -104,7 +107,7 @@ export default function AboutSection({ bgImage = '/about-bg.jpg' }) {
             <div className="relative z-10 mx-auto max-w-4xl px-6 sm:px-10 py-14 sm:py-16 text-center text-sm sm:text-base text-gray-300 font-sans leading-relaxed space-y-6">
               <p>
                 <span className="bg-gradient-to-r from-amber-200 via-amber-400 to-yellow-500 bg-clip-text text-transparent">
-                  INNOVERSE 2.0
+                  INNOVERSE 3.0
                 </span>{' '}
                 is a National-level hackathon designed to ignite innovation and challenge brilliant minds in the domains of{' '}
                 <span className="text-amber-300">Artificial Intelligence</span>,{' '}
@@ -127,7 +130,7 @@ export default function AboutSection({ bgImage = '/about-bg.jpg' }) {
                 <span className="text-cyan-300">
                   With separate competitive tracks for MCA and BCA students,
                 </span>{' '}
-                <span className="text-amber-400">INNOVERSE 2.0</span> aims to inspire new ideas, build futuristic prototypes, and celebrate the spirit of technology and teamwork.
+                <span className="text-amber-400">INNOVERSE 3.0</span> aims to inspire new ideas, build futuristic prototypes, and celebrate the spirit of technology and teamwork.
               </p>
               <p>See you at the hackathon! 🚀💻</p>
             </div>

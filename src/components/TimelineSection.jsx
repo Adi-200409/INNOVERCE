@@ -173,7 +173,7 @@ export default function TimelineSection() {
         <div className="flex flex-col items-start md:items-center md:text-center mb-12">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-300 font-mono text-xs uppercase tracking-widest mb-4">
             <Clock className="w-3.5 h-3.5" />
-            <span>TWO-PHASE MISSION TIMELINE</span>
+            <span>INNOVERSE 3.0 • TWO-PHASE MISSION TIMELINE</span>
           </div>
 
           <h2 className="font-display font-black text-3xl sm:text-5xl text-white tracking-tight uppercase">

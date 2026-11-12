@@ -149,8 +149,11 @@ export default function Rules() {
         </a>
 
         <header className="mb-12 text-center sm:mb-16">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-amber-400/30 bg-amber-400/10 text-amber-300 font-mono text-xs uppercase tracking-widest mb-4">
+            <span>INNOVERSE 3.0 PROTOCOLS</span>
+          </div>
           <h1 className="font-display text-3xl font-black tracking-tight uppercase text-white sm:text-5xl md:text-6xl">
-            Hackathon{' '}
+            INNOVERSE 3.0{' '}
             <span className="text-amber-400">
               Rules &amp; Guidelines
             </span>

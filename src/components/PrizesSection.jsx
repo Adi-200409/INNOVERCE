@@ -93,7 +93,7 @@ export default function PrizesSection({ onOpenRegister }) {
         <div className="flex flex-col items-start md:items-center md:text-center mb-12 sm:mb-16">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-amber-400/30 bg-amber-400/10 text-amber-300 font-sans text-xs uppercase tracking-widest mb-4">
             <Trophy className="w-3.5 h-3.5" />
-            <span>₹35,000 TOTAL PRIZE POOL • DUAL LEAGUES (MCA & BCA)</span>
+            <span>INNOVERSE 3.0 • ₹35,000 TOTAL PRIZE POOL • DUAL LEAGUES (MCA & BCA)</span>
           </div>
 
           <h2 className="font-display font-black text-3xl sm:text-5xl md:text-6xl text-white tracking-tight uppercase">

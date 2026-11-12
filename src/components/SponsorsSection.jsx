@@ -20,7 +20,7 @@ export default function SponsorsSection() {
         <div className="flex flex-col items-start md:items-center md:text-center mb-14">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-purple-500/30 bg-purple-500/10 text-purple-300 font-mono text-xs uppercase tracking-widest mb-4">
             <ShieldCheck className="w-3.5 h-3.5" />
-            <span>ECOSYSTEM ALLIANCE</span>
+            <span>INNOVERSE 3.0 • ECOSYSTEM ALLIANCE</span>
           </div>
 
           <h2 className="font-display font-black text-3xl sm:text-5xl text-white tracking-tight uppercase">

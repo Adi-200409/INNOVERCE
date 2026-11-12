@@ -79,6 +79,26 @@ function createNexus1SpaceShuttle(onLoaded) {
   const modelWrapper = new THREE.Group();
   ship.add(modelWrapper);
 
+  // Instant procedural delta hull while the detailed OBJ loads asynchronously
+  const tempHull = new THREE.Group();
+  {
+    const bodyGeo = new THREE.ConeGeometry(0.18, 0.95, 16);
+    bodyGeo.rotateX(Math.PI / 2);
+    const body = new THREE.Mesh(bodyGeo, shuttleMaterial);
+    tempHull.add(body);
+
+    const wingGeo = new THREE.BoxGeometry(0.72, 0.025, 0.45);
+    wingGeo.translate(0, -0.04, -0.15);
+    const wings = new THREE.Mesh(wingGeo, shuttleMaterial);
+    tempHull.add(wings);
+
+    const finGeo = new THREE.BoxGeometry(0.02, 0.22, 0.22);
+    finGeo.translate(0, 0.12, -0.32);
+    const fin = new THREE.Mesh(finGeo, shuttleMaterial);
+    tempHull.add(fin);
+  }
+  modelWrapper.add(tempHull);
+
   const attachModel = (obj) => {
     if (!obj) return;
     const clone = obj.clone(true);
@@ -87,6 +107,12 @@ function createNexus1SpaceShuttle(onLoaded) {
         child.material = shuttleMaterial;
       }
     });
+    if (tempHull.parent) {
+      modelWrapper.remove(tempHull);
+      tempHull.traverse((c) => {
+        if (c.geometry) c.geometry.dispose();
+      });
+    }
     modelWrapper.add(clone);
     if (onLoaded) onLoaded(clone);
   };
@@ -178,12 +204,12 @@ function createNexus1SpaceShuttle(onLoaded) {
   const rightEngine = createFireThruster(0.115, -0.045, -0.68);
   const topEngine = createFireThruster(0.0, 0.088, -0.68);
 
-  const thrusterLight = new THREE.PointLight(0xff6600, 3.2, 5.5);
+  const thrusterLight = new THREE.PointLight(0xff6600, 3.6, 7.5);
   thrusterLight.position.set(0, 0, -0.92);
   ship.add(thrusterLight);
 
-  ship.scale.set(0.19, 0.19, 0.19);
-  ship.rotation.y = Math.PI;
+  // Prominent, enlarged 3D Space Shuttle (increased size for heroic cinematic presence)
+  ship.scale.set(0.38, 0.38, 0.38);
 
   return {
     group: ship,
@@ -195,7 +221,7 @@ function createNexus1SpaceShuttle(onLoaded) {
   };
 }
 
-export default function ThreeEarthGlobe({
+function ThreeEarthGlobe({
   autoRotate = true,
   atmosphereGlow: _atmosphereGlow = true,
   showArcs = false
@@ -254,114 +280,11 @@ export default function ThreeEarthGlobe({
       powerPreference: 'high-performance'
     });
     renderer.setSize(width, height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2.0));
+    // Capped at 1.5 to maintain retina crispness while avoiding 4K GPU fragment fill lag
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.25;
     container.appendChild(renderer.domElement);
-
-    // =========================================================================
-    // 1.1 ENHANCED 4K PROCEDURAL COSMIC NEBULA & DEEP SPACE BACKGROUND
-    // Rendered mathematically in fragment shader: 0% pixelation, continuous drift, twinkling micro-stars
-    // =========================================================================
-    const cosmosGeo = new THREE.PlaneGeometry(75, 48);
-    const cosmosMat = new THREE.ShaderMaterial({
-      uniforms: {
-        uTime: { value: 0 },
-        uResolution: { value: new THREE.Vector2(width, height) }
-      },
-      vertexShader: `
-        varying vec2 vUv;
-        void main() {
-          vUv = uv;
-          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-        }
-      `,
-      fragmentShader: `
-        uniform float uTime;
-        varying vec2 vUv;
-
-        // High precision hash
-        float hash21(vec2 p) {
-          vec3 p3 = fract(vec3(p.xyx) * 0.1031);
-          p3 += dot(p3, p3.yzx + 33.33);
-          return fract((p3.x + p3.y) * p3.z);
-        }
-
-        // Smooth 2D noise
-        float vnoise(vec2 p) {
-          vec2 i = floor(p);
-          vec2 f = fract(p);
-          vec2 u = f * f * (3.0 - 2.0 * f);
-          return mix(
-            mix(hash21(i + vec2(0.0, 0.0)), hash21(i + vec2(1.0, 0.0)), u.x),
-            mix(hash21(i + vec2(0.0, 1.0)), hash21(i + vec2(1.0, 1.0)), u.x),
-            u.y
-          );
-        }
-
-        // Fractal Brownian Motion for swirling cosmic gas
-        float fbm(vec2 p) {
-          float v = 0.0;
-          float a = 0.5;
-          mat2 rot = mat2(cos(0.48), sin(0.48), -sin(0.48), cos(0.48));
-          for (int i = 0; i < 5; ++i) {
-            v += a * vnoise(p);
-            p = rot * p * 2.04 + vec2(3.14, 1.82);
-            a *= 0.52;
-          }
-          return v;
-        }
-
-        void main() {
-          vec2 uv = vUv;
-          
-          // Coordinate space centered - stable, no mouse moving effect
-          vec2 p = (uv - 0.5) * vec2(2.5, 1.45);
-          float t = uTime * 0.025;
-
-          // Layer 1: Sweeping interstellar dust band
-          vec2 bandCoord = p * 1.6 + vec2(t * 0.35, -t * 0.20);
-          float n1 = fbm(bandCoord);
-          
-          // Layer 2: Radiant stellar gas filaments
-          float n2 = fbm(bandCoord * 2.2 + vec2(n1 * 1.4, t * 0.25));
-
-          // Clean, Deep Obsidian Space Void (Whisper-quiet cosmic depth, no thick blue fog)
-          vec3 deepSpaceVoid = vec3(0.002, 0.003, 0.006);
-          vec3 subtleNavy = vec3(0.008, 0.016, 0.045);
-          vec3 faintCyan = vec3(0.010, 0.026, 0.065);
-
-          // Deep space is overwhelmingly pure dark space; blue fog reduced by >80%
-          vec3 color = deepSpaceVoid;
-          color = mix(color, subtleNavy, smoothstep(0.50, 0.90, n1) * 0.16);
-          color = mix(color, faintCyan, smoothstep(0.60, 0.94, n2) * 0.10);
-
-          // Thousands of micro-stars twinkling in the deep distance
-          vec2 starGrid = uv * 360.0 + vec2(t * 1.5, t * 0.8);
-          vec2 starCell = floor(starGrid);
-          float starSeed = hash21(starCell);
-          if (starSeed > 0.980) {
-            vec2 starPos = fract(starGrid) - 0.5;
-            float dist = length(starPos);
-            float twinkle = 0.45 + 0.55 * sin(uTime * (3.5 + starSeed * 9.0) + starSeed * 6.28);
-            float starGlow = smoothstep(0.16, 0.0, dist) * twinkle;
-            vec3 starTint = mix(vec3(0.75, 0.90, 1.0), vec3(1.0, 0.95, 0.80), fract(starSeed * 19.0));
-            color += starTint * starGlow * 1.45;
-          }
-
-          // Optical vignette for dramatic cinematic focus
-          float vignette = 1.0 - smoothstep(0.40, 1.25, length((uv - 0.5) * vec2(1.25, 1.0)));
-          color *= (0.60 + 0.40 * vignette);
-
-          gl_FragColor = vec4(color, 1.0);
-        }
-      `,
-      depthWrite: false
-    });
-    const cosmosMesh = new THREE.Mesh(cosmosGeo, cosmosMat);
-    cosmosMesh.position.set(0, 0, -26);
-    cosmosMesh.renderOrder = -10;
-    scene.add(cosmosMesh);
 
     // =========================================================================
     // 1.2 HYPER-VELOCITY 3D METEORS / SHOOTING STARS
@@ -419,14 +342,13 @@ export default function ThreeEarthGlobe({
 
     const globeRadius = 1.95;
 
-    // 1.5 3D Moving Celestial Starfield (Drifting & twinkling in deep space)
+    // 1.5 3D Moving Celestial Starfield (Efficient GPU celestial rotation)
     const starsGroup = new THREE.Group();
     scene.add(starsGroup);
 
-    const STARS_COUNT = 1500;
+    const STARS_COUNT = 600;
     const starPositions = new Float32Array(STARS_COUNT * 3);
     const starColors = new Float32Array(STARS_COUNT * 3);
-    const starData = [];
 
     const STAR_COLOR_PALETTE = [
       new THREE.Color(1.0, 1.0, 1.0),        // Pure Diamond White
@@ -459,19 +381,6 @@ export default function ThreeEarthGlobe({
       starColors[i * 3] = chosenColor.r * baseBright;
       starColors[i * 3 + 1] = chosenColor.g * baseBright;
       starColors[i * 3 + 2] = chosenColor.b * baseBright;
-
-      const driftSpeed = 0.012 + Math.random() * 0.022;
-      const driftAngle = Math.PI * 0.78 + (Math.random() - 0.5) * 0.5;
-
-      starData.push({
-        baseColor: chosenColor,
-        baseBright,
-        vx: Math.cos(driftAngle) * driftSpeed,
-        vy: Math.sin(driftAngle) * driftSpeed,
-        vz: (Math.random() - 0.5) * 0.0015,
-        twinkleSpeed: 0.002 + Math.random() * 0.004,
-        twinklePhase: Math.random() * Math.PI * 2
-      });
     }
 
     const starsGeo = new THREE.BufferGeometry();
@@ -480,11 +389,11 @@ export default function ThreeEarthGlobe({
 
     const starSpriteTexture = createStarTexture();
     const starsMat = new THREE.PointsMaterial({
-      size: 0.11,
+      size: 0.12,
       map: starSpriteTexture,
       vertexColors: true,
       transparent: true,
-      opacity: 0.75,
+      opacity: 0.80,
       blending: THREE.AdditiveBlending,
       depthWrite: false
     });
@@ -517,7 +426,7 @@ export default function ThreeEarthGlobe({
     // Solar Sunrise Vector on the UPPER-LEFT HORIZON
     const sunDirection = new THREE.Vector3(-0.92, 0.44, 0.18).normalize();
 
-    const earthGeo = new THREE.SphereGeometry(globeRadius, 96, 96);
+    const earthGeo = new THREE.SphereGeometry(globeRadius, 64, 64);
     const earthMat = new THREE.ShaderMaterial({
       uniforms: {
         map: { value: dayTexture },
@@ -553,14 +462,13 @@ export default function ThreeEarthGlobe({
           vec3 nightColor = texture2D(nightMap, vUv).rgb;
           vec4 cloudData = texture2D(cloudMap, vUv);
 
-          // Bump-mapped normal perturbation for realistic mountain relief
+          // Fast 3-tap bump-mapped normal perturbation for crisp terrain relief
           vec2 texel = vec2(1.0 / 2048.0, 1.0 / 1024.0);
-          float hL = texture2D(bumpMap, vUv - vec2(texel.x, 0.0)).r;
+          float hC = texture2D(bumpMap, vUv).r;
           float hR = texture2D(bumpMap, vUv + vec2(texel.x, 0.0)).r;
-          float hD = texture2D(bumpMap, vUv - vec2(0.0, texel.y)).r;
           float hU = texture2D(bumpMap, vUv + vec2(0.0, texel.y)).r;
-          vec3 bumpNorm = normalize(vNormal + vec3((hL - hR) * 0.045, (hD - hU) * 0.045, 0.0));
-          vec3 norm = normalize(mix(vNormal, bumpNorm, 0.60));
+          vec3 bumpNorm = normalize(vNormal + vec3((hC - hR) * 0.06, (hC - hU) * 0.06, 0.0));
+          vec3 norm = normalize(mix(vNormal, bumpNorm, 0.55));
 
           vec3 sunDir = normalize(sunDirection);
           vec3 viewDir = normalize(cameraPosition - vWorldPosition);
@@ -742,7 +650,10 @@ export default function ThreeEarthGlobe({
       exhaustData.push({
         life: Math.random(),
         speed: 0.015 + Math.random() * 0.025,
-        decay: 0.022 + Math.random() * 0.025
+        decay: 0.022 + Math.random() * 0.025,
+        vx: 0,
+        vy: 0,
+        vz: 0
       });
     }
 
@@ -751,7 +662,7 @@ export default function ThreeEarthGlobe({
     exhaustGeo.setAttribute('color', new THREE.BufferAttribute(exhaustColors, 3));
 
     const exhaustMat = new THREE.PointsMaterial({
-      size: 0.032,
+      size: 0.052,
       vertexColors: true,
       transparent: true,
       opacity: 0.90,
@@ -818,9 +729,20 @@ export default function ThreeEarthGlobe({
     window.addEventListener('pointermove', onPointerMove);
     window.addEventListener('pointerup', onPointerUp);
 
-    // 6. Animation Loop
+    // 6. Animation Loop & Scratch Vectors (Zero Garbage-Collection pauses)
     let animationFrameId;
-    const tempV3 = new THREE.Vector3();
+    const _tempV3 = new THREE.Vector3();
+    const _heroTangent = new THREE.Vector3();
+    const _scrollTangent = new THREE.Vector3();
+    const _blendedTangent = new THREE.Vector3();
+    const _lookTarget = new THREE.Vector3();
+    const _leftNozzleWorld = new THREE.Vector3();
+    const _rightNozzleWorld = new THREE.Vector3();
+    const _topNozzleWorld = new THREE.Vector3();
+    const _toCamera = new THREE.Vector3();
+    const _normalWorld = new THREE.Vector3();
+    const _dummyObj = new THREE.Object3D();
+    const _targetQuat = new THREE.Quaternion();
 
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
@@ -850,36 +772,10 @@ export default function ThreeEarthGlobe({
         p.mesh.position.copy(p.curve.getPoint(p.progress));
       });
 
-      // Animate 3D Stars & Twinkle
-      const starPosArr = starsGeo.attributes.position.array;
-      const starColArr = starsGeo.attributes.color.array;
-
-      for (let i = 0; i < STARS_COUNT; i++) {
-        const sd = starData[i];
-
-        starPosArr[i * 3] += sd.vx;
-        starPosArr[i * 3 + 1] += sd.vy;
-        starPosArr[i * 3 + 2] += sd.vz;
-
-        if (starPosArr[i * 3] < -29) starPosArr[i * 3] = 29;
-        if (starPosArr[i * 3] > 29) starPosArr[i * 3] = -29;
-        if (starPosArr[i * 3 + 1] < -22) starPosArr[i * 3 + 1] = 22;
-        if (starPosArr[i * 3 + 1] > 22) starPosArr[i * 3 + 1] = -22;
-
-        const tw = 0.65 + 0.35 * Math.sin(animTime * 1000 * sd.twinkleSpeed + sd.twinklePhase);
-        starColArr[i * 3] = sd.baseColor.r * sd.baseBright * tw;
-        starColArr[i * 3 + 1] = sd.baseColor.g * sd.baseBright * tw;
-        starColArr[i * 3 + 2] = sd.baseColor.b * sd.baseBright * tw;
-      }
-      starsGeo.attributes.position.needsUpdate = true;
-      starsGeo.attributes.color.needsUpdate = true;
-
-      starsGroup.rotation.z += 0.0001;
-      starsGroup.position.x = 0;
+      // Smooth GPU celestial starfield drift (zero CPU vertex buffer uploads)
+      starsGroup.rotation.z += 0.00012;
+      starsGroup.rotation.y += 0.00010;
       starsGroup.position.y = -currentScrollProgress * 1.5;
-
-      // Animate Procedural Cosmos Nebula & Micro-Stars (Time-driven only, no mouse moving effect)
-      cosmosMat.uniforms.uTime.value = animTime;
 
       // Animate 3D Hyper-Velocity Shooting Meteors
       if (animTime * 1000 - lastMeteorTime > nextMeteorDelay && meteors.length < MAX_METEORS) {
@@ -921,20 +817,20 @@ export default function ThreeEarthGlobe({
         }
       }
 
-      // Dynamic Spaceship Flight: Hero Section Orbit & Scroll Descent
+      // Dynamic Spaceship Flight: Continuous Orbital Motion & Smooth Scroll Descent
       const time = performance.now() * 0.001;
       const prevScroll = currentScrollProgress;
       currentScrollProgress += (targetScrollProgress - currentScrollProgress) * 0.08;
       const scrollVelocity = Math.abs(currentScrollProgress - prevScroll);
 
-      // Grand 3D Planetary Orbit (Sweeps outside the frame & passes behind Earth)
+      // Grand 3D Planetary Orbit
       const isMobile = window.innerWidth < 768;
-      const aX = isMobile ? 2.35 : 4.25;
+      const aX = isMobile ? 2.55 : 4.40;
       const aY_front = isMobile ? -1.05 : -0.95;
       const aY_back = isMobile ? 1.15 : 1.25;
-      const aZ = 2.30;
+      const aZ = 2.45; // Generous depth clearance for enlarged shuttle
 
-      const orbitSpeed = 0.25;
+      const orbitSpeed = 0.22;
       const theta = time * orbitSpeed;
 
       const cosT = Math.cos(theta);
@@ -950,83 +846,83 @@ export default function ThreeEarthGlobe({
       const heroVx = aX * cosT;
       const heroVy = 0.5 * (aY_back - aY_front) * sinT;
       const heroVz = -aZ * sinT;
-      const heroTangent = new THREE.Vector3(heroVx, heroVy, heroVz).normalize();
+      _heroTangent.set(heroVx, heroVy, heroVz).normalize();
 
-      const heroBank = -0.45 * cosT;
-
-      // Scroll Flight Descent Trajectory (Diving across Earth into About section)
+      // Smooth scroll interpolation via hermite smoothstep
       const s = currentScrollProgress;
-      const scrollP1 = new THREE.Vector3(0.20, -0.15, 3.25);
-      const scrollP2 = new THREE.Vector3(-1.65, -1.35, 3.55);
+      const scrollFactor = Math.min(1.0, s * 1.3);
+      const tSmooth = scrollFactor * scrollFactor * (3.0 - 2.0 * scrollFactor);
 
-      const heroWeight = Math.max(0, 1.0 - s * 3.6);
-      const scrollWeight = 1.0 - heroWeight;
+      // Scroll descent destination (gracefully diving towards the About section)
+      const scrollDestX = -1.65;
+      const scrollDestY = -1.35;
+      const scrollDestZ = 3.65;
 
-      const scrollCurveT = Math.min(1.0, s * 1.4);
-      const invT = 1.0 - scrollCurveT;
-
-      const scrollX = invT * invT * heroPatrolX + 2 * invT * scrollCurveT * scrollP1.x + scrollCurveT * scrollCurveT * scrollP2.x;
-      const scrollY = invT * invT * heroPatrolY + 2 * invT * scrollCurveT * scrollP1.y + scrollCurveT * scrollCurveT * scrollP2.y;
-      const scrollZ = invT * invT * heroPatrolZ + 2 * invT * scrollCurveT * scrollP1.z + scrollCurveT * scrollCurveT * scrollP2.z;
-
-      const scrollTangent = new THREE.Vector3(
-        2 * invT * (scrollP1.x - heroPatrolX) + 2 * scrollCurveT * (scrollP2.x - scrollP1.x),
-        2 * invT * (scrollP1.y - heroPatrolY) + 2 * scrollCurveT * (scrollP2.y - scrollP1.y),
-        2 * invT * (scrollP1.z - heroPatrolZ) + 2 * scrollCurveT * (scrollP2.z - scrollP1.z)
-      ).normalize();
-
-      const posX = heroPatrolX * heroWeight + scrollX * scrollWeight;
-      const posY = heroPatrolY * heroWeight + scrollY * scrollWeight;
-      const posZ = heroPatrolZ * heroWeight + scrollZ * scrollWeight;
+      const posX = THREE.MathUtils.lerp(heroPatrolX, scrollDestX, tSmooth);
+      const posY = THREE.MathUtils.lerp(heroPatrolY, scrollDestY, tSmooth);
+      const posZ = THREE.MathUtils.lerp(heroPatrolZ, scrollDestZ, tSmooth);
 
       spaceshipData.group.position.set(posX, posY, posZ);
 
-      const blendedTangent = new THREE.Vector3()
-        .addScaledVector(heroTangent, heroWeight)
-        .addScaledVector(scrollTangent, scrollWeight)
-        .normalize();
+      // Smoothly blend tangent towards downward descent
+      const diveTangentX = scrollDestX - heroPatrolX;
+      const diveTangentY = scrollDestY - heroPatrolY - 0.45;
+      const diveTangentZ = scrollDestZ - heroPatrolZ;
+      _scrollTangent.set(diveTangentX, diveTangentY, diveTangentZ).normalize();
 
-      const lookTarget = spaceshipData.group.position.clone().add(blendedTangent);
-      spaceshipData.group.lookAt(lookTarget);
+      _blendedTangent.copy(_heroTangent).lerp(_scrollTangent, tSmooth).normalize();
 
-      const scrollBank = -0.55 * Math.sin(Math.min(1, s) * Math.PI);
-      const finalBank = heroBank * heroWeight + scrollBank * scrollWeight + Math.sin(time * 1.5) * 0.03;
-      spaceshipData.group.rotateZ(finalBank);
+      // Target orientation: Look along blended tangent
+      _lookTarget.copy(spaceshipData.group.position).add(_blendedTangent);
+      _dummyObj.position.copy(spaceshipData.group.position);
+      _dummyObj.lookAt(_lookTarget);
 
-      // Dynamic Fire Combustion Thrusters & Flicker
-      const throttle = 1.0 + Math.min(3.2, scrollVelocity * 60.0);
-      spaceshipData.thrusterLight.intensity = 2.4 + throttle * 1.6;
+      // Aerodynamic orbital banking:
+      // In orbit, bank tilts inward towards Earth's center
+      // Front crossing is nearly level (-0.08 rad); apex turns deepen naturally (-0.30 rad)
+      const turnIntensity = Math.abs(cosT);
+      const baseOrbitBank = -0.12 - 0.18 * (1.0 - turnIntensity);
+      const scrollDiveBank = -0.50 * Math.sin(tSmooth * Math.PI);
+      const finalBank = THREE.MathUtils.lerp(baseOrbitBank, scrollDiveBank, tSmooth);
+
+      _dummyObj.rotateZ(finalBank);
+      _targetQuat.copy(_dummyObj.quaternion);
+
+      // Silk-smooth quaternion slerp (eliminates any angular snapping or twitching)
+      spaceshipData.group.quaternion.slerp(_targetQuat, 0.14);
+
+      // Smooth Supersonic Thruster Combustion Plumes
+      const throttle = 1.0 + Math.min(2.5, scrollVelocity * 50.0);
+      spaceshipData.thrusterLight.intensity = 2.8 + throttle * 1.6;
 
       spaceshipData.engines.forEach((eng, idx) => {
         const offset = idx * 1.3;
-        const flk1 = Math.sin(time * 35.0 + offset) * 0.08;
-        const flk2 = Math.cos(time * 48.0 + offset) * 0.07;
+        // Controlled, subtle supersonic ripple (no violent 50% scale strobing)
+        const flk1 = Math.sin(time * 16.0 + offset) * 0.04;
+        const flk2 = Math.cos(time * 20.0 + offset) * 0.04;
 
-        const coreScaleZ = (1.0 + flk1) * (0.95 + throttle * 0.45);
-        const coreScaleXY = 1.0 + flk2 * 0.3;
+        const coreScaleZ = (1.0 + flk1) * (1.0 + throttle * 0.35);
+        const coreScaleXY = 1.0 + flk2 * 0.06;
         eng.core.scale.set(coreScaleXY, coreScaleXY, coreScaleZ);
 
-        const midScaleZ = (1.0 + flk2) * (1.0 + throttle * 0.65);
-        const midScaleXY = 1.0 + flk1 * 0.4;
+        const midScaleZ = (1.0 + flk2) * (1.0 + throttle * 0.45);
+        const midScaleXY = 1.0 + flk1 * 0.08;
         eng.mid.scale.set(midScaleXY, midScaleXY, midScaleZ);
 
-        const outerScaleZ = (1.0 + flk1 * 0.8) * (1.05 + throttle * 0.85);
-        const outerScaleXY = 1.0 + flk2 * 0.5;
+        const outerScaleZ = (1.0 + flk1 * 0.8) * (1.05 + throttle * 0.55);
+        const outerScaleXY = 1.0 + flk2 * 0.10;
         eng.outer.scale.set(outerScaleXY, outerScaleXY, outerScaleZ);
 
-        const discScale = 1.0 + Math.sin(time * 25.0 + offset) * 0.12 + throttle * 0.2;
+        const discScale = 1.0 + Math.sin(time * 12.0 + offset) * 0.06 + throttle * 0.15;
         eng.disc.scale.set(discScale, discScale, 1.0);
       });
 
-      // Update trailing fiery sparks and embers from nozzle anchors
+      // Realistic Particle Exhaust Trail (particles travel on their own inertia)
       const posAttr = exhaustGeo.attributes.position;
       const colAttr = exhaustGeo.attributes.color;
-      const leftNozzleWorld = new THREE.Vector3();
-      spaceshipData.leftNozzleAnchor.getWorldPosition(leftNozzleWorld);
-      const rightNozzleWorld = new THREE.Vector3();
-      spaceshipData.rightNozzleAnchor.getWorldPosition(rightNozzleWorld);
-      const topNozzleWorld = new THREE.Vector3();
-      spaceshipData.topNozzleAnchor.getWorldPosition(topNozzleWorld);
+      spaceshipData.leftNozzleAnchor.getWorldPosition(_leftNozzleWorld);
+      spaceshipData.rightNozzleAnchor.getWorldPosition(_rightNozzleWorld);
+      spaceshipData.topNozzleAnchor.getWorldPosition(_topNozzleWorld);
 
       for (let i = 0; i < EXHAUST_COUNT; i++) {
         const p = exhaustData[i];
@@ -1034,17 +930,19 @@ export default function ThreeEarthGlobe({
 
         if (p.life <= 0) {
           p.life = 1.0;
-          const source = (i % 3 === 0) ? leftNozzleWorld : ((i % 3 === 1) ? rightNozzleWorld : topNozzleWorld);
+          const source = (i % 3 === 0) ? _leftNozzleWorld : ((i % 3 === 1) ? _rightNozzleWorld : _topNozzleWorld);
           posAttr.array[i * 3] = source.x + (Math.random() - 0.5) * 0.02;
           posAttr.array[i * 3 + 1] = source.y + (Math.random() - 0.5) * 0.02;
           posAttr.array[i * 3 + 2] = source.z + (Math.random() - 0.5) * 0.02;
+
+          // Eject backwards relative to the spaceship's current flight direction
+          p.vx = -_blendedTangent.x * p.speed * (0.9 + throttle * 0.3) + (Math.random() - 0.5) * 0.005;
+          p.vy = -_blendedTangent.y * p.speed * (0.9 + throttle * 0.3) + (Math.random() - 0.5) * 0.005;
+          p.vz = -_blendedTangent.z * p.speed * (0.9 + throttle * 0.3) + (Math.random() - 0.5) * 0.005;
         } else {
-          const backward = new THREE.Vector3(0, 0, -1)
-            .applyQuaternion(spaceshipData.group.quaternion)
-            .multiplyScalar(p.speed * (0.8 + throttle * 0.4));
-          posAttr.array[i * 3] += backward.x;
-          posAttr.array[i * 3 + 1] += backward.y;
-          posAttr.array[i * 3 + 2] += backward.z;
+          posAttr.array[i * 3] += p.vx;
+          posAttr.array[i * 3 + 1] += p.vy;
+          posAttr.array[i * 3 + 2] += p.vz;
         }
 
         const alpha = p.life;
@@ -1066,19 +964,19 @@ export default function ThreeEarthGlobe({
       colAttr.needsUpdate = true;
 
       // Project Active Hub to 2D Screen Space for Badge
-      tempV3.copy(userNodePos);
-      tempV3.applyMatrix4(globeGroup.matrixWorld);
+      _tempV3.copy(userNodePos);
+      _tempV3.applyMatrix4(globeGroup.matrixWorld);
 
-      const toCamera = camera.position.clone().sub(tempV3).normalize();
-      const normalWorld = tempV3.clone().normalize();
-      const dot = normalWorld.dot(toCamera);
+      _toCamera.copy(camera.position).sub(_tempV3).normalize();
+      _normalWorld.copy(_tempV3).normalize();
+      const dot = _normalWorld.dot(_toCamera);
 
-      tempV3.project(camera);
-      const x = (tempV3.x * 0.5 + 0.5) * container.clientWidth;
-      const y = (-(tempV3.y * 0.5) + 0.5) * container.clientHeight;
+      _tempV3.project(camera);
+      const x = (_tempV3.x * 0.5 + 0.5) * container.clientWidth;
+      const y = (-(_tempV3.y * 0.5) + 0.5) * container.clientHeight;
 
       if (badgeRef.current) {
-        const isBadgeVisible = dot > 0.05 && tempV3.z < 1 && showArcsRef.current;
+        const isBadgeVisible = dot > 0.05 && _tempV3.z < 1 && showArcsRef.current;
         badgeRef.current.style.display = isBadgeVisible ? 'block' : 'none';
         if (isBadgeVisible) {
           badgeRef.current.style.transform = `translate3d(${x}px, ${y}px, 0px) translate(16px, -115%)`;
@@ -1097,7 +995,6 @@ export default function ThreeEarthGlobe({
       camera.aspect = w / h;
       camera.updateProjectionMatrix();
       renderer.setSize(w, h);
-      cosmosMat.uniforms.uResolution.value.set(w, h);
     };
 
     window.addEventListener('resize', handleResize);
@@ -1115,8 +1012,6 @@ export default function ThreeEarthGlobe({
         m.geo.dispose();
         m.mat.dispose();
       });
-      cosmosGeo.dispose();
-      cosmosMat.dispose();
       if (starsGeo) starsGeo.dispose();
       if (starsMat) starsMat.dispose();
       if (container.contains(renderer.domElement)) {
@@ -1152,3 +1047,5 @@ export default function ThreeEarthGlobe({
     </div>
   );
 }
+
+export default React.memo(ThreeEarthGlobe);
