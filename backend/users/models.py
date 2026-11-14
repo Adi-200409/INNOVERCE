@@ -1,5 +1,7 @@
+import os
 import random
 import string
+import uuid
 from django.db import models
 
 
@@ -7,6 +9,14 @@ def generate_confirmation_id():
     # Format: INN-3.0-XXXXXX (6 random digits)
     random_digits = ''.join(random.choices(string.digits, k=6))
     return f"INN-3.0-{random_digits}"
+
+
+def payment_screenshot_upload_path(instance, filename):
+    ext = os.path.splitext(filename)[1].lower()
+    if ext not in ['.jpg', '.jpeg', '.png']:
+        ext = '.png'
+    safe_name = f"payment_{uuid.uuid4().hex[:12]}{ext}"
+    return os.path.join('payment_screenshots', safe_name)
 
 
 class Registration(models.Model):
@@ -42,6 +52,21 @@ class Registration(models.Model):
     member2_email = models.EmailField(blank=True, null=True)
     domain = models.CharField(max_length=100, blank=True, null=True)
     payment_status = models.CharField(max_length=20, choices=PAYMENT_STATUS_CHOICES, default='PENDING')
+
+    # UPI Payment verification fields
+    utr_number = models.CharField(
+        max_length=12,
+        blank=True,
+        default='',
+        help_text="12-digit UPI Transaction ID / UTR"
+    )
+    payment_screenshot = models.ImageField(
+        upload_to=payment_screenshot_upload_path,
+        max_length=255,
+        blank=True,
+        null=True,
+        help_text="Uploaded UPI payment screenshot"
+    )
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

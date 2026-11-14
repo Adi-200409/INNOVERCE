@@ -10,6 +10,7 @@ export default function Navbar({ onOpenRegister, _onOpenTracks, isReady = true }
     { label: 'Tracks', id: 'tracks', href: '#tracks' },
     { label: 'Timelines', id: 'schedule', href: '#schedule' },
     { label: 'Prizes', id: 'prizes', href: '#prizes' },
+    { label: 'Team', id: 'team', href: '#team' },
     { label: 'Contact', id: 'contact', href: '#contact' },
     { label: 'Rules', href: '/rules' },
   ];
@@ -90,12 +91,6 @@ export default function Navbar({ onOpenRegister, _onOpenTracks, isReady = true }
 
           {/* Right Action Items */}
           <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
-            {/* Live Registration Telemetry Badge (Visible on 2xl+ to maintain clean breathing room) */}
-            <div className="hidden 2xl:flex items-center gap-2 px-3 py-1 rounded-full border border-amber-500/25 bg-amber-500/10 text-amber-300 font-mono text-[11px] tracking-wide whitespace-nowrap shadow-[0_0_12px_rgba(245,158,11,0.15)]">
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse shadow-[0_0_6px_#f59e0b]" />
-              <span>REGISTRATIONS OPEN</span>
-            </div>
-
             {/* Quick Action Primary Button - Solid Golden Amber Pill (Orbit24 style) */}
             <button
               onClick={onOpenRegister}

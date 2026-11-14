@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Rocket,
   ArrowLeft,
@@ -8,12 +8,20 @@ import {
   Users,
   Ticket,
   Phone,
-  Mail,
+  Building,
   CheckCircle2,
   ExternalLink,
+  ShieldCheck,
   Sparkles,
   AlertCircle,
-  LogIn
+  LogIn,
+  QrCode,
+  UploadCloud,
+  FileCheck,
+  Trash2,
+  Copy,
+  Check,
+  Image as ImageIcon
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import BoardingPass from './BoardingPass';
@@ -35,6 +43,7 @@ function saveLocalRegistration(formData, confirmationId) {
       institution_name: formData.institutionName,
       college_address: formData.collegeAddress,
       stream: formData.stream,
+      utr_number: formData.utrNumber,
       payment_status: 'PENDING'
     };
     localStorage.setItem(LOCAL_REGISTRATIONS_KEY, JSON.stringify([record, ...existing]));
@@ -53,70 +62,200 @@ export default function RegistrationPage({ onBackToHome, embedded = false, onSwi
     member2Name: '',
     institutionName: '',
     collegeAddress: '',
-    stream: ''
+    stream: '',
+    utrNumber: ''
   });
+
+  const [paymentScreenshot, setPaymentScreenshot] = useState(null);
+  const [screenshotPreview, setScreenshotPreview] = useState(null);
+  const [utrError, setUtrError] = useState('');
+  const [fileError, setFileError] = useState('');
+  const fileInputRef = useRef(null);
 
   const [submitted, setSubmitted] = useState(false);
   const [confirmationId, setConfirmationId] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
+  const [copiedUpi, setCopiedUpi] = useState(false);
 
   const googleFormUrl =
     'https://docs.google.com/forms/d/e/1FAIpQLSfPgaUONQ7VBSQ3rNObDOquTU1d7RGHTIsHHEvIsVa2JNRKzQ/viewform';
 
+  const handleCopyUpi = () => {
+    if (navigator?.clipboard?.writeText) {
+      navigator.clipboard.writeText('9611606975@kbl');
+      setCopiedUpi(true);
+      setTimeout(() => setCopiedUpi(false), 2000);
+    }
+  };
+
+  // Cleanup object URL when preview unmounts or changes
+  useEffect(() => {
+    return () => {
+      if (screenshotPreview) {
+        URL.revokeObjectURL(screenshotPreview);
+      }
+    };
+  }, [screenshotPreview]);
+
+  const handleUtrChange = (e) => {
+    // Restrict to digits only, maximum 12 characters
+    const digitsOnly = e.target.value.replace(/\D/g, '').slice(0, 12);
+    setFormData((prev) => ({ ...prev, utrNumber: digitsOnly }));
+
+    if (digitsOnly.length > 0 && digitsOnly.length < 12) {
+      setUtrError('12-digit UTR / Transaction ID must be exactly 12 digits.');
+    } else {
+      setUtrError('');
+    }
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files?.[0];
+    setFileError('');
+
+    if (!file) {
+      setPaymentScreenshot(null);
+      if (screenshotPreview) URL.revokeObjectURL(screenshotPreview);
+      setScreenshotPreview(null);
+      return;
+    }
+
+    const validExtensions = ['jpg', 'jpeg', 'png'];
+    const fileExtension = (file.name.split('.').pop() || '').toLowerCase();
+    const validMimeTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/pjpeg'];
+
+    if (!validExtensions.includes(fileExtension) || (file.type && !validMimeTypes.includes(file.type.toLowerCase()))) {
+      setFileError('Invalid file type. Only image files (.jpg, .jpeg, .png) are accepted.');
+      if (fileInputRef.current) fileInputRef.current.value = '';
+      setPaymentScreenshot(null);
+      if (screenshotPreview) URL.revokeObjectURL(screenshotPreview);
+      setScreenshotPreview(null);
+      return;
+    }
+
+    // Max 5MB (5 * 1024 * 1024 bytes)
+    const maxSize = 5 * 1024 * 1024;
+    if (file.size > maxSize) {
+      setFileError(`File size (${(file.size / (1024 * 1024)).toFixed(2)} MB) exceeds the 5MB limit.`);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+      setPaymentScreenshot(null);
+      if (screenshotPreview) URL.revokeObjectURL(screenshotPreview);
+      setScreenshotPreview(null);
+      return;
+    }
+
+    setPaymentScreenshot(file);
+    if (screenshotPreview) URL.revokeObjectURL(screenshotPreview);
+    setScreenshotPreview(URL.createObjectURL(file));
+  };
+
+  const handleRemoveFile = () => {
+    setPaymentScreenshot(null);
+    if (screenshotPreview) {
+      URL.revokeObjectURL(screenshotPreview);
+    }
+    setScreenshotPreview(null);
+    setFileError('');
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitError('');
+
+    // Pre-flight validation
+    const cleanUtr = (formData.utrNumber || '').trim();
+    if (!/^\d{12}$/.test(cleanUtr)) {
+      setUtrError('12-digit UTR / Transaction ID must be exactly 12 digits.');
+      setSubmitError('Please enter a valid 12-digit numeric UTR / Transaction ID.');
+      return;
+    }
+
+    if (!paymentScreenshot) {
+      setFileError('Payment screenshot is required.');
+      setSubmitError('Please upload your payment screenshot (.jpg, .jpeg, or .png, max 5MB).');
+      return;
+    }
+
+    if (paymentScreenshot.size > 5 * 1024 * 1024) {
+      setFileError('Payment screenshot file size must be less than 5MB.');
+      setSubmitError('Payment screenshot file size must be less than 5MB.');
+      return;
+    }
+
     setSubmitting(true);
 
-    let resolvedId = `INN-3.0-${Math.floor(100000 + Math.random() * 900000)}`;
-    let savedToServer = false;
     try {
+      // Build multipart/form-data payload
+      const multipartData = new FormData();
+      multipartData.append('teamName', formData.teamName);
+      multipartData.append('team_name', formData.teamName);
+      multipartData.append('leaderName', formData.leaderName);
+      multipartData.append('leader_name', formData.leaderName);
+      multipartData.append('leaderEmail', formData.leaderEmail);
+      multipartData.append('leader_email', formData.leaderEmail);
+      multipartData.append('leaderContact', formData.leaderContact);
+      multipartData.append('leader_contact', formData.leaderContact);
+      multipartData.append('member1Name', formData.member1Name);
+      multipartData.append('member1_name', formData.member1Name);
+      multipartData.append('member2Name', formData.member2Name);
+      multipartData.append('member2_name', formData.member2Name);
+      multipartData.append('institutionName', formData.institutionName);
+      multipartData.append('institution_name', formData.institutionName);
+      multipartData.append('collegeAddress', formData.collegeAddress);
+      multipartData.append('college_address', formData.collegeAddress);
+      multipartData.append('stream', formData.stream);
+      multipartData.append('utrNumber', cleanUtr);
+      multipartData.append('utr_number', cleanUtr);
+      multipartData.append('paymentScreenshot', paymentScreenshot);
+      multipartData.append('payment_screenshot', paymentScreenshot);
+
       const response = await fetch(`${API_BASE}/api/register/`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        // Note: Do not set Content-Type header so the browser sets multipart/form-data boundary automatically
+        body: multipartData
       });
 
-      if (!response.ok) {
-        const errPayload = await response.json().catch(() => null);
-        if (errPayload && Object.keys(errPayload).length > 0) {
-          const firstMsg =
-            errPayload.message ||
-            errPayload.detail ||
-            Object.values(errPayload).flat()[0] ||
-            'Please verify all required registration fields.';
-          setSubmitError(String(firstMsg));
-          return;
-        }
-      } else {
+      if (response.ok) {
+        // On receiving a 200 OK from the backend, trigger the existing "Registration Successful" UI state
         const payload = await response.json().catch(() => ({}));
-        if (payload.confirmationId) {
-          resolvedId = payload.confirmationId;
-          savedToServer = true;
+        const resolvedId = payload.confirmationId || `INN-3.0-${Math.floor(100000 + Math.random() * 900000)}`;
+        setConfirmationId(resolvedId);
+        setSubmitted(true);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        // Celebratory confetti burst
+        confetti({
+          particleCount: 150,
+          spread: 80,
+          origin: { y: 0.5 },
+          colors: ['#f59e0b', '#fbbf24', '#3b82f6', '#10b981', '#ffffff']
+        });
+      } else {
+        const errPayload = await response.json().catch(() => null);
+        let errorMsg = 'Please verify all required registration fields.';
+        if (errPayload) {
+          if (typeof errPayload === 'string') {
+            errorMsg = errPayload;
+          } else if (errPayload.message) {
+            errorMsg = errPayload.message;
+          } else if (errPayload.detail) {
+            errorMsg = errPayload.detail;
+          } else {
+            const firstVal = Object.values(errPayload).flat()[0];
+            if (firstVal) errorMsg = String(firstVal);
+          }
         }
+        setSubmitError(errorMsg);
       }
-    } catch {
-      // Allow static preview fallback when Django backend is not running
+    } catch (err) {
+      setSubmitError(err.message || 'Unable to connect to the registration server. Please check your backend connection.');
     } finally {
       setSubmitting(false);
     }
-
-    if (!savedToServer) {
-      saveLocalRegistration(formData, resolvedId);
-    }
-
-    setConfirmationId(resolvedId);
-    setSubmitted(true);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-
-    // Celebratory confetti burst
-    confetti({
-      particleCount: 150,
-      spread: 80,
-      origin: { y: 0.5 },
-      colors: ['#f59e0b', '#fbbf24', '#3b82f6', '#10b981', '#ffffff']
-    });
   };
 
   const handleReset = () => {
@@ -129,8 +268,20 @@ export default function RegistrationPage({ onBackToHome, embedded = false, onSwi
       member2Name: '',
       institutionName: '',
       collegeAddress: '',
-      stream: ''
+      stream: '',
+      utrNumber: ''
     });
+    setPaymentScreenshot(null);
+    if (screenshotPreview) {
+      URL.revokeObjectURL(screenshotPreview);
+    }
+    setScreenshotPreview(null);
+    setUtrError('');
+    setFileError('');
+    setSubmitError('');
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
     setSubmitted(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -229,24 +380,21 @@ export default function RegistrationPage({ onBackToHome, embedded = false, onSwi
                 </div>
               </div>
 
-              {/* Sector Focus Areas Strip */}
+              {/* Theme Tracks Strip */}
               <div className="mt-5 p-4 rounded-xl border border-white/10 bg-white/[0.02] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <div className="flex items-center gap-2 font-mono text-xs text-amber-300 font-semibold shrink-0">
+                <div className="flex items-center gap-2 font-mono text-xs text-amber-300 font-semibold">
                   <Sparkles className="w-4 h-4 text-amber-400" />
-                  <span>🎯 Sector Focus Areas:</span>
+                  <span>🎯 Theme Tracks:</span>
                 </div>
                 <div className="flex flex-wrap gap-2 text-xs font-mono">
-                  <span className="px-2.5 py-1 rounded-md bg-amber-500/10 border border-amber-500/20 text-amber-200">
-                    Fintech
+                  <span className="px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-gray-200">
+                    Cyber Security
                   </span>
-                  <span className="px-2.5 py-1 rounded-md bg-blue-500/10 border border-blue-500/20 text-blue-200">
-                    Educational
+                  <span className="px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-gray-200">
+                    Blockchain
                   </span>
-                  <span className="px-2.5 py-1 rounded-md bg-emerald-500/10 border border-emerald-500/20 text-emerald-200">
-                    Healthcare
-                  </span>
-                  <span className="px-2.5 py-1 rounded-md bg-orange-500/10 border border-orange-500/20 text-orange-200">
-                    Agriculture
+                  <span className="px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-gray-200">
+                    Artificial Intelligence & Machine Learning
                   </span>
                 </div>
               </div>
@@ -276,27 +424,6 @@ export default function RegistrationPage({ onBackToHome, embedded = false, onSwi
                     <span>Sriraj R Y – 7760819024</span>
                   </a>
                 </div>
-              </div>
-            </div>
-
-            {/* Google Form Switch Notice Banner */}
-            <div className="p-4 rounded-2xl border border-white/10 bg-[#0d0d12]/95 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs font-mono text-gray-400">
-              <div className="flex items-center gap-2.5">
-                <Mail className="w-4 h-4 text-white/50 shrink-0" />
-                <span className="text-white/80">
-                  adityap4til@gmail.com{' '}
-                  <a
-                    href={googleFormUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-amber-400 hover:underline inline-flex items-center gap-1 ml-1"
-                  >
-                    Switch accounts
-                  </a>
-                </span>
-              </div>
-              <div className="text-[11px] text-white/40">
-                The name, email address and photo associated with your Google Account will be recorded when you upload files and submit this form
               </div>
             </div>
 
@@ -497,6 +624,259 @@ export default function RegistrationPage({ onBackToHome, embedded = false, onSwi
                 )}
               </div>
 
+              {/* =========================================================================
+                  10. MANUAL UPI PAYMENT VERIFICATION SECTION
+                  ========================================================================= */}
+              <div className="p-6 sm:p-8 rounded-3xl border border-amber-500/30 bg-[#0a0a0e]/95 space-y-6 relative overflow-hidden shadow-[0_10px_35px_rgba(245,158,11,0.08)]">
+                {/* Ambient Glow */}
+                <div className="absolute top-0 right-0 w-64 h-64 bg-amber-500/[0.05] rounded-full blur-2xl pointer-events-none" />
+
+                {/* Header */}
+                <div className="border-b border-white/10 pb-4">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-300 font-mono text-[11px] uppercase tracking-wider mb-2">
+                    <QrCode className="w-3.5 h-3.5" />
+                    <span>MANUAL UPI PAYMENT STEP</span>
+                  </div>
+                  <h3 className="font-display font-bold text-xl sm:text-2xl text-white">
+                    Scan & Pay Registration Fee (₹300)
+                  </h3>
+                  <p className="text-xs sm:text-sm text-gray-400 mt-1 leading-relaxed">
+                    Scan the QR code with any UPI app (GPay, PhonePe, Paytm, BHIM) to pay the registration fee of ₹300 per team. Once completed, enter the 12-digit UTR and upload the payment screenshot below for verification.
+                  </p>
+                </div>
+
+                {/* Static Payment QR Code Display Card */}
+                <div className="flex flex-col md:flex-row items-center gap-6 p-5 rounded-2xl border border-white/10 bg-white/[0.02]">
+                  {/* Clean Square QR Code Container */}
+                  <div className="relative group p-4 bg-white rounded-2xl shadow-[0_0_30px_rgba(245,158,11,0.25)] shrink-0 flex flex-col items-center">
+                    <img
+                      src="/payment-qr.png"
+                      alt="UPI Payment QR Code - the chairman govrn body mca dept"
+                      className="w-48 h-48 sm:w-52 sm:h-52 object-contain rounded-lg"
+                    />
+                    <div className="mt-2.5 text-center">
+                      <span className="inline-block px-3 py-0.5 rounded-full bg-amber-100 text-amber-900 font-mono font-bold text-[10px] uppercase tracking-wider">
+                        ₹300 • SCAN WITH ANY UPI APP
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Payment Details & Instructions */}
+                  <div className="space-y-3 font-mono text-xs w-full">
+                    <div className="p-4 rounded-xl border border-amber-500/20 bg-amber-500/5 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[11px] uppercase tracking-wider text-amber-400 font-bold">
+                          Official UPI ID (VPA)
+                        </span>
+                        <span className="text-[10px] text-amber-300/80 uppercase font-semibold">
+                          Karnataka Bank
+                        </span>
+                      </div>
+
+                      <div className="p-2.5 rounded-lg bg-black/40 border border-white/10 flex items-center justify-between gap-2">
+                        <span className="text-white text-sm sm:text-base font-bold font-mono select-all truncate">
+                          9611606975@kbl
+                        </span>
+                        <button
+                          type="button"
+                          onClick={handleCopyUpi}
+                          className="px-2.5 py-1 rounded-md bg-amber-400 hover:bg-amber-300 text-black font-mono text-[11px] font-bold transition-all flex items-center gap-1 shrink-0 cursor-pointer"
+                        >
+                          {copiedUpi ? (
+                            <>
+                              <Check className="w-3 h-3 text-black" />
+                              <span>Copied!</span>
+                            </>
+                          ) : (
+                            <>
+                              <Copy className="w-3 h-3 text-black" />
+                              <span>Copy UPI</span>
+                            </>
+                          )}
+                        </button>
+                      </div>
+
+                      <div className="text-[11px] text-gray-300 space-y-0.5 pt-1 border-t border-white/5">
+                        <span className="text-white/60 block text-[10px] uppercase tracking-wider">
+                          Payee / Beneficiary Name:
+                        </span>
+                        <strong className="text-white text-xs block font-mono">
+                          the chairman govrn body mca dept
+                        </strong>
+                      </div>
+                    </div>
+
+                    {/* Direct UPI Mobile Link & Quick Info */}
+                    <div className="space-y-2 text-xs text-gray-300">
+                      <div className="flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
+                        <span>Fixed Registration Fee: <strong className="text-amber-300">₹300 per squad</strong></span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
+                        <span>Compatible with: Google Pay, PhonePe, Paytm, BHIM, KBL Mobile, Cred</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 rounded-full bg-amber-400 shrink-0" />
+                        <span>After payment, copy the 12-digit UTR and take a clear receipt screenshot</span>
+                      </div>
+                    </div>
+
+                    {/* Mobile Quick Pay Intent Button */}
+                    <div className="pt-1">
+                      <a
+                        href="upi://pay?pa=9611606975@kbl&pn=the%20chairman%20govrn%20body%20mca%20dept&am=300&cu=INR&tn=INNOVERSE%203.0%20Registration"
+                        className="inline-flex sm:hidden w-full items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/40 text-emerald-300 font-mono text-xs font-bold transition-all text-center"
+                      >
+                        <QrCode className="w-3.5 h-3.5" />
+                        <span>Pay ₹300 Directly in UPI App (Mobile)</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 12-digit UTR Input Field */}
+                <div className="space-y-2">
+                  <label
+                    htmlFor="utr-input"
+                    className="block font-mono text-xs uppercase tracking-wider text-white font-bold"
+                  >
+                    12-digit UTR / Transaction ID <span className="text-amber-400">*</span>
+                  </label>
+                  <div className="relative">
+                    <input
+                      id="utr-input"
+                      required
+                      type="text"
+                      name="utr_number"
+                      maxLength={12}
+                      pattern="[0-9]{12}"
+                      placeholder="Enter exactly 12-digit UTR (e.g. 412345678901)"
+                      value={formData.utrNumber}
+                      onChange={handleUtrChange}
+                      className={`w-full px-4 py-3 rounded-xl bg-white/[0.04] border ${
+                        utrError ? 'border-red-500/80 focus:border-red-500' : 'border-white/15 focus:border-amber-400'
+                      } focus:outline-none focus:ring-1 focus:ring-amber-400 font-mono text-sm text-white placeholder-gray-500 tracking-wider transition-all`}
+                    />
+                    <div className="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-mono text-gray-500 pointer-events-none">
+                      {formData.utrNumber.length}/12
+                    </div>
+                  </div>
+                  {utrError ? (
+                    <p className="text-[11px] font-mono text-red-400 flex items-center gap-1.5">
+                      <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                      <span>{utrError}</span>
+                    </p>
+                  ) : (
+                    <p className="text-[11px] font-mono text-gray-400">
+                      Must be strictly 12 numeric digits as shown on your UPI payment confirmation slip.
+                    </p>
+                  )}
+                </div>
+
+                {/* Payment Screenshot File Input Field */}
+                <div className="space-y-2">
+                  <label
+                    htmlFor="screenshot-upload"
+                    className="block font-mono text-xs uppercase tracking-wider text-white font-bold"
+                  >
+                    Payment Screenshot <span className="text-amber-400">*</span>
+                  </label>
+
+                  {/* File upload drag/click box */}
+                  <div
+                    onClick={() => fileInputRef.current?.click()}
+                    className={`p-5 rounded-2xl border-2 border-dashed ${
+                      fileError
+                        ? 'border-red-500/60 bg-red-500/5'
+                        : paymentScreenshot
+                        ? 'border-emerald-500/60 bg-emerald-500/5'
+                        : 'border-white/20 bg-white/[0.02] hover:border-amber-400/50 hover:bg-white/[0.04]'
+                    } transition-all cursor-pointer text-center relative`}
+                  >
+                    <input
+                      ref={fileInputRef}
+                      id="screenshot-upload"
+                      type="file"
+                      required={!paymentScreenshot}
+                      accept=".jpg,.jpeg,.png,image/jpeg,image/png"
+                      onChange={handleFileChange}
+                      className="hidden"
+                    />
+
+                    {paymentScreenshot && screenshotPreview ? (
+                      <div
+                        className="flex flex-col sm:flex-row items-center justify-between gap-4 p-2"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <div className="flex items-center gap-4 text-left">
+                          <img
+                            src={screenshotPreview}
+                            alt="Payment screenshot preview"
+                            className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-xl border border-white/20 shadow-md shrink-0"
+                          />
+                          <div>
+                            <div className="flex items-center gap-1.5 text-emerald-400 font-mono text-xs font-semibold">
+                              <FileCheck className="w-4 h-4" />
+                              <span>Screenshot Attached</span>
+                            </div>
+                            <p className="text-white font-medium text-xs sm:text-sm truncate max-w-[200px] sm:max-w-xs mt-0.5">
+                              {paymentScreenshot.name}
+                            </p>
+                            <span className="text-[11px] font-mono text-gray-400">
+                              {(paymentScreenshot.size / (1024 * 1024)).toFixed(2)} MB • {paymentScreenshot.type || 'image'}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => fileInputRef.current?.click()}
+                            className="px-3.5 py-1.5 rounded-lg border border-white/20 hover:border-white/40 bg-white/5 hover:bg-white/10 text-white font-mono text-[11px] transition-colors cursor-pointer"
+                          >
+                            Change
+                          </button>
+                          <button
+                            type="button"
+                            onClick={handleRemoveFile}
+                            className="px-3.5 py-1.5 rounded-lg border border-red-500/30 hover:border-red-500/60 bg-red-500/10 hover:bg-red-500/20 text-red-300 font-mono text-[11px] flex items-center gap-1.5 transition-colors cursor-pointer"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                            <span>Remove</span>
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="py-4 space-y-2">
+                        <div className="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center mx-auto">
+                          <UploadCloud className="w-6 h-6" />
+                        </div>
+                        <div>
+                          <p className="text-white text-xs sm:text-sm font-medium">
+                            Click to select payment screenshot
+                          </p>
+                          <p className="text-[11px] font-mono text-gray-400 mt-1">
+                            Accepted formats: .jpg, .jpeg, .png (Max file size: 5MB)
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {fileError ? (
+                    <p className="text-[11px] font-mono text-red-400 flex items-center gap-1.5">
+                      <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                      <span>{fileError}</span>
+                    </p>
+                  ) : (
+                    <p className="text-[11px] font-mono text-gray-400">
+                      Upload a clear screenshot showing successful transaction amount, date, and UTR.
+                    </p>
+                  )}
+                </div>
+              </div>
+
               {/* Submit Button Row */}
               <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4">
                 <button
@@ -509,7 +889,7 @@ export default function RegistrationPage({ onBackToHome, embedded = false, onSwi
 
                 <button
                   type="submit"
-                  disabled={!formData.stream || submitting}
+                  disabled={!formData.stream || !formData.utrNumber || formData.utrNumber.length !== 12 || !paymentScreenshot || submitting}
                   className="w-full sm:w-auto px-10 py-4 rounded-full bg-amber-400 hover:bg-amber-300 disabled:opacity-50 disabled:cursor-not-allowed text-black font-mono text-xs uppercase tracking-wider font-bold shadow-[0_0_25px_rgba(245,158,11,0.4)] hover:shadow-[0_0_35px_rgba(245,158,11,0.65)] hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <Rocket className="w-4 h-4 text-black" />
@@ -534,9 +914,14 @@ export default function RegistrationPage({ onBackToHome, embedded = false, onSwi
             <h2 className="font-display font-black text-2xl sm:text-4xl text-white tracking-tight mb-2">
               Registration Successful!
             </h2>
-            <p className="text-sm text-gray-300 max-w-lg mx-auto mb-8 font-sans">
-              Thank you for registering squad <strong className="text-white">{formData.teamName}</strong> for <strong className="text-amber-400">INNOVERSE 3.0</strong>! Your response has been recorded.
+            <p className="text-sm text-gray-300 max-w-lg mx-auto mb-4 font-sans">
+              Thank you for registering squad <strong className="text-white">{formData.teamName}</strong> for <strong className="text-amber-400">INNOVERSE 3.0</strong>! Your response and payment verification details have been recorded.
             </p>
+            {formData.utrNumber && (
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-300 font-mono text-xs mb-8">
+                <span>UTR Reference: <strong>{formData.utrNumber}</strong></span>
+              </div>
+            )}
 
             <div className="mb-8">
               <BoardingPass

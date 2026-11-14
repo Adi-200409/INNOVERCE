@@ -11,7 +11,7 @@ class RegistrationAdmin(admin.ModelAdmin):
         'leader_email',
         'leader_contact',
         'stream',
-        'institution_name',
+        'utr_number',
         'payment_status',
         'created_at'
     )
@@ -22,6 +22,7 @@ class RegistrationAdmin(admin.ModelAdmin):
         'leader_name',
         'leader_email',
         'leader_contact',
+        'utr_number',
         'institution_name'
     )
     readonly_fields = ('confirmation_id', 'created_at', 'updated_at')

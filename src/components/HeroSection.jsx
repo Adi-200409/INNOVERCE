@@ -3,24 +3,34 @@ import { ArrowRight, Compass, Users, Trophy, Ticket, Sparkles } from 'lucide-rea
 import ThreeEarthGlobe from './ThreeEarthGlobe';
 import confetti from 'canvas-confetti';
 
+// Target: January 5th at 09:00 AM IST
+const getHackathonTargetDate = () => {
+  const now = new Date();
+  let target = new Date(now.getFullYear(), 0, 5, 9, 0, 0);
+  if (now.getTime() >= target.getTime()) {
+    target = new Date(now.getFullYear() + 1, 0, 5, 9, 0, 0);
+  }
+  return target;
+};
+
+const calculateTimeLeft = (target) => {
+  const diff = Math.max(0, target.getTime() - Date.now());
+  return {
+    days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+    hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
+    minutes: Math.floor((diff / (1000 * 60)) % 60),
+    seconds: Math.floor((diff / 1000) % 60)
+  };
+};
+
 export default function HeroSection({ onOpenRegister, onOpenTracks }) {
-  // Live countdown to Hackathon launch matching Orbit24
-  const [timeLeft, setTimeLeft] = useState({
-    days: 46,
-    hours: 20,
-    minutes: 34,
-    seconds: 40
-  });
+  // Live countdown to Hackathon launch on January 5th
+  const [timeLeft, setTimeLeft] = useState(() => calculateTimeLeft(getHackathonTargetDate()));
 
   useEffect(() => {
+    const target = getHackathonTargetDate();
     const timer = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev.seconds > 0) return { ...prev, seconds: prev.seconds - 1 };
-        if (prev.minutes > 0) return { ...prev, minutes: 59, seconds: 59 };
-        if (prev.hours > 0) return { ...prev, hours: prev.hours - 1, minutes: 59, seconds: 59 };
-        if (prev.days > 0) return { ...prev, days: prev.days - 1, hours: 23, minutes: 59, seconds: 59 };
-        return prev;
-      });
+      setTimeLeft(calculateTimeLeft(target));
     }, 1000);
     return () => clearInterval(timer);
   }, []);
@@ -156,7 +166,7 @@ export default function HeroSection({ onOpenRegister, onOpenTracks }) {
         <div className="flex flex-col items-center justify-center gap-2 pointer-events-auto mx-auto relative z-20">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-white/12 bg-[#08080c]/90 backdrop-blur-xl shadow-[0_2px_15px_rgba(0,0,0,0.85)] font-mono text-[10px] sm:text-[11px] uppercase tracking-widest">
             <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399] animate-pulse shrink-0" />
-            <span className="font-medium text-white/80">HACKING BEGINS IN</span>
+            <span className="font-medium text-white/80">HACKING BEGINS IN • JAN 05</span>
           </div>
 
           <div className="flex items-center justify-center gap-2 sm:gap-3 font-mono">

@@ -1,8 +1,19 @@
+import io
+from PIL import Image
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from django.urls import reverse
 from rest_framework.test import APIClient
 from rest_framework import status
 from .models import Registration
+
+
+def create_test_image(name='test_screenshot.png', size=(100, 100), color='blue'):
+    file_obj = io.BytesIO()
+    image = Image.new('RGB', size=size, color=color)
+    image.save(file_obj, format='PNG')
+    file_obj.seek(0)
+    return SimpleUploadedFile(name, file_obj.read(), content_type='image/png')
 
 
 class RegistrationAPITestCase(TestCase):
@@ -17,16 +28,19 @@ class RegistrationAPITestCase(TestCase):
             "member2Name": "Clark Kent",
             "institutionName": "KLS GIT Belagavi",
             "collegeAddress": "Udyambag, Belagavi, Karnataka",
-            "stream": "MCA"
+            "stream": "MCA",
+            "utrNumber": "123456789012"
         }
 
-    def test_successful_registration_camel_case(self):
+    def test_successful_registration_multipart(self):
+        payload = self.valid_payload.copy()
+        payload['payment_screenshot'] = create_test_image('payment.png')
         response = self.client.post(
             reverse('register'),
-            data=self.valid_payload,
-            format='json'
+            data=payload,
+            format='multipart'
         )
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue(response.data.get('success'))
         self.assertIn('confirmationId', response.data)
         conf_id = response.data['confirmationId']
@@ -36,6 +50,8 @@ class RegistrationAPITestCase(TestCase):
         reg = Registration.objects.get(confirmation_id=conf_id)
         self.assertEqual(reg.team_name, "CyberKnights")
         self.assertEqual(reg.stream, "MCA")
+        self.assertEqual(reg.utr_number, "123456789012")
+        self.assertTrue(bool(reg.payment_screenshot))
         self.assertEqual(reg.payment_status, "PENDING")
 
     def test_successful_registration_snake_case(self):
@@ -48,17 +64,55 @@ class RegistrationAPITestCase(TestCase):
             "member2_name": "Arthur Curry",
             "institution_name": "GIT MCA",
             "college_address": "Belagavi",
-            "stream": "bca"
+            "stream": "bca",
+            "utr_number": "987654321098",
+            "payment_screenshot": create_test_image('receipt.jpg')
         }
         response = self.client.post(
             reverse('register'),
             data=payload,
-            format='json'
+            format='multipart'
         )
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue(Registration.objects.filter(team_name="CodeBreakers").exists())
         reg = Registration.objects.get(team_name="CodeBreakers")
         self.assertEqual(reg.stream, "BCA")
+        self.assertEqual(reg.utr_number, "987654321098")
+        self.assertTrue(bool(reg.payment_screenshot))
+
+    def test_missing_utr_or_screenshot(self):
+        incomplete_payload = self.valid_payload.copy()
+        response = self.client.post(
+            reverse('register'),
+            data=incomplete_payload,
+            format='multipart'
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('payment_screenshot', response.data)
+
+    def test_invalid_utr_regex(self):
+        payload = self.valid_payload.copy()
+        payload['utrNumber'] = '12345'  # only 5 digits
+        payload['payment_screenshot'] = create_test_image()
+        response = self.client.post(
+            reverse('register'),
+            data=payload,
+            format='multipart'
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('utr_number', response.data)
+
+    def test_invalid_screenshot_type(self):
+        payload = self.valid_payload.copy()
+        fake_file = SimpleUploadedFile("receipt.pdf", b"fake pdf data", content_type="application/pdf")
+        payload['payment_screenshot'] = fake_file
+        response = self.client.post(
+            reverse('register'),
+            data=payload,
+            format='multipart'
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('payment_screenshot', response.data)
 
     def test_missing_required_fields(self):
         incomplete_payload = {
@@ -67,7 +121,7 @@ class RegistrationAPITestCase(TestCase):
         response = self.client.post(
             reverse('register'),
             data=incomplete_payload,
-            format='json'
+            format='multipart'
         )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn('leader_name', response.data)
@@ -76,20 +130,23 @@ class RegistrationAPITestCase(TestCase):
     def test_invalid_stream(self):
         invalid_payload = self.valid_payload.copy()
         invalid_payload['stream'] = 'BTECH'
+        invalid_payload['payment_screenshot'] = create_test_image()
         response = self.client.post(
             reverse('register'),
             data=invalid_payload,
-            format='json'
+            format='multipart'
         )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn('stream', response.data)
 
     def test_retrieve_registration_detail(self):
         # Create a registration first
+        payload = self.valid_payload.copy()
+        payload['payment_screenshot'] = create_test_image()
         create_res = self.client.post(
             reverse('register'),
-            data=self.valid_payload,
-            format='json'
+            data=payload,
+            format='multipart'
         )
         conf_id = create_res.data['confirmationId']
 
@@ -98,12 +155,15 @@ class RegistrationAPITestCase(TestCase):
         self.assertEqual(detail_res.status_code, status.HTTP_200_OK)
         self.assertEqual(detail_res.data['confirmation_id'], conf_id)
         self.assertEqual(detail_res.data['team_name'], "CyberKnights")
+        self.assertEqual(detail_res.data['utr_number'], "123456789012")
 
     def test_team_login_success_case_insensitive(self):
+        payload = self.valid_payload.copy()
+        payload['payment_screenshot'] = create_test_image()
         create_res = self.client.post(
             reverse('register'),
-            data=self.valid_payload,
-            format='json'
+            data=payload,
+            format='multipart'
         )
         conf_id = create_res.data['confirmationId']
 

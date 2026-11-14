@@ -12,42 +12,7 @@ import {
   Eye,
   EyeOff
 } from 'lucide-react';
-
-const API_BASE = (import.meta.env.VITE_API_URL || '').replace(/\/+$/, '');
-const LOCAL_USERS_KEY = 'innoverce_local_users';
-
-function readLocalUsers() {
-  try {
-    const raw = localStorage.getItem(LOCAL_USERS_KEY);
-    return raw ? JSON.parse(raw) : [];
-  } catch {
-    return [];
-  }
-}
-
-function handleLocalAuth(isSignup, { name, email, password }) {
-  const lowerEmail = email.toLowerCase();
-  const users = readLocalUsers();
-
-  if (isSignup) {
-    if (users.some((u) => u.email.toLowerCase() === lowerEmail)) {
-      return { error: 'An account with this email already exists. Please log in.' };
-    }
-    const newUser = { name, email: lowerEmail, password };
-    try {
-      localStorage.setItem(LOCAL_USERS_KEY, JSON.stringify([...users, newUser]));
-    } catch {
-      // Proceed even if localStorage is blocked
-    }
-    return { user: { name, email: lowerEmail, guest: false } };
-  }
-
-  const found = users.find((u) => u.email.toLowerCase() === lowerEmail && u.password === password);
-  if (!found) {
-    return { error: 'Invalid email or password.' };
-  }
-  return { user: { name: found.name, email: found.email, guest: false } };
-}
+import { authenticateUser } from '../utils/authSession';
 
 export default function AuthGate({ onAuthenticated }) {
   const [mode, setMode] = useState('login');
@@ -86,44 +51,16 @@ export default function AuthGate({ onAuthenticated }) {
 
     setLoading(true);
     try {
-      const endpoint = isSignup ? '/api/auth/signup/' : '/api/auth/login/';
-      const body = isSignup
-        ? { name: cleanName, email: cleanEmail, password }
-        : { email: cleanEmail, password };
-
-      const response = await fetch(`${API_BASE}${endpoint}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
+      const result = await authenticateUser(mode, {
+        name: cleanName,
+        email: cleanEmail,
+        password
       });
-
-      const payload = await response.json().catch(() => null);
-      if (payload && typeof payload.success === 'boolean') {
-        if (!response.ok || !payload.success || !payload.user) {
-          setError(
-            payload.message ||
-              (isSignup ? 'Unable to create account. Check your details.' : 'Invalid email or password.')
-          );
-          return;
-        }
-        onAuthenticated({ ...payload.user, guest: false });
+      if (result.error) {
+        setError(result.error);
         return;
       }
-
-      // Backend returned non-JSON (e.g. Vite proxy 500 when Django is not running) -> use local store fallback
-      const localResult = handleLocalAuth(isSignup, { name: cleanName, email: cleanEmail, password });
-      if (localResult.error) {
-        setError(localResult.error);
-        return;
-      }
-      onAuthenticated(localResult.user);
-    } catch {
-      const localResult = handleLocalAuth(isSignup, { name: cleanName, email: cleanEmail, password });
-      if (localResult.error) {
-        setError(localResult.error);
-        return;
-      }
-      onAuthenticated(localResult.user);
+      onAuthenticated(result.user);
     } finally {
       setLoading(false);
     }

@@ -6,6 +6,7 @@ from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from .models import Registration
 from .serializers import RegistrationSerializer
 
@@ -14,6 +15,7 @@ class RegistrationCreateView(generics.CreateAPIView):
     queryset = Registration.objects.all()
     serializer_class = RegistrationSerializer
     permission_classes = [AllowAny]
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -27,7 +29,7 @@ class RegistrationCreateView(generics.CreateAPIView):
                 "confirmationId": registration.confirmation_id,
                 "data": serializer.data,
             },
-            status=status.HTTP_201_CREATED,
+            status=status.HTTP_200_OK,
             headers=headers
         )
 

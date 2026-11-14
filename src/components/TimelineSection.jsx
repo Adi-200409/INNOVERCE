@@ -221,7 +221,7 @@ export default function TimelineSection() {
               }`}
             >
               <Calendar className="w-3.5 h-3.5" />
-              <span>Final: Day 1 (Dec 27)</span>
+              <span>Final: Day 1 (Jan 5)</span>
             </button>
             <button
               onClick={() => setActiveTab('day2')}
@@ -232,7 +232,7 @@ export default function TimelineSection() {
               }`}
             >
               <Calendar className="w-3.5 h-3.5" />
-              <span>Final: Day 2 (Dec 28)</span>
+              <span>Final: Day 2 (Jan 6)</span>
             </button>
           </div>
         </div>

@@ -25,16 +25,12 @@ export default function PrizesSection({ onOpenRegister }) {
       streamNote: 'Awarded to #1 Team in MCA & #1 Team in BCA',
       color: '#f59e0b',
       borderColor: 'border-amber-400/60',
-      glow: 'rgba(245, 158, 11, 0.35)',
       icon: Trophy,
       featured: true,
       perks: [
         '₹12,000 Direct Cash Award',
         'INNOVERSE 3.0 Grand Champion Trophy',
-        'Official Winner Merit Certificates (for all 3 members)',
-        'Cloud GPU & API Compute Credits',
-        'Direct 1-on-1 Fast-Track Industry Mentorship',
-        'VIP Presentation at Demo Day Grand Finale'
+        'Official Winner Merit Certificates (for all 3 members)'
       ]
     },
     {
@@ -46,16 +42,12 @@ export default function PrizesSection({ onOpenRegister }) {
       streamNote: 'Awarded to #2 Team in MCA & #2 Team in BCA',
       color: '#38bdf8',
       borderColor: 'border-cyan-500/40',
-      glow: 'rgba(56, 189, 248, 0.25)',
       icon: Medal,
       featured: false,
       perks: [
         '₹6,000 Direct Cash Award',
         'INNOVERSE 3.0 Runner-Up Trophy',
-        'Official Runner-Up Certificates (for all 3 members)',
-        'Cloud Compute Credits & Tooling Passes',
-        'Fast-Track Technical Interview Screening',
-        'Recognition on the Innovation Wall'
+        'Official Runner-Up Certificates (for all 3 members)'
       ]
     }
   ];
@@ -85,9 +77,6 @@ export default function PrizesSection({ onOpenRegister }) {
 
   return (
     <section id="prizes" className="relative w-full py-24 sm:py-32 px-4 sm:px-6 lg:px-8 bg-[#08080c] z-20 overflow-hidden">
-      {/* Background glow effects */}
-      <div className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-[radial-gradient(ellipse_at_center,rgba(251,191,36,0.09)_0%,rgba(59,130,246,0.04)_60%,transparent_80%)] blur-[100px]" />
-
       <div className="relative max-w-6xl mx-auto">
         {/* Header */}
         <div className="flex flex-col items-start md:items-center md:text-center mb-12 sm:mb-16">
@@ -177,18 +166,12 @@ export default function PrizesSection({ onOpenRegister }) {
             return (
               <div
                 key={item.id}
-                className={`group relative rounded-3xl border ${item.borderColor} bg-[#0e0e16]/90 backdrop-blur-xl p-7 sm:p-9 flex flex-col justify-between transition-transform duration-300 ease-out hover:-translate-y-0.5 ${
+                className={`relative rounded-3xl border ${item.borderColor} bg-[#0e0e16]/90 backdrop-blur-xl p-7 sm:p-9 flex flex-col justify-between ${
                   item.featured
-                    ? 'shadow-[0_0_40px_rgba(245,158,11,0.2)] bg-gradient-to-b from-amber-500/10 via-[#0e0e16] to-[#0e0e16]'
+                    ? 'bg-gradient-to-b from-amber-500/10 via-[#0e0e16] to-[#0e0e16]'
                     : 'bg-gradient-to-b from-blue-500/10 via-[#0e0e16] to-[#0e0e16]'
                 }`}
               >
-                {/* Glow behind card */}
-                <div
-                  className="pointer-events-none absolute -inset-0.5 rounded-3xl opacity-40 blur-xl transition-opacity duration-300 group-hover:opacity-50"
-                  style={{ background: item.glow }}
-                />
-
                 <div className="relative z-10">
                   <div className="flex items-center justify-between mb-4">
                     <span
@@ -201,10 +184,7 @@ export default function PrizesSection({ onOpenRegister }) {
                     >
                       {item.badge}
                     </span>
-                    <div
-                      className="w-12 h-12 rounded-xl flex items-center justify-center border border-white/10 bg-white/5"
-                      style={{ boxShadow: `0 0 16px ${item.glow}` }}
-                    >
+                    <div className="w-12 h-12 rounded-xl flex items-center justify-center border border-white/10 bg-white/5">
                       <Icon className="w-6 h-6" style={{ color: item.color }} />
                     </div>
                   </div>

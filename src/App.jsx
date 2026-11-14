@@ -9,6 +9,7 @@ import TimelineSection from './components/TimelineSection';
 import PrizesSection from './components/PrizesSection';
 import SponsorsSection from './components/SponsorsSection';
 import GallerySection from './components/GallerySection';
+import TeamSection from './components/TeamSection';
 import Footer from './components/Footer';
 import RegisterModal from './components/RegisterModal';
 import TracksModal from './components/TracksModal';
@@ -17,24 +18,18 @@ import CosmicBackground from './components/CosmicBackground';
 import MissionControlChatbot from './components/MissionControlChatbot';
 import LoginPage from './components/LoginPage';
 import AuthGate from './components/AuthGate';
+import { readStoredAuthUser, writeStoredAuthUser } from './utils/authSession';
 import './App.css';
 
-const AUTH_SESSION_KEY = 'innoverce_auth_user';
-
-function readStoredAuthUser() {
-  try {
-    const raw = sessionStorage.getItem(AUTH_SESSION_KEY);
-    return raw ? JSON.parse(raw) : null;
-  } catch {
-    return null;
-  }
-}
-
 function App() {
+  const normalizedPath = window.location.pathname.replace(/\/+$/, '');
+  const isRulesPage = normalizedPath === '/rules';
+  const isLoginPage = normalizedPath === '/login' || window.location.hash === '#login';
+
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
   const [isTracksOpen, setIsTracksOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isReady, setIsReady] = useState(false);
+  const [isLoading, setIsLoading] = useState(!isRulesPage);
+  const [isReady, setIsReady] = useState(isRulesPage);
   const [authUser, setAuthUser] = useState(readStoredAuthUser);
 
   // Guarantee that on initial load and reload, the page always starts at top: 0
@@ -70,9 +65,6 @@ function App() {
     window.location.href = '/register.html';
   };
 
-  const normalizedPath = window.location.pathname.replace(/\/+$/, '');
-  const isRulesPage = normalizedPath === '/rules';
-  const isLoginPage = normalizedPath === '/login' || window.location.hash === '#login';
   const showAuthGate = !isLoading && !authUser && !isRulesPage;
 
   const handlePreloaderStartExit = () => {
@@ -91,11 +83,7 @@ function App() {
   };
 
   const handleAuthenticated = (user) => {
-    try {
-      sessionStorage.setItem(AUTH_SESSION_KEY, JSON.stringify(user));
-    } catch {
-      // Ignore storage quota errors
-    }
+    writeStoredAuthUser(user);
     setAuthUser(user);
     setIsReady(true);
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
@@ -181,13 +169,16 @@ function App() {
             onOpenRegister={handleOpenRegister}
           />
 
-          {/* 7. Sponsors, Cloud Compute & Institutional Partners */}
+          {/* 7. Sponsors & Innovation Partners */}
           <SponsorsSection />
 
-          {/* 8. The Journey So Far */}
+          {/* 8. Developers & Organizers */}
+          <TeamSection />
+
+          {/* 9. The Journey So Far */}
           <GallerySection />
 
-          {/* 9. Contact Details */}
+          {/* 10. Contact Details ("Get in Touch") */}
           <Contact />
 
           {/* 10. Mission Control Footer */}
