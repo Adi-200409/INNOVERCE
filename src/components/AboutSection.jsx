@@ -47,11 +47,11 @@ export default function AboutSection({ bgImage = '/about-bg.jpg' }) {
                 <span className="bg-gradient-to-r from-amber-200 via-amber-400 to-yellow-500 bg-clip-text text-transparent">
                   INNOVERSE 3.0
                 </span>{' '}
-                is a National-level hackathon designed to ignite innovation and challenge brilliant minds in the domains of{' '}
-                <span className="text-amber-300">Artificial Intelligence</span>,{' '}
-                <span className="text-blue-400">Machine Learning</span>,{' '}
-                <span className="text-emerald-400">Cybersecurity</span>, and{' '}
-                <span className="text-purple-400">Blockchain</span>.
+                is a National-level hackathon designed to ignite innovation and challenge brilliant minds across 4 sector focus areas:{' '}
+                <span className="text-amber-300">Fintech</span>,{' '}
+                <span className="text-blue-400">Educational Technology</span>,{' '}
+                <span className="text-emerald-400">Healthcare</span>, and{' '}
+                <span className="text-orange-400">Agriculture</span>.
               </p>
               <p>
                 Organized by the{' '}

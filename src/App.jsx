@@ -155,7 +155,7 @@ function App() {
             onOpenTracks={() => setIsTracksOpen(true)}
           />
 
-          {/* 3. 5 Mission Arenas & Problem Tracks */}
+          {/* 4. 5 Mission Arenas & Problem Tracks */}
           <TracksSection
             onOpenRegister={handleOpenRegister}
             onSelectTrack={(trackId) => setIsTracksOpen(true)}

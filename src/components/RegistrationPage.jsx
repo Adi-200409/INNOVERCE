@@ -8,25 +8,23 @@ import {
   Users,
   Ticket,
   Phone,
-  Building,
   CheckCircle2,
   ExternalLink,
-  ShieldCheck,
   Sparkles,
   AlertCircle,
   LogIn,
+  Loader2,
   QrCode,
   UploadCloud,
   FileCheck,
   Trash2,
   Copy,
-  Check,
-  Image as ImageIcon
+  Check
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import BoardingPass from './BoardingPass';
 
-const API_BASE = (import.meta.env.VITE_API_URL || '').replace(/\/+$/, '');
+const API_BASE = (import.meta.env.VITE_API_URL || 'http://localhost:8000').replace(/\/+$/, '');
 const LOCAL_REGISTRATIONS_KEY = 'innoverce_local_registrations';
 
 function saveLocalRegistration(formData, confirmationId) {
@@ -77,6 +75,12 @@ export default function RegistrationPage({ onBackToHome, embedded = false, onSwi
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
   const [copiedUpi, setCopiedUpi] = useState(false);
+
+  // Aliases to avoid undefined reference errors
+  const isSubmitting = submitting;
+  const setIsSubmitting = setSubmitting;
+  const errorMessage = submitError;
+  const setErrorMessage = setSubmitError;
 
   const googleFormUrl =
     'https://docs.google.com/forms/d/e/1FAIpQLSfPgaUONQ7VBSQ3rNObDOquTU1d7RGHTIsHHEvIsVa2JNRKzQ/viewform';
@@ -222,7 +226,8 @@ export default function RegistrationPage({ onBackToHome, embedded = false, onSwi
       if (response.ok) {
         // On receiving a 200 OK from the backend, trigger the existing "Registration Successful" UI state
         const payload = await response.json().catch(() => ({}));
-        const resolvedId = payload.confirmationId || `INN-3.0-${Math.floor(100000 + Math.random() * 900000)}`;
+        const resolvedId = payload.confirmationId || payload.confirmation_id || `INN-3.0-${Math.floor(100000 + Math.random() * 900000)}`;
+        saveLocalRegistration(formData, resolvedId);
         setConfirmationId(resolvedId);
         setSubmitted(true);
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -252,6 +257,7 @@ export default function RegistrationPage({ onBackToHome, embedded = false, onSwi
         setSubmitError(errorMsg);
       }
     } catch (err) {
+      console.error('Registration submission error:', err);
       setSubmitError(err.message || 'Unable to connect to the registration server. Please check your backend connection.');
     } finally {
       setSubmitting(false);
@@ -283,6 +289,8 @@ export default function RegistrationPage({ onBackToHome, embedded = false, onSwi
       fileInputRef.current.value = '';
     }
     setSubmitted(false);
+    setErrorMessage('');
+    setIsSubmitting(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -380,21 +388,24 @@ export default function RegistrationPage({ onBackToHome, embedded = false, onSwi
                 </div>
               </div>
 
-              {/* Theme Tracks Strip */}
+              {/* Sector Focus Areas Strip */}
               <div className="mt-5 p-4 rounded-xl border border-white/10 bg-white/[0.02] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <div className="flex items-center gap-2 font-mono text-xs text-amber-300 font-semibold">
+                <div className="flex items-center gap-2 font-mono text-xs text-amber-300 font-semibold shrink-0">
                   <Sparkles className="w-4 h-4 text-amber-400" />
-                  <span>🎯 Theme Tracks:</span>
+                  <span>🎯 Sector Focus Areas:</span>
                 </div>
                 <div className="flex flex-wrap gap-2 text-xs font-mono">
-                  <span className="px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-gray-200">
-                    Cyber Security
+                  <span className="px-2.5 py-1 rounded-md bg-amber-500/10 border border-amber-500/20 text-amber-200">
+                    Fintech
                   </span>
-                  <span className="px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-gray-200">
-                    Blockchain
+                  <span className="px-2.5 py-1 rounded-md bg-blue-500/10 border border-blue-500/20 text-blue-200">
+                    Educational
                   </span>
-                  <span className="px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-gray-200">
-                    Artificial Intelligence & Machine Learning
+                  <span className="px-2.5 py-1 rounded-md bg-emerald-500/10 border border-emerald-500/20 text-emerald-200">
+                    Healthcare
+                  </span>
+                  <span className="px-2.5 py-1 rounded-md bg-orange-500/10 border border-orange-500/20 text-orange-200">
+                    Agriculture
                   </span>
                 </div>
               </div>
@@ -431,13 +442,13 @@ export default function RegistrationPage({ onBackToHome, embedded = false, onSwi
                 THE REGISTRATION FORM
                 ========================================================================= */}
             <form onSubmit={handleSubmit} className="space-y-6">
-              {submitError && (
+              {errorMessage && (
                 <div
                   role="alert"
                   className="flex items-start gap-2.5 rounded-2xl border border-red-500/35 bg-red-500/10 px-4 py-3 text-xs sm:text-sm text-red-200"
                 >
                   <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
-                  <span>{submitError}</span>
+                  <span>{errorMessage}</span>
                 </div>
               )}
               <div className="text-right text-xs font-mono text-amber-400">
@@ -877,12 +888,24 @@ export default function RegistrationPage({ onBackToHome, embedded = false, onSwi
                 </div>
               </div>
 
+              {/* Error Notification Alert */}
+              {submitError && (
+                <div className="p-4 rounded-2xl border border-red-500/40 bg-red-500/10 text-red-300 flex items-start gap-3 text-xs font-mono animate-fade-in">
+                  <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+                  <div className="space-y-1">
+                    <span className="font-bold block uppercase tracking-wider">Registration Error</span>
+                    <p className="text-white/80">{submitError}</p>
+                  </div>
+                </div>
+              )}
+
               {/* Submit Button Row */}
               <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4">
                 <button
                   type="button"
                   onClick={handleReset}
-                  className="w-full sm:w-auto px-6 py-3 rounded-full border border-white/15 text-white/60 hover:text-white hover:bg-white/5 font-mono text-xs uppercase tracking-wider transition-colors cursor-pointer"
+                  disabled={submitting}
+                  className="w-full sm:w-auto px-6 py-3 rounded-full border border-white/15 text-white/60 hover:text-white hover:bg-white/5 font-mono text-xs uppercase tracking-wider transition-colors cursor-pointer disabled:opacity-50"
                 >
                   Clear Form
                 </button>
@@ -892,8 +915,17 @@ export default function RegistrationPage({ onBackToHome, embedded = false, onSwi
                   disabled={!formData.stream || !formData.utrNumber || formData.utrNumber.length !== 12 || !paymentScreenshot || submitting}
                   className="w-full sm:w-auto px-10 py-4 rounded-full bg-amber-400 hover:bg-amber-300 disabled:opacity-50 disabled:cursor-not-allowed text-black font-mono text-xs uppercase tracking-wider font-bold shadow-[0_0_25px_rgba(245,158,11,0.4)] hover:shadow-[0_0_35px_rgba(245,158,11,0.65)] hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
-                  <Rocket className="w-4 h-4 text-black" />
-                  <span>{submitting ? 'Submitting Registration...' : 'Submit Registration (₹300)'}</span>
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="w-4 h-4 text-black animate-spin" />
+                      <span>Submitting Registration...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Rocket className="w-4 h-4 text-black" />
+                      <span>Submit Registration (₹300)</span>
+                    </>
+                  )}
                 </button>
               </div>
             </form>

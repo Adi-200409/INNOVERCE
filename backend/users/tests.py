@@ -44,7 +44,7 @@ class RegistrationAPITestCase(TestCase):
         self.assertTrue(response.data.get('success'))
         self.assertIn('confirmationId', response.data)
         conf_id = response.data['confirmationId']
-        self.assertTrue(conf_id.startswith('INN-3.0-'))
+        self.assertEqual(conf_id, 'INN-3.0-001')
 
         # Check DB record
         reg = Registration.objects.get(confirmation_id=conf_id)
@@ -53,6 +53,26 @@ class RegistrationAPITestCase(TestCase):
         self.assertEqual(reg.utr_number, "123456789012")
         self.assertTrue(bool(reg.payment_screenshot))
         self.assertEqual(reg.payment_status, "PENDING")
+
+    def test_sequential_serial_confirmation_ids(self):
+        # Register squad 1
+        res1 = self.client.post(reverse('register'), data=self.valid_payload, format='json')
+        self.assertEqual(res1.status_code, status.HTTP_200_OK)
+        self.assertEqual(res1.data['confirmationId'], 'INN-3.0-001')
+
+        # Register squad 2
+        payload2 = self.valid_payload.copy()
+        payload2['teamName'] = "AlphaSquad"
+        res2 = self.client.post(reverse('register'), data=payload2, format='json')
+        self.assertEqual(res2.status_code, status.HTTP_200_OK)
+        self.assertEqual(res2.data['confirmationId'], 'INN-3.0-002')
+
+        # Register squad 3
+        payload3 = self.valid_payload.copy()
+        payload3['teamName'] = "BetaSquad"
+        res3 = self.client.post(reverse('register'), data=payload3, format='json')
+        self.assertEqual(res3.status_code, status.HTTP_200_OK)
+        self.assertEqual(res3.data['confirmationId'], 'INN-3.0-003')
 
     def test_successful_registration_snake_case(self):
         payload = {
@@ -150,7 +170,6 @@ class RegistrationAPITestCase(TestCase):
         )
         conf_id = create_res.data['confirmationId']
 
-        # Retrieve by confirmation ID
         detail_res = self.client.get(reverse('registration-detail', kwargs={'confirmation_id': conf_id}))
         self.assertEqual(detail_res.status_code, status.HTTP_200_OK)
         self.assertEqual(detail_res.data['confirmation_id'], conf_id)

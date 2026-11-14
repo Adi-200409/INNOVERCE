@@ -495,10 +495,6 @@ export default function MissionControlChatbot({ onOpenRegister, onOpenTracks }) 
                     ONLINE
                   </span>
                 </div>
-                <div className="flex items-center gap-1 text-[8px] sm:text-[9px] font-mono text-zinc-400">
-                  <Activity className="w-2.5 h-2.5 text-cyan-400 animate-pulse" />
-                  <span>KLS GIT NODE // 15.82°N 74.48°E</span>
-                </div>
               </div>
             </div>
 
