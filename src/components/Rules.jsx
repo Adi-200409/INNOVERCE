@@ -34,7 +34,7 @@ const RULE_SECTIONS = [
       'A unique team name must be provided during registration.',
       'Registration is a two-step process: application followed by competitive selection.',
       'Once registered, team member changes are not allowed.',
-      'All participants are required to report on time for the event start on 5th Jan at 9:00 AM.'
+      'All participants are required to report on time for the event start on 5th January 2027 at 9:00 AM.'
     ]
   },
   {
@@ -64,7 +64,7 @@ const RULE_SECTIONS = [
       'MCA and BCA streams will run in parallel but be judged separately.',
       'Mentors will be available for technical guidance.',
       'Teams cannot interfere with or obstruct other teams.',
-      'The event will conclude on 6th January, followed by a prize distribution ceremony.'
+      'The event will conclude on 6th January 2027, followed by a prize distribution ceremony.'
     ]
   },
   {
@@ -113,8 +113,7 @@ const RULE_SECTIONS = [
   {
     title: 'Accommodation & Food Arrangements',
     icon: Hotel,
-    points: ['Accommodation for participants will be arranged only for the night of 5th Jan.']
-  },
+    points: [    'Accommodation for participants will be arranged only for the night of 5th January 2027.']  },
   {
     title: 'Intellectual Property Rights',
     icon: Copyright,

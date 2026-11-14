@@ -65,8 +65,8 @@ export default function PrizesSection({ onOpenRegister }) {
     },
     {
       icon: Zap,
-      title: 'Preliminary ➔ Final Round',
-      desc: 'Phase 1 online idea abstract submission followed by the 24-hour on-campus hackathon for top shortlisted squads.'
+      title: 'Two-Phase Hackathon',
+      desc: 'Phase 1 is an online evaluation of team PPTs. Selected teams advance to the 24-hour on-campus hackathon.'
     },
     {
       icon: Sparkles,
@@ -89,7 +89,7 @@ export default function PrizesSection({ onOpenRegister }) {
             Prizes & <span className="text-amber-400">Honors</span>
           </h2>
           <p className="mt-4 text-sm sm:text-base text-gray-300 max-w-2xl font-sans">
-            Separate competitive tracks for <strong className="text-white">MCA (Postgraduate)</strong> and <strong className="text-white">BCA (Undergraduate)</strong> students. Preliminary round screening leads to the intense 24-hour sprint.
+            Separate competitive tracks for <strong className="text-white">MCA (Postgraduate)</strong> and <strong className="text-white">BCA (Undergraduate)</strong> students. Teams first complete an online PPT evaluation, followed by the 24-hour hackathon.
           </p>
 
           {/* Quick Specifications Pill Bar */}
@@ -229,7 +229,7 @@ export default function PrizesSection({ onOpenRegister }) {
           })}
         </div>
 
-        {/* Process Stepper: Preliminary Round ➔ Shortlisted ➔ Final Round */}
+        {/* Two-phase competition overview */}
         <div className="mb-16 p-6 sm:p-8 rounded-3xl border border-white/15 bg-[#0a0a0e]/90 backdrop-blur-xl relative overflow-hidden">
           <div className="max-w-2xl mb-6">
             <span className="font-sans text-xs uppercase tracking-widest text-amber-400 block mb-1">
@@ -243,28 +243,28 @@ export default function PrizesSection({ onOpenRegister }) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="p-5 rounded-2xl border border-white/10 bg-white/[0.02]">
               <div className="flex items-center justify-between mb-3">
-                <span className="font-sans text-xs text-amber-400 font-bold">ROUND 01</span>
+                <span className="font-sans text-xs text-amber-400 font-bold">PHASE 01</span>
                 <span className="font-sans text-[10px] px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/20">
-                  ONLINE SCREENING
+                  ONLINE PPT EVALUATION
                 </span>
               </div>
               <h5 className="font-display font-bold text-lg text-white mb-2">
-                Preliminary Round (Abstract & Idea)
+                Online PPT Evaluation
               </h5>
               <p className="text-xs text-gray-300 font-sans leading-relaxed">
-                Teams of 3 submit their problem statement abstract, proposed technology architecture, and prototype blueprint with a nominal ₹300 registration fee. Evaluated online on feasibility, technical depth, and innovation.
+                Teams submit their project PPT online for jury evaluation. Selected teams advance to the 24-hour hackathon.
               </p>
             </div>
 
             <div className="p-5 rounded-2xl border border-white/10 bg-white/[0.02]">
               <div className="flex items-center justify-between mb-3">
-                <span className="font-sans text-xs text-emerald-400 font-bold">ROUND 02</span>
+                <span className="font-sans text-xs text-emerald-400 font-bold">PHASE 02</span>
                 <span className="font-sans text-[10px] px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">
                   ON-CAMPUS FINALE
                 </span>
               </div>
               <h5 className="font-display font-bold text-lg text-white mb-2">
-                Shortlisted Final Round (24h Marathon)
+                24-Hour Hackathon
               </h5>
               <p className="text-xs text-gray-300 font-sans leading-relaxed">
                 Top shortlisted squads are invited for the intense 24-hour coding sprint with mentorship and live jury demos to win the ₹35,000 prize pool.

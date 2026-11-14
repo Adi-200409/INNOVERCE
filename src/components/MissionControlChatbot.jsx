@@ -70,7 +70,7 @@ const KNOWLEDGE_BASE = [
   {
     triggers: ['register', 'apply', 'signup', 'sign up', 'ticket', 'boarding pass', 'form', 'how to join'],
     response: {
-      text: "Ready to board **INNOVERSE 3.0**? Applications are open for both BCA and MCA builders nationwide!\n\n• **Step 1**: Assemble your squad of 3 builders from the same college.\n• **Step 2**: Select your problem track arena and prepare your project abstract.\n• **Step 3**: Submit your entry form along with the ₹300 entry fee through the Boarding Pass portal.",
+      text: "Ready to board **INNOVERSE 3.0**? Applications are open for both BCA and MCA builders nationwide!\n\n• **Step 1**: Assemble your squad of 3 builders from the same college.\n• **Step 2**: Prepare your project PPT for online evaluation.\n• **Step 3**: Submit your entry form along with the ₹300 entry fee through the Boarding Pass portal.",
       actions: [
         { label: '🚀 Claim Boarding Pass', type: 'register' },
         { label: '🌌 Inspect 5 Arenas', type: 'tracks' }
@@ -126,7 +126,7 @@ const KNOWLEDGE_BASE = [
   {
     triggers: ['round', 'rounds', 'stage', 'stages', 'selection', 'timeline', 'process', 'how does it work'],
     response: {
-      text: "The hackathon is conducted across **Two Mission Phases**:\n\n1. 🛰️ **Phase 1: Preliminary Round (Online)**\n   Teams submit problem statement abstracts, proposed tech architecture, and ₹300 entry fee. Shortlisting conducted by technical faculty.\n\n2. 🚀 **Phase 2: Final Sprint (24h On-Campus)**\n   Selected squads convene at KLS GIT Belagavi for a non-stop 24-hour build marathon, live jury demo, and awards ceremony.",
+      text: "The hackathon has **Two Phases**:\n\n1. 🛰️ **Phase 1: Online PPT Evaluation**\n   Teams submit their project PPT for online jury evaluation. Selected teams advance to Phase 2.\n\n2. 🚀 **Phase 2: 24-Hour Hackathon**\n   Selected teams take part in the 24-hour on-campus hackathon at KLS GIT Belagavi, followed by project demos and judging.",
       actions: [
         { label: '📅 Event Timeline', type: 'timeline' }
       ]

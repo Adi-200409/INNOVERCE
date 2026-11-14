@@ -2,8 +2,8 @@ import React from 'react';
 import { MessageCircle, Phone } from 'lucide-react';
 
 const CONTACTS = [
-  { name: 'XYZ', phone: '7860819022' },
-  { name: 'ABC', phone: '9162237610' }
+  { name: 'Vaishnavi Shivkale', phone: '79751 11929' },
+  { name: 'Aditya Belled', phone: '76766 87006' }
 ];
 
 export default function Contact() {

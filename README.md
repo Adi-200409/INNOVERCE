@@ -28,7 +28,7 @@
 - **Fixed Team Size**: Strictly 3 members per team.
 - **Registration Fee**: ₹300 per team.
 - **₹35,000 Prize Pool**: Dedicated prizes for separate BCA and MCA tracks (₹12,000 First Prize, ₹6,000 Second Prize each).
-- **Two-Phase Selection**: Preliminary Round (Online idea & abstract review) ➔ Final Round (Shortlisted teams for the 24-hour on-campus hackathon at KLS GIT Belagavi).
+- **Two-Phase Hackathon**: Phase 1 is online PPT evaluation; selected teams advance to Phase 2, the 24-hour on-campus hackathon at KLS GIT Belagavi.
 - **200+ Premier Institutions**: Builders from across India competing under independent evaluation rubrics.
 
 ---

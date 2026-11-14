@@ -14,40 +14,57 @@ import {
   Rocket
 } from 'lucide-react';
 
-const TIMELINE_PRELIMINARY = [
+const TIMELINE_JOURNEY = [
   {
-    time: 'PHASE 01',
-    title: 'Registration & Abstract Submission Opens',
-    desc: 'Squads of fixed 3 members register online for MCA or BCA track with ₹300 registration fee. Submit problem statement abstract, proposed architecture, and tech stack.',
-    category: 'SUBMISSION',
+    time: '16 NOV - 30 NOV 2026',
+    title: 'Registration Window',
+    desc: 'Initial team registration opens on 16 November 2026 and closes on 30 November 2026.',
+    category: 'REGISTRATION',
     icon: Rocket,
     highlight: true,
     active: true
   },
   {
-    time: 'PHASE 02',
-    title: 'Jury Evaluation & Technical Screening',
-    desc: 'Panel of faculty and industry experts review all submitted project abstracts on feasibility, technical depth, novelty, and societal impact.',
-    category: 'SCREENING',
-    icon: Compass,
+    time: '1 DEC - 10 DEC 2026',
+    title: 'Final Idea Submission',
+    desc: 'Registered teams submit their project ideas between 1 December 2026 and 10 December 2026.',
+    category: 'IDEA SUBMISSION',
+    icon: Sparkles,
     active: true
   },
   {
-    time: 'PHASE 03',
-    title: 'Shortlist Announcement & Finalist Invites',
-    desc: 'Shortlisted teams from Preliminary Round are declared. Qualifying squads receive official boarding passes for the 24-hour on-campus finale.',
-    category: 'SHORTLIST',
+    time: 'STEP 03',
+    title: 'Idea-Based Shortlisting',
+    desc: 'Teams are shortlisted based on the ideas they submitted.',
+    category: 'SHORTLISTING',
     icon: CheckCircle2,
-    highlight: true,
-    active: false
+    active: true
   },
   {
-    time: 'PHASE 04',
-    title: 'Finalist Briefing & Event Readiness',
-    desc: 'Logistics guidance and final prep details shared with finalists for the 24-hour sprint.',
-    category: 'LOGISTICS',
-    icon: Sparkles,
-    active: false
+    time: 'STEP 04',
+    title: 'Shortlisted Team Registration',
+    desc: 'Shortlisted teams complete their registration before moving on to the hackathon phases.',
+    category: 'TEAM REGISTRATION',
+    icon: Users,
+    active: true
+  },
+  {
+    time: 'PHASE 01',
+    title: 'Online PPT Evaluation',
+    desc: 'Shortlisted, registered teams present their project PPT online for evaluation by the jury.',
+    category: 'ONLINE PPT EVALUATION',
+    icon: Compass,
+    highlight: true,
+    active: true
+  },
+  {
+    time: '5 JAN - 6 JAN 2027',
+    title: '24-Hour Hackathon',
+    desc: 'The on-campus 24-hour hackathon runs from 5 January 2027 to 6 January 2027, followed by project demos and judging.',
+    category: '24-HOUR HACKATHON',
+    icon: Zap,
+    highlight: true,
+    active: true
   }
 ];
 
@@ -55,7 +72,7 @@ const TIMELINE_DAY_1 = [
   {
     time: '08:00 AM',
     title: 'Hacker Check-In & Breakfast',
-    desc: 'Shortlisted squads arrive on campus. Verify digital boarding passes, collect hacker kits, badges, and breakfast.',
+    desc: 'Selected teams arrive on campus. Verify digital boarding passes, collect hacker kits, badges, and breakfast.',
     category: 'LOGISTICS',
     icon: Coffee,
     active: true
@@ -157,11 +174,11 @@ const TIMELINE_DAY_2 = [
 ];
 
 export default function TimelineSection() {
-  const [activeTab, setActiveTab] = useState('preliminary'); // 'preliminary' | 'day1' | 'day2'
+  const [activeTab, setActiveTab] = useState('journey'); // 'journey' | 'day1' | 'day2'
 
   const events =
-    activeTab === 'preliminary'
-      ? TIMELINE_PRELIMINARY
+    activeTab === 'journey'
+      ? TIMELINE_JOURNEY
       : activeTab === 'day1'
       ? TIMELINE_DAY_1
       : TIMELINE_DAY_2;
@@ -180,7 +197,7 @@ export default function TimelineSection() {
             Hackathon <span className="text-amber-400">Roadmap</span>
           </h2>
           <p className="mt-4 text-sm sm:text-base text-gray-300 max-w-2xl font-sans">
-            From the online Preliminary Round abstract review to the 24-hour finale sprint.
+            Register, submit an idea, and qualify through shortlisting before the two hackathon phases.
           </p>
 
           {/* Quick Specifications Pill Strip */}
@@ -199,18 +216,18 @@ export default function TimelineSection() {
             </span>
           </div>
 
-          {/* Tab Switcher: Preliminary Round vs Final Round Day 1 vs Final Round Day 2 */}
+          {/* Full journey and the two days of the Phase 2 hackathon */}
           <div className="mt-8 flex flex-wrap items-center justify-center p-1.5 rounded-full border border-white/15 bg-[#0e0e14] backdrop-blur-xl gap-1">
             <button
-              onClick={() => setActiveTab('preliminary')}
+              onClick={() => setActiveTab('journey')}
               className={`flex items-center gap-2 px-4 sm:px-5 py-2 rounded-full font-mono text-xs uppercase tracking-wider font-semibold transition-all cursor-pointer ${
-                activeTab === 'preliminary'
+                activeTab === 'journey'
                   ? 'bg-amber-400 text-black shadow-[0_0_15px_rgba(245,158,11,0.5)]'
                   : 'text-white/60 hover:text-white'
               }`}
             >
-              <Rocket className="w-3.5 h-3.5" />
-              <span>Round 1: Preliminary</span>
+              <Compass className="w-3.5 h-3.5" />
+              <span>Full Journey</span>
             </button>
             <button
               onClick={() => setActiveTab('day1')}
@@ -221,7 +238,7 @@ export default function TimelineSection() {
               }`}
             >
               <Calendar className="w-3.5 h-3.5" />
-              <span>Final: Day 1 (Jan 5)</span>
+              <span>Phase 2: Day 1 (Jan 5, 2027)</span>
             </button>
             <button
               onClick={() => setActiveTab('day2')}
@@ -232,20 +249,20 @@ export default function TimelineSection() {
               }`}
             >
               <Calendar className="w-3.5 h-3.5" />
-              <span>Final: Day 2 (Jan 6)</span>
+              <span>Phase 2: Day 2 (Jan 6, 2027)</span>
             </button>
           </div>
         </div>
 
         {/* Informative Round Header Note */}
-        {activeTab === 'preliminary' && (
+        {activeTab === 'journey' && (
           <div className="mb-8 p-4 rounded-2xl border border-amber-500/20 bg-amber-500/[0.04] text-center font-mono text-xs text-amber-300">
-            📋 <strong>Preliminary Round:</strong> Teams of 3 submit problem abstracts online with ₹300 registration fee. Shortlisted squads advance to the 24-hour on-campus finale.
+            📋 Registration closes <strong>30 November 2026</strong>, final idea submission runs <strong>1-10 December 2026</strong>, and the hackathon begins <strong>5 January 2027</strong> and concludes <strong>6 January 2027</strong>.
           </div>
         )}
         {(activeTab === 'day1' || activeTab === 'day2') && (
           <div className="mb-8 p-4 rounded-2xl border border-emerald-500/20 bg-emerald-500/[0.04] text-center font-mono text-xs text-emerald-300">
-            ⚡ <strong>Final Round:</strong> Shortlisted squads assemble for the 24-hour non-stop sprint to win ₹35,000 in cash prizes.
+            ⚡ <strong>Phase 2:</strong> Selected teams take part in the 24-hour on-campus hackathon and compete for ₹35,000 in cash prizes.
           </div>
         )}
 

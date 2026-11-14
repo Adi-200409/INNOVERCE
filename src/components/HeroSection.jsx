@@ -136,7 +136,7 @@ export default function HeroSection({ onOpenRegister, onOpenTracks }) {
           </div>
           <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3.5 py-1.5 rounded-full border border-white/15 bg-black/65 backdrop-blur-md text-xs sm:text-[13px] font-mono text-gray-200 shadow-[0_2px_12px_rgba(0,0,0,0.55)]">
             <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-cyan-400 shrink-0" />
-            <span>Preliminary Round ➔ Shortlisted Final Round</span>
+            <span>Online PPT Evaluation ➔ 24-Hour Hackathon</span>
           </div>
         </div>
 

@@ -21,7 +21,7 @@ export default function RegisterModal({ isOpen, onClose }) {
     member2Email: '',
     member3Name: '',
     member3Email: '',
-    abstractUrl: ''
+    pptUrl: ''
   });
   const [submitted, setSubmitted] = useState(false);
 
@@ -69,14 +69,14 @@ export default function RegisterModal({ isOpen, onClose }) {
             <div className="flex items-center gap-2 mb-2">
               <span className="w-2 h-2 rounded-full bg-amber-400 shadow-[0_0_8px_#f59e0b] animate-pulse" />
               <p className="font-mono text-xs uppercase tracking-widest text-amber-400">
-                INNOVERSE 3.0 // PRELIMINARY ROUND
+                INNOVERSE 3.0 // PHASE 1: ONLINE PPT EVALUATION
               </p>
             </div>
             <h2 className="text-2xl sm:text-3xl font-display font-black text-white tracking-tight">
               Register Your 3-Member Squad
             </h2>
             <p className="text-xs sm:text-sm text-gray-400 mt-1 mb-4">
-              Submit your team details for the Preliminary Round. Shortlisted teams advance to the 24-hour finale to compete for the ₹35,000 prize pool.
+              Submit your team details and project PPT for online evaluation. Selected teams advance to the 24-hour hackathon to compete for the ₹35,000 prize pool.
             </p>
 
             {/* Quick Specs Strip */}
@@ -237,16 +237,16 @@ export default function RegisterModal({ isOpen, onClose }) {
                 </div>
               </div>
 
-              {/* Project Abstract / Link */}
+              {/* Project PPT Link */}
               <div>
                 <label className="block font-mono text-[11px] uppercase tracking-wider text-gray-300 mb-1.5">
-                  Project Abstract / Proposal Link (Drive / GitHub / Notion)
+                  Project PPT Link (Google Drive)
                 </label>
                 <input
                   type="url"
-                  placeholder="https://drive.google.com/... or GitHub URL"
-                  value={formData.abstractUrl}
-                  onChange={(e) => setFormData({ ...formData, abstractUrl: e.target.value })}
+                  placeholder="https://drive.google.com/..."
+                  value={formData.pptUrl}
+                  onChange={(e) => setFormData({ ...formData, pptUrl: e.target.value })}
                   className="w-full px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/15 focus:border-amber-400 focus:outline-none focus:ring-1 focus:ring-amber-400 font-sans text-sm text-white placeholder-gray-500 transition-all"
                 />
               </div>
@@ -255,7 +255,7 @@ export default function RegisterModal({ isOpen, onClose }) {
               <div className="p-3.5 rounded-xl border border-emerald-500/25 bg-emerald-500/[0.06] flex items-start gap-2.5 text-xs text-emerald-300">
                 <Ticket className="w-4 h-4 shrink-0 mt-0.5 text-emerald-400" />
                 <div>
-                  <strong>Registration Fee: ₹300 per team</strong>. Covers preliminary round evaluation. Shortlisted teams qualifying for the final round receive full event support. Payment instructions will be emailed to the team leader.
+                  <strong>Registration Fee: ₹300 per team</strong>. Covers the online PPT evaluation. Selected teams receive details for the 24-hour hackathon. Payment instructions will be emailed to the team leader.
                 </div>
               </div>
 
@@ -265,7 +265,7 @@ export default function RegisterModal({ isOpen, onClose }) {
                 className="w-full mt-4 font-mono text-xs uppercase tracking-wider font-bold py-3.5 px-6 rounded-full bg-amber-400 hover:bg-amber-300 text-black shadow-[0_0_25px_rgba(245,158,11,0.4)] hover:shadow-[0_0_35px_rgba(245,158,11,0.65)] hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
                 <Rocket className="w-4 h-4 text-black" />
-                <span>Submit Preliminary Registration (₹300)</span>
+                <span>Submit Registration (₹300)</span>
               </button>
             </form>
           </div>
@@ -275,9 +275,9 @@ export default function RegisterModal({ isOpen, onClose }) {
             <div className="w-16 h-16 rounded-full bg-amber-400/20 border border-amber-400 flex items-center justify-center text-amber-400 mb-4 animate-bounce">
               <CheckCircle2 className="w-8 h-8" />
             </div>
-            <h3 className="text-2xl font-display font-black text-white">Preliminary Registration Submitted!</h3>
+            <h3 className="text-2xl font-display font-black text-white">Phase 1 Entry Submitted!</h3>
             <p className="text-sm text-gray-300 max-w-sm mt-2 mb-6">
-              Welcome squad <strong className="text-white">{formData.teamName || 'Innovators'}</strong>! Your preliminary entry has been received for the <strong className="text-amber-400">{formData.category === 'mca' ? 'MCA Track' : 'BCA Track'}</strong>.
+              Welcome squad <strong className="text-white">{formData.teamName || 'Innovators'}</strong>! Your PPT evaluation entry has been received for the <strong className="text-amber-400">{formData.category === 'mca' ? 'MCA Track' : 'BCA Track'}</strong>.
             </p>
 
             <section
@@ -305,7 +305,7 @@ export default function RegisterModal({ isOpen, onClose }) {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/15 to-transparent" />
                 <div className="absolute inset-x-4 bottom-4">
                   <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-amber-300">
-                    Preliminary round // Passenger
+                    Phase 1 PPT evaluation // Passenger
                   </p>
                   <p className="mt-1 truncate text-xl font-bold text-white sm:text-2xl">
                     {formData.leaderName || 'Team leader'}
@@ -357,7 +357,7 @@ export default function RegisterModal({ isOpen, onClose }) {
             </div>
 
             <p className="text-xs text-gray-400 mb-6 max-w-md">
-              Shortlisted squads will receive official invitations for the 24-hour hackathon to battle for the ₹35,000 prize pool!
+              Selected teams will receive official invitations for the 24-hour hackathon to compete for the ₹35,000 prize pool!
             </p>
 
             <button
