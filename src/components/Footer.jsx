@@ -1,5 +1,5 @@
 import React from 'react';
-import { Terminal, ArrowUp, Compass } from 'lucide-react';
+import { ArrowUp, Compass } from 'lucide-react';
 
 export default function Footer({ onOpenRegister, onOpenTracks }) {
   const scrollToTop = () => {
@@ -51,7 +51,7 @@ export default function Footer({ onOpenRegister, onOpenTracks }) {
               </li>
               <li>
                 <a href="#tracks" onClick={(e) => scrollToSection(e, 'tracks')} className="hover:text-amber-400 transition-colors">
-                  5 Arenas & Tracks
+                  Sector Focus Areas
                 </a>
               </li>
               <li>

@@ -9,10 +9,8 @@ import {
   Ticket,
   Phone,
   Mail,
-  Building,
   CheckCircle2,
   ExternalLink,
-  ShieldCheck,
   Sparkles,
   AlertCircle,
   LogIn
@@ -231,21 +229,24 @@ export default function RegistrationPage({ onBackToHome, embedded = false, onSwi
                 </div>
               </div>
 
-              {/* Theme Tracks Strip */}
+              {/* Sector Focus Areas Strip */}
               <div className="mt-5 p-4 rounded-xl border border-white/10 bg-white/[0.02] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <div className="flex items-center gap-2 font-mono text-xs text-amber-300 font-semibold">
+                <div className="flex items-center gap-2 font-mono text-xs text-amber-300 font-semibold shrink-0">
                   <Sparkles className="w-4 h-4 text-amber-400" />
-                  <span>🎯 Theme Tracks:</span>
+                  <span>🎯 Sector Focus Areas:</span>
                 </div>
                 <div className="flex flex-wrap gap-2 text-xs font-mono">
-                  <span className="px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-gray-200">
-                    Cyber Security
+                  <span className="px-2.5 py-1 rounded-md bg-amber-500/10 border border-amber-500/20 text-amber-200">
+                    Fintech
                   </span>
-                  <span className="px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-gray-200">
-                    Blockchain
+                  <span className="px-2.5 py-1 rounded-md bg-blue-500/10 border border-blue-500/20 text-blue-200">
+                    Educational
                   </span>
-                  <span className="px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-gray-200">
-                    Artificial Intelligence & Machine Learning
+                  <span className="px-2.5 py-1 rounded-md bg-emerald-500/10 border border-emerald-500/20 text-emerald-200">
+                    Healthcare
+                  </span>
+                  <span className="px-2.5 py-1 rounded-md bg-orange-500/10 border border-orange-500/20 text-orange-200">
+                    Agriculture
                   </span>
                 </div>
               </div>

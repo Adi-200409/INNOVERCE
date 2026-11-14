@@ -106,11 +106,11 @@ const KNOWLEDGE_BASE = [
     }
   },
   {
-    triggers: ['track', 'tracks', 'arena', 'domains', 'problem statement', 'challenge', 'categories', 'theme'],
+    triggers: ['track', 'tracks', 'arena', 'domains', 'problem statement', 'challenge', 'categories', 'theme', 'sector', 'sectors'],
     response: {
-      text: "Builders will construct solutions across **5 High-Ambition Mission Arenas**:\n\n1. 🤖 **Autonomous AI & Swarm Intelligence** (`₹15K Bounty`)\n   *Multi-agent frameworks, LangGraph, self-healing codebases, agent economies*\n2. ⛓️ **Decentralized Compute & Cryptography** (`₹12K Bounty`)\n   *zk-SNARKs verifiable ML, distributed GPU grids, Solana, Bittensor*\n3. 🥽 **Spatial Computing & Next-Gen Interfaces** (`₹10K Bounty`)\n   *WebGPU, Three.js, Vision Pro WebXR, Gaussian splatting, 3D worlds*\n4. 📡 **Intelligent Edge & Neural Hardware** (`₹8K Bounty`)\n   *TinyML, ESP32, robotic sensor fusion, low-power Rust firmware*\n5. 🚀 **Open Innovation & Wildcard Moonshots** (`₹5K Bounty`)\n   *Climate tech, synthetic bio-computing, quantum simulations, zero-to-one*",
+      text: "Builders will construct solutions across **4 Sector Focus Areas**:\n\n1. 💳 **Fintech**: Financial technology\n   *Digital payments, algorithmic fraud detection, micro-lending, fiscal AI*\n2. 🎓 **Educational**: Learning and education\n   *Adaptive learning engines, gamified pedagogy, automated assessment, vernacular access*\n3. 🩺 **Healthcare**: Health and wellbeing\n   *Telemedicine, AI-assisted diagnostics, vital tracking, remote monitoring*\n4. 🌱 **Agriculture**: Farming and agri-solutions\n   *Precision farming, crop disease diagnostics, agri IoT, supply chain logistics*\n\n💡 *Note: Sectors are open focus domains for real-world innovation—you do not need to lock in a sector during registration!*",
       actions: [
-        { label: '🌌 Explore 5 Arenas', type: 'tracks' }
+        { label: '🌌 Explore 4 Sectors', type: 'tracks' }
       ]
     }
   },
@@ -205,7 +205,7 @@ const QUICK_CHANNELS = [
   { id: 'CH-01', label: 'Registration', query: 'How to Register?' },
   { id: 'CH-02', label: '₹300 Squad Fee', query: 'Team Size & Entry Fee?' },
   { id: 'CH-03', label: '₹35K Prizes', query: 'Prize Pool & Distribution' },
-  { id: 'CH-04', label: '5 Arenas', query: 'What are the 5 Tracks?' },
+  { id: 'CH-04', label: '4 Sectors', query: 'What are the Sector Focus Areas?' },
   { id: 'CH-05', label: 'KLS GIT Venue', query: 'Where is the Venue?' },
   { id: 'CH-06', label: 'Flight Rules', query: 'Selection Rounds & Rules' }
 ];
