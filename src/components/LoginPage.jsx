@@ -234,7 +234,11 @@ export default function LoginPage({ onBackToHome }) {
               teamName={squad.team_name}
               leaderName={squad.leader_name}
               leaderEmail={squad.leader_email}
+              leaderContact={squad.leader_contact}
               institutionName={squad.institution_name}
+              collegeAddress={squad.college_address}
+              member1Name={squad.member1_name}
+              member2Name={squad.member2_name}
               stream={squad.stream}
               confirmationId={squad.confirmation_id}
               submitted

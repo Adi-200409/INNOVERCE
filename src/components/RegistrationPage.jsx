@@ -542,7 +542,11 @@ export default function RegistrationPage({ onBackToHome, embedded = false, onSwi
                 teamName={formData.teamName}
                 leaderName={formData.leaderName}
                 leaderEmail={formData.leaderEmail}
+                leaderContact={formData.leaderContact}
                 institutionName={formData.institutionName}
+                collegeAddress={formData.collegeAddress}
+                member1Name={formData.member1Name}
+                member2Name={formData.member2Name}
                 stream={formData.stream}
                 confirmationId={confirmationId}
                 submitted
