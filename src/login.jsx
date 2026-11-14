@@ -4,6 +4,10 @@ import './index.css';
 import './App.css';
 import CosmicBackground from './components/CosmicBackground';
 import LoginPage from './components/LoginPage';
+import { markInitialPreloaderSeen } from './utils/sessionPreloader';
+
+// Mark preloader seen so returning to Home does not trigger loading screen
+markInitialPreloaderSeen();
 
 export default function LoginApp() {
   const handleBackToHome = () => {

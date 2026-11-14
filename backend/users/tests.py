@@ -56,21 +56,25 @@ class RegistrationAPITestCase(TestCase):
 
     def test_sequential_serial_confirmation_ids(self):
         # Register squad 1
-        res1 = self.client.post(reverse('register'), data=self.valid_payload, format='json')
+        payload1 = self.valid_payload.copy()
+        payload1['payment_screenshot'] = create_test_image('sq1.png')
+        res1 = self.client.post(reverse('register'), data=payload1, format='multipart')
         self.assertEqual(res1.status_code, status.HTTP_200_OK)
         self.assertEqual(res1.data['confirmationId'], 'INN-3.0-001')
 
         # Register squad 2
         payload2 = self.valid_payload.copy()
         payload2['teamName'] = "AlphaSquad"
-        res2 = self.client.post(reverse('register'), data=payload2, format='json')
+        payload2['payment_screenshot'] = create_test_image('sq2.png')
+        res2 = self.client.post(reverse('register'), data=payload2, format='multipart')
         self.assertEqual(res2.status_code, status.HTTP_200_OK)
         self.assertEqual(res2.data['confirmationId'], 'INN-3.0-002')
 
         # Register squad 3
         payload3 = self.valid_payload.copy()
         payload3['teamName'] = "BetaSquad"
-        res3 = self.client.post(reverse('register'), data=payload3, format='json')
+        payload3['payment_screenshot'] = create_test_image('sq3.png')
+        res3 = self.client.post(reverse('register'), data=payload3, format='multipart')
         self.assertEqual(res3.status_code, status.HTTP_200_OK)
         self.assertEqual(res3.data['confirmationId'], 'INN-3.0-003')
 

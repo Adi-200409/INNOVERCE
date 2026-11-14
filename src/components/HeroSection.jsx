@@ -80,11 +80,32 @@ export default function HeroSection({ onOpenRegister, onOpenTracks }) {
               </span>
             </div>
 
-            {/* Department Presents Text */}
-            <div className="px-4 sm:px-5 py-1 sm:py-1.5 rounded-full bg-black/75 backdrop-blur-md border border-white/10 shadow-[0_2px_12px_rgba(0,0,0,0.8)] mt-1">
-              <p className="font-mono text-[11px] sm:text-xs md:text-sm tracking-[0.22em] sm:tracking-[0.28em] uppercase text-white/90 font-medium">
-                Master Of Computer Applications <span className="text-amber-400 font-semibold">presents</span>
-              </p>
+            {/* Department Presents Text & Industry Partner */}
+            <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 mt-1.5">
+              <div className="px-4 sm:px-5 py-1.5 sm:py-2 rounded-full bg-black/75 backdrop-blur-md border border-white/10 shadow-[0_2px_12px_rgba(0,0,0,0.8)] flex items-center">
+                <p className="font-mono text-[11px] sm:text-xs md:text-sm tracking-[0.2em] sm:tracking-[0.25em] uppercase text-white/90 font-medium">
+                  Master Of Computer Applications <span className="text-amber-400 font-semibold">presents</span>
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2.5 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full bg-black/75 backdrop-blur-md border border-white/15 shadow-[0_2px_15px_rgba(0,0,0,0.8)]">
+                <span className="font-mono text-[11px] sm:text-xs text-white/70 uppercase tracking-wider font-semibold">
+                  in collaboration with
+                </span>
+                <a
+                  href="https://dlithe.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center px-3.5 py-1 sm:py-1.5 rounded-xl bg-white hover:bg-white/95 transition-all hover:scale-105 cursor-pointer shadow-[0_2px_10px_rgba(0,0,0,0.4)]"
+                  title="DLithe - Official Industry Partner (dlithe.com)"
+                >
+                  <img
+                    src="/dlithe-logo.png"
+                    alt="DLithe Official Logo"
+                    className="h-6 sm:h-7 md:h-8 w-auto object-contain"
+                  />
+                </a>
+              </div>
             </div>
           </div>
 

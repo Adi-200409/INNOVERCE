@@ -19,6 +19,7 @@ import MissionControlChatbot from './components/MissionControlChatbot';
 import LoginPage from './components/LoginPage';
 import AuthGate from './components/AuthGate';
 import { readStoredAuthUser, writeStoredAuthUser } from './utils/authSession';
+import { hasSeenInitialPreloader, markInitialPreloaderSeen } from './utils/sessionPreloader';
 import './App.css';
 
 function App() {
@@ -26,10 +27,13 @@ function App() {
   const isRulesPage = normalizedPath === '/rules';
   const isLoginPage = normalizedPath === '/login' || window.location.hash === '#login';
 
+  const alreadySeenPreloader = hasSeenInitialPreloader();
+  const shouldShowPreloader = !isRulesPage && !isLoginPage && !alreadySeenPreloader;
+
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
   const [isTracksOpen, setIsTracksOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(!isRulesPage);
-  const [isReady, setIsReady] = useState(isRulesPage);
+  const [isLoading, setIsLoading] = useState(shouldShowPreloader);
+  const [isReady, setIsReady] = useState(isRulesPage || alreadySeenPreloader);
   const [authUser, setAuthUser] = useState(readStoredAuthUser);
 
   // Guarantee that on initial load and reload, the page always starts at top: 0
@@ -68,6 +72,7 @@ function App() {
   const showAuthGate = !isLoading && !authUser && !isRulesPage;
 
   const handlePreloaderStartExit = () => {
+    markInitialPreloaderSeen();
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     if (authUser || isRulesPage) {
       setIsReady(true);
@@ -75,6 +80,7 @@ function App() {
   };
 
   const handlePreloaderComplete = () => {
+    markInitialPreloaderSeen();
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     setIsLoading(false);
     if (authUser || isRulesPage) {
@@ -149,11 +155,14 @@ function App() {
             onOpenTracks={() => setIsTracksOpen(true)}
           />
 
-          {/* 2. About & Metrics Section */}
+          {/* 2. About & Metrics Section (includes MCA Department) */}
           <AboutSection
             onOpenRegister={handleOpenRegister}
             onOpenTracks={() => setIsTracksOpen(true)}
           />
+
+          {/* 3. Industry & Innovation Partners Section (After MCA Department) */}
+          <SponsorsSection />
 
           {/* 4. 5 Mission Arenas & Problem Tracks */}
           <TracksSection
@@ -169,10 +178,7 @@ function App() {
             onOpenRegister={handleOpenRegister}
           />
 
-          {/* 7. Sponsors & Innovation Partners */}
-          <SponsorsSection />
-
-          {/* 8. Developers & Organizers */}
+          {/* 7. Developers & Organizers */}
           <TeamSection />
 
           {/* 9. The Journey So Far */}

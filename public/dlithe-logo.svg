@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80" width="100%" height="100%">
+  <defs>
+    <linearGradient id="dlitheBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#2563eb" />
+    </linearGradient>
+    <linearGradient id="dlitheOrange" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fb923c" />
+      <stop offset="100%" stop-color="#f59e0b" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="glow" />
+      <feComposite in="SourceGraphic" in2="glow" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Stylized Icon Mark (Connected nodes / Geometric D) -->
+  <g transform="translate(15, 12)">
+    <!-- Tech diamond circuit base -->
+    <rect x="10" y="8" width="40" height="40" rx="10" fill="none" stroke="url(#dlitheBlue)" stroke-width="4" transform="rotate(45 30 28)" />
+    <!-- Center glowing core -->
+    <circle cx="30" cy="28" r="7" fill="url(#dlitheOrange)" filter="url(#glow)" />
+    <!-- Dynamic orbit lines -->
+    <path d="M 12 28 Q 30 6 48 28" fill="none" stroke="url(#dlitheBlue)" stroke-width="2.5" stroke-linecap="round" />
+    <path d="M 12 28 Q 30 50 48 28" fill="none" stroke="url(#dlitheOrange)" stroke-width="2.5" stroke-linecap="round" />
+  </g>
+
+  <!-- Wordmark "DLithe" -->
+  <text x="88" y="47" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif" font-weight="900" font-size="34" letter-spacing="0.5" fill="#ffffff">
+    D<tspan fill="#38bdf8">L</tspan><tspan fill="#ffffff">ithe</tspan>
+  </text>
+
+  <!-- Tagline -->
+  <text x="90" y="64" font-family="'Courier New', monospace" font-size="9.5" font-weight="700" letter-spacing="2.5" fill="#f59e0b" text-transform="uppercase">
+    Transforming Talent
+  </text>
+</svg>
+

@@ -46,7 +46,12 @@ export default function Footer({ onOpenRegister, onOpenTracks }) {
             <ul className="space-y-2.5 font-mono text-xs text-gray-400">
               <li>
                 <a href="#about" onClick={(e) => scrollToSection(e, 'about')} className="hover:text-amber-400 transition-colors">
-                  About Event
+                  About Event & MCA Dept
+                </a>
+              </li>
+              <li>
+                <a href="#sponsors" onClick={(e) => scrollToSection(e, 'sponsors')} className="hover:text-amber-400 transition-colors">
+                  Industry Partners
                 </a>
               </li>
               <li>
@@ -62,11 +67,6 @@ export default function Footer({ onOpenRegister, onOpenTracks }) {
               <li>
                 <a href="#prizes" onClick={(e) => scrollToSection(e, 'prizes')} className="hover:text-amber-400 transition-colors">
                   Prizes & Bounties
-                </a>
-              </li>
-              <li>
-                <a href="#sponsors" onClick={(e) => scrollToSection(e, 'sponsors')} className="hover:text-amber-400 transition-colors">
-                  Sponsors
                 </a>
               </li>
             </ul>
