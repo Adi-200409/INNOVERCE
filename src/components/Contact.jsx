@@ -1,5 +1,6 @@
 import React from 'react';
 import { MessageCircle, Phone } from 'lucide-react';
+import { useScrollReveal } from '../hooks/useScrollReveal';
 
 const CONTACTS = [
   { name: 'Vaishnavi Shivkale', phone: '79751 11929' },
@@ -7,14 +8,38 @@ const CONTACTS = [
 ];
 
 export default function Contact() {
+  const [sectionRef, isVisible] = useScrollReveal();
+
   return (
-    <section id="contact" className="relative w-full overflow-hidden bg-[#060608] px-4 py-20 text-white sm:px-6 sm:py-28">
+    <section
+      ref={sectionRef}
+      id="contact"
+      className="relative w-full overflow-hidden bg-[#060608] px-4 scroll-mt-20 pt-16 sm:pt-24 pb-14 sm:pb-18 text-white sm:px-6 border-t border-white/5"
+    >
+      {/* Top Horizon Transition Beam */}
+      <div className="pointer-events-none absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-amber-400/40 to-transparent" />
+      <div className="pointer-events-none absolute top-0 inset-x-0 h-24 bg-gradient-to-b from-amber-500/[0.04] via-transparent to-transparent" />
+
       <div className="pointer-events-none absolute inset-0 bg-tech-dots opacity-40" />
-      <div className="pointer-events-none absolute -left-40 top-40 h-96 w-96 rounded-full bg-amber-500/10 blur-[140px]" />
-      <div className="pointer-events-none absolute -right-40 top-1/3 h-96 w-96 rounded-full bg-blue-600/10 blur-[140px]" />
+      <div
+        className={`pointer-events-none absolute -left-40 top-40 h-96 w-96 rounded-full bg-amber-500/10 blur-[140px] transition-opacity duration-1000 ease-out ${
+          isVisible ? 'opacity-100' : 'opacity-0'
+        }`}
+      />
+      <div
+        className={`pointer-events-none absolute -right-40 top-1/3 h-96 w-96 rounded-full bg-blue-600/10 blur-[140px] transition-opacity duration-1000 delay-150 ease-out ${
+          isVisible ? 'opacity-100' : 'opacity-0'
+        }`}
+      />
 
       <div className="relative z-10 mx-auto max-w-4xl">
-        <header className="mb-14 text-center">
+        <header
+          className={`mb-14 text-center transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+            isVisible
+              ? 'opacity-100 translate-y-0 scale-100'
+              : 'opacity-0 translate-y-8 scale-[0.98]'
+          }`}
+        >
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-amber-400/30 bg-amber-400/10 text-amber-300 font-mono text-xs uppercase tracking-widest mb-4">
             <span>INNOVERSE 3.0 HELPDESK</span>
           </div>
@@ -29,7 +54,11 @@ export default function Contact() {
           </p>
         </header>
 
-        <section className="group mx-auto max-w-3xl rounded-3xl border border-white/10 bg-[#0c0c12]/80 p-6 shadow-[0_20px_60px_rgba(0,0,0,0.4)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-amber-400/30 hover:shadow-[0_24px_64px_rgba(0,0,0,0.5)] sm:p-8">
+        <section
+          className={`group mx-auto max-w-3xl rounded-3xl border border-white/10 bg-[#0c0c12]/80 p-6 shadow-[0_20px_60px_rgba(0,0,0,0.4)] backdrop-blur-xl transition-all duration-700 delay-150 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1 hover:border-amber-400/30 hover:shadow-[0_24px_64px_rgba(0,0,0,0.5)] sm:p-8 ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          }`}
+        >
           <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl border border-amber-400/25 bg-amber-400/10 transition-transform duration-300 group-hover:scale-105">
             <MessageCircle aria-hidden="true" className="h-9 w-9 text-amber-400" strokeWidth={1.8} />
           </div>

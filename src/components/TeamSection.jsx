@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Code2, User, ShieldCheck, Mail, Sparkles } from 'lucide-react';
+import { useScrollReveal } from '../hooks/useScrollReveal';
 
 // Developers Configuration - Replace names, roles and image URLs when photos are ready
 const DEVELOPERS = [
@@ -150,15 +151,34 @@ function TeamMemberCard({ member }) {
 
 export default function TeamSection() {
   const [activeTab, setActiveTab] = useState('developers'); // 'developers' | 'organizers'
+  const [sectionRef, isVisible] = useScrollReveal();
 
   return (
-    <section id="team" className="relative w-full py-24 sm:py-32 px-4 sm:px-6 lg:px-8 bg-[#060608] z-20 overflow-hidden">
+    <section
+      ref={sectionRef}
+      id="team"
+      className="relative w-full scroll-mt-20 pt-20 sm:pt-28 pb-16 sm:pb-20 px-4 sm:px-6 lg:px-8 bg-[#060608] z-20 overflow-hidden border-t border-white/5"
+    >
+      {/* Top Horizon Transition Beam */}
+      <div className="pointer-events-none absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-amber-400/40 to-transparent" />
+      <div className="pointer-events-none absolute top-0 inset-x-0 h-24 bg-gradient-to-b from-amber-500/[0.04] via-transparent to-transparent" />
+
       {/* Background ambient lighting */}
-      <div className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[450px] bg-[radial-gradient(ellipse_at_center,rgba(245,158,11,0.06)_0%,rgba(59,130,246,0.04)_60%,transparent_80%)] blur-[100px]" />
+      <div
+        className={`pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[450px] bg-[radial-gradient(ellipse_at_center,rgba(245,158,11,0.06)_0%,rgba(59,130,246,0.04)_60%,transparent_80%)] blur-[100px] transition-opacity duration-1000 ease-out ${
+          isVisible ? 'opacity-100' : 'opacity-0'
+        }`}
+      />
 
       <div className="relative max-w-6xl mx-auto space-y-10 sm:space-y-12">
         {/* Main Section Header */}
-        <div className="flex flex-col items-start md:items-center md:text-center">
+        <div
+          className={`flex flex-col items-start md:items-center md:text-center transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+            isVisible
+              ? 'opacity-100 translate-y-0 scale-100'
+              : 'opacity-0 translate-y-8 scale-[0.98]'
+          }`}
+        >
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-amber-400/30 bg-amber-400/10 text-amber-300 font-mono text-xs uppercase tracking-widest mb-4">
             <Code2 className="w-3.5 h-3.5" />
             <span>DEVELOPERS &amp; ORGANIZERS</span>
@@ -202,61 +222,67 @@ export default function TeamSection() {
         </div>
 
         {/* Display: Shows Developers by default, switches to Organizers on toggle */}
-        {activeTab === 'developers' ? (
-          <div id="developers" className="space-y-6">
-            <div className="flex items-center justify-between border-b border-white/10 pb-4">
-              <div className="flex items-center gap-3">
-                <div className="p-2 rounded-xl bg-amber-400/10 border border-amber-400/30 text-amber-300">
-                  <Code2 className="w-5 h-5" />
+        <div
+          className={`transition-all duration-700 delay-150 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          }`}
+        >
+          {activeTab === 'developers' ? (
+            <div id="developers" className="space-y-6">
+              <div className="flex items-center justify-between border-b border-white/10 pb-4">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-xl bg-amber-400/10 border border-amber-400/30 text-amber-300">
+                    <Code2 className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl sm:text-2xl font-display font-bold text-white uppercase tracking-wide">
+                      Core Developers
+                    </h3>
+                    <p className="text-xs font-mono text-gray-400">
+                      Platform Architecture &amp; Engineering
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-xl sm:text-2xl font-display font-bold text-white uppercase tracking-wide">
-                    Core Developers
-                  </h3>
-                  <p className="text-xs font-mono text-gray-400">
-                    Platform Architecture &amp; Engineering
-                  </p>
-                </div>
+                <span className="text-xs font-mono px-3 py-1 rounded-full border border-amber-400/25 bg-amber-400/10 text-amber-300">
+                  {DEVELOPERS.length} Engineers
+                </span>
               </div>
-              <span className="text-xs font-mono px-3 py-1 rounded-full border border-amber-400/25 bg-amber-400/10 text-amber-300">
-                {DEVELOPERS.length} Engineers
-              </span>
-            </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {DEVELOPERS.map((member) => (
-                <TeamMemberCard key={member.id} member={member} />
-              ))}
-            </div>
-          </div>
-        ) : (
-          <div id="organizers" className="space-y-6">
-            <div className="flex items-center justify-between border-b border-white/10 pb-4">
-              <div className="flex items-center gap-3">
-                <div className="p-2 rounded-xl bg-cyan-400/10 border border-cyan-400/30 text-cyan-300">
-                  <ShieldCheck className="w-5 h-5" />
-                </div>
-                <div>
-                  <h3 className="text-xl sm:text-2xl font-display font-bold text-white uppercase tracking-wide">
-                    Event Organizers
-                  </h3>
-                  <p className="text-xs font-mono text-gray-400">
-                    Faculty Coordination &amp; Operations Leadership
-                  </p>
-                </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {DEVELOPERS.map((member) => (
+                  <TeamMemberCard key={member.id} member={member} />
+                ))}
               </div>
-              <span className="text-xs font-mono px-3 py-1 rounded-full border border-cyan-400/25 bg-cyan-400/10 text-cyan-300">
-                {ORGANIZERS.length} Leads
-              </span>
             </div>
+          ) : (
+            <div id="organizers" className="space-y-6">
+              <div className="flex items-center justify-between border-b border-white/10 pb-4">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-xl bg-cyan-400/10 border border-cyan-400/30 text-cyan-300">
+                    <ShieldCheck className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl sm:text-2xl font-display font-bold text-white uppercase tracking-wide">
+                      Event Organizers
+                    </h3>
+                    <p className="text-xs font-mono text-gray-400">
+                      Faculty Coordination &amp; Operations Leadership
+                    </p>
+                  </div>
+                </div>
+                <span className="text-xs font-mono px-3 py-1 rounded-full border border-cyan-400/25 bg-cyan-400/10 text-cyan-300">
+                  {ORGANIZERS.length} Leads
+                </span>
+              </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {ORGANIZERS.map((member) => (
-                <TeamMemberCard key={member.id} member={member} />
-              ))}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {ORGANIZERS.map((member) => (
+                  <TeamMemberCard key={member.id} member={member} />
+                ))}
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
 
         {/* Informative Note for adding pictures */}
         <div className="pt-4 text-center">

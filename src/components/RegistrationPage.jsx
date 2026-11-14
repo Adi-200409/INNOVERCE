@@ -416,19 +416,19 @@ export default function RegistrationPage({ onBackToHome, embedded = false, onSwi
                 <span className="text-white/60">For any queries, contact:</span>
                 <div className="flex flex-wrap items-center gap-4">
                   <a
-                    href="tel:6362237616"
+                    href="tel:7975111929"
                     className="inline-flex items-center gap-1.5 text-amber-300 hover:text-amber-200 transition-colors"
                   >
                     <Phone className="w-3.5 h-3.5 text-amber-400" />
-                    <span>Praveen H B – 6362237616</span>
+                    <span>Vaishnavi Shivkale – 79751 11929</span>
                   </a>
                   <span className="text-white/20 hidden sm:inline">•</span>
                   <a
-                    href="tel:7760819024"
+                    href="tel:7676687006"
                     className="inline-flex items-center gap-1.5 text-amber-300 hover:text-amber-200 transition-colors"
                   >
                     <Phone className="w-3.5 h-3.5 text-amber-400" />
-                    <span>Sriraj R Y – 7760819024</span>
+                    <span>Aditya Belled – 76766 87006</span>
                   </a>
                 </div>
               </div>
@@ -971,7 +971,7 @@ export default function RegistrationPage({ onBackToHome, embedded = false, onSwi
             <div className="p-4 rounded-xl border border-white/10 bg-white/[0.02] max-w-xl mx-auto text-xs font-mono text-gray-300 mb-8 space-y-1">
               <div className="text-white/70">For any queries, reach out to coordinators:</div>
               <div className="text-amber-300">
-                Praveen H B: <a href="tel:6362237616" className="hover:underline">6362237616</a> | Sriraj R Y: <a href="tel:7760819024" className="hover:underline">7760819024</a>
+                Vaishnavi Shivkale: <a href="tel:7975111929" className="hover:underline">79751 11929</a> | Aditya Belled: <a href="tel:7676687006" className="hover:underline">76766 87006</a>
               </div>
             </div>
 

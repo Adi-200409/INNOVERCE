@@ -8,6 +8,7 @@ import {
   Layers,
   Sparkles
 } from 'lucide-react';
+import { useScrollReveal } from '../hooks/useScrollReveal';
 
 export const TRACKS_DATA = [
   {
@@ -65,14 +66,34 @@ export const TRACKS_DATA = [
 ];
 
 export default function TracksSection({ onOpenRegister }) {
+  const [sectionRef, isVisible] = useScrollReveal();
+
   return (
-    <section id="tracks" className="relative w-full py-24 sm:py-32 px-4 sm:px-6 lg:px-8 bg-[#060608]/90 z-20">
+    <section
+      ref={sectionRef}
+      id="tracks"
+      className="relative w-full scroll-mt-20 pt-20 sm:pt-28 pb-16 sm:pb-20 px-4 sm:px-6 lg:px-8 bg-[#060608]/90 z-20 border-t border-white/5 overflow-hidden"
+    >
+      {/* Top Horizon Transition Beam */}
+      <div className="pointer-events-none absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-amber-400/40 to-transparent" />
+      <div className="pointer-events-none absolute top-0 inset-x-0 h-24 bg-gradient-to-b from-amber-500/[0.04] via-transparent to-transparent" />
+
       {/* Background ambient radial glow */}
-      <div className="pointer-events-none absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[500px] bg-[radial-gradient(ellipse_at_center,rgba(245,158,11,0.08)_0%,rgba(59,130,246,0.04)_50%,transparent_75%)] blur-[90px]" />
+      <div
+        className={`pointer-events-none absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[500px] bg-[radial-gradient(ellipse_at_center,rgba(245,158,11,0.08)_0%,rgba(59,130,246,0.04)_50%,transparent_75%)] blur-[90px] transition-opacity duration-1000 ease-out ${
+          isVisible ? 'opacity-100' : 'opacity-0'
+        }`}
+      />
 
       <div className="relative max-w-6xl mx-auto">
         {/* Section Header */}
-        <div className="flex flex-col items-start md:items-center md:text-center mb-16 sm:mb-20">
+        <div
+          className={`flex flex-col items-start md:items-center md:text-center mb-16 sm:mb-20 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+            isVisible
+              ? 'opacity-100 translate-y-0 scale-100'
+              : 'opacity-0 translate-y-8 scale-[0.98]'
+          }`}
+        >
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-amber-400/30 bg-amber-400/10 text-amber-300 font-mono text-xs uppercase tracking-widest mb-4">
             <Layers className="w-3.5 h-3.5" />
             <span>INNOVERSE 3.0 • 4 SECTOR FOCUS AREAS</span>
@@ -89,7 +110,11 @@ export default function TracksSection({ onOpenRegister }) {
         </div>
 
         {/* Sectors Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+        <div
+          className={`grid grid-cols-1 md:grid-cols-2 gap-6 mb-12 transition-all duration-700 delay-150 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          }`}
+        >
           {TRACKS_DATA.map((track) => {
             const Icon = track.icon;
 
@@ -172,7 +197,11 @@ export default function TracksSection({ onOpenRegister }) {
         </div>
 
         {/* Global Track Perks Banner */}
-        <div className="relative rounded-3xl border border-white/10 bg-gradient-to-r from-amber-500/10 via-blue-500/5 to-purple-500/10 p-6 sm:p-8 backdrop-blur-xl flex flex-col md:flex-row items-center justify-between gap-6">
+        <div
+          className={`relative rounded-3xl border border-white/10 bg-gradient-to-r from-amber-500/10 via-blue-500/5 to-purple-500/10 p-6 sm:p-8 backdrop-blur-xl flex flex-col md:flex-row items-center justify-between gap-6 transition-all duration-700 delay-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}
+        >
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 rounded-2xl bg-amber-400/20 border border-amber-400/40 flex items-center justify-center shrink-0">
               <Terminal className="w-6 h-6 text-amber-400" />

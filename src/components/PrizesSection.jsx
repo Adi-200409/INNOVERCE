@@ -11,9 +11,11 @@ import {
   Laptop,
   ArrowRight
 } from 'lucide-react';
+import { useScrollReveal } from '../hooks/useScrollReveal';
 
 export default function PrizesSection({ onOpenRegister }) {
   const [activeTab, setActiveTab] = useState('both'); // 'both' | 'mca' | 'bca'
+  const [sectionRef, isVisible] = useScrollReveal();
 
   const PODIUM_TIERS = [
     {
@@ -76,10 +78,31 @@ export default function PrizesSection({ onOpenRegister }) {
   ];
 
   return (
-    <section id="prizes" className="relative w-full py-24 sm:py-32 px-4 sm:px-6 lg:px-8 bg-[#08080c] z-20 overflow-hidden">
+    <section
+      ref={sectionRef}
+      id="prizes"
+      className="relative w-full scroll-mt-20 pt-20 sm:pt-28 pb-16 sm:pb-20 px-4 sm:px-6 lg:px-8 bg-[#08080c] z-20 overflow-hidden border-t border-white/5"
+    >
+      {/* Top Horizon Transition Beam */}
+      <div className="pointer-events-none absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-amber-400/40 to-transparent" />
+      <div className="pointer-events-none absolute top-0 inset-x-0 h-24 bg-gradient-to-b from-amber-500/[0.04] via-transparent to-transparent" />
+
+      {/* Atmospheric Glow */}
+      <div
+        className={`pointer-events-none absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[450px] bg-amber-500/5 blur-[150px] rounded-full transition-opacity duration-1000 ease-out ${
+          isVisible ? 'opacity-100' : 'opacity-0'
+        }`}
+      />
+
       <div className="relative max-w-6xl mx-auto">
         {/* Header */}
-        <div className="flex flex-col items-start md:items-center md:text-center mb-12 sm:mb-16">
+        <div
+          className={`flex flex-col items-start md:items-center md:text-center mb-12 sm:mb-16 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+            isVisible
+              ? 'opacity-100 translate-y-0 scale-100'
+              : 'opacity-0 translate-y-8 scale-[0.98]'
+          }`}
+        >
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-amber-400/30 bg-amber-400/10 text-amber-300 font-sans text-xs uppercase tracking-widest mb-4">
             <Trophy className="w-3.5 h-3.5" />
             <span>INNOVERSE 3.0 • ₹35,000 TOTAL PRIZE POOL • DUAL LEAGUES (MCA & BCA)</span>
@@ -160,7 +183,11 @@ export default function PrizesSection({ onOpenRegister }) {
         )}
 
         {/* Podium Cards Grid (1st Prize ₹12K & 2nd Prize ₹6K) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-16">
+        <div
+          className={`grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-16 transition-all duration-700 delay-150 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          }`}
+        >
           {PODIUM_TIERS.map((item) => {
             const Icon = item.icon;
             return (
@@ -230,7 +257,11 @@ export default function PrizesSection({ onOpenRegister }) {
         </div>
 
         {/* Two-phase competition overview */}
-        <div className="mb-16 p-6 sm:p-8 rounded-3xl border border-white/15 bg-[#0a0a0e]/90 backdrop-blur-xl relative overflow-hidden">
+        <div
+          className={`mb-16 p-6 sm:p-8 rounded-3xl border border-white/15 bg-[#0a0a0e]/90 backdrop-blur-xl relative overflow-hidden transition-all duration-700 delay-250 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}
+        >
           <div className="max-w-2xl mb-6">
             <span className="font-sans text-xs uppercase tracking-widest text-amber-400 block mb-1">
               COMPETITION ARCHITECTURE
@@ -274,7 +305,11 @@ export default function PrizesSection({ onOpenRegister }) {
         </div>
 
         {/* Supplementary Perks Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div
+          className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 transition-all duration-700 delay-350 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}
+        >
           {EXTRA_PERKS.map((perk, idx) => {
             const Icon = perk.icon;
             return (

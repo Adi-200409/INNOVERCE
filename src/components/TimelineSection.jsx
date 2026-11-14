@@ -13,6 +13,7 @@ import {
   Ticket,
   Rocket
 } from 'lucide-react';
+import { useScrollReveal } from '../hooks/useScrollReveal';
 
 const TIMELINE_JOURNEY = [
   {
@@ -175,6 +176,7 @@ const TIMELINE_DAY_2 = [
 
 export default function TimelineSection() {
   const [activeTab, setActiveTab] = useState('journey'); // 'journey' | 'day1' | 'day2'
+  const [sectionRef, isVisible] = useScrollReveal();
 
   const events =
     activeTab === 'journey'
@@ -184,10 +186,31 @@ export default function TimelineSection() {
       : TIMELINE_DAY_2;
 
   return (
-    <section id="schedule" className="relative w-full py-24 sm:py-32 px-4 sm:px-6 lg:px-8 bg-[#060608] z-20">
+    <section
+      ref={sectionRef}
+      id="schedule"
+      className="relative w-full scroll-mt-20 pt-20 sm:pt-28 pb-16 sm:pb-20 px-4 sm:px-6 lg:px-8 bg-[#060608] z-20 border-t border-white/5 overflow-hidden"
+    >
+      {/* Top Horizon Transition Beam */}
+      <div className="pointer-events-none absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-amber-400/40 to-transparent" />
+      <div className="pointer-events-none absolute top-0 inset-x-0 h-24 bg-gradient-to-b from-amber-500/[0.04] via-transparent to-transparent" />
+
+      {/* Atmospheric Glow */}
+      <div
+        className={`pointer-events-none absolute top-1/4 -right-32 w-[600px] h-[500px] bg-blue-600/5 blur-[140px] rounded-full transition-opacity duration-1000 ease-out ${
+          isVisible ? 'opacity-100' : 'opacity-0'
+        }`}
+      />
+
       <div className="relative max-w-5xl mx-auto">
         {/* Header */}
-        <div className="flex flex-col items-start md:items-center md:text-center mb-12">
+        <div
+          className={`flex flex-col items-start md:items-center md:text-center mb-12 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+            isVisible
+              ? 'opacity-100 translate-y-0 scale-100'
+              : 'opacity-0 translate-y-8 scale-[0.98]'
+          }`}
+        >
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-300 font-mono text-xs uppercase tracking-widest mb-4">
             <Clock className="w-3.5 h-3.5" />
             <span>INNOVERSE 3.0 • TWO-PHASE MISSION TIMELINE</span>
@@ -256,18 +279,30 @@ export default function TimelineSection() {
 
         {/* Informative Round Header Note */}
         {activeTab === 'journey' && (
-          <div className="mb-8 p-4 rounded-2xl border border-amber-500/20 bg-amber-500/[0.04] text-center font-mono text-xs text-amber-300">
+          <div
+            className={`mb-8 p-4 rounded-2xl border border-amber-500/20 bg-amber-500/[0.04] text-center font-mono text-xs text-amber-300 transition-all duration-700 delay-100 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+            }`}
+          >
             📋 Registration closes <strong>30 November 2026</strong>, final idea submission runs <strong>1-10 December 2026</strong>, and the hackathon begins <strong>5 January 2027</strong> and concludes <strong>6 January 2027</strong>.
           </div>
         )}
         {(activeTab === 'day1' || activeTab === 'day2') && (
-          <div className="mb-8 p-4 rounded-2xl border border-emerald-500/20 bg-emerald-500/[0.04] text-center font-mono text-xs text-emerald-300">
+          <div
+            className={`mb-8 p-4 rounded-2xl border border-emerald-500/20 bg-emerald-500/[0.04] text-center font-mono text-xs text-emerald-300 transition-all duration-700 delay-100 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+            }`}
+          >
             ⚡ <strong>Phase 2:</strong> Selected teams take part in the 24-hour on-campus hackathon and compete for ₹35,000 in cash prizes.
           </div>
         )}
 
         {/* Milestone Timeline Spine */}
-        <div className="relative border-l-2 border-white/10 ml-4 sm:ml-32 pl-6 sm:pl-10 space-y-8 sm:space-y-10">
+        <div
+          className={`relative border-l-2 border-white/10 ml-4 sm:ml-32 pl-6 sm:pl-10 space-y-8 sm:space-y-10 transition-all duration-700 delay-200 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          }`}
+        >
           {events.map((item, idx) => {
             const Icon = item.icon;
             const isHighlight = item.highlight;

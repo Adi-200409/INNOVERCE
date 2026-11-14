@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useScrollReveal } from "../hooks/useScrollReveal";
 
 const GallerySection = () => {
   const originalImages = [
@@ -79,24 +80,54 @@ const GallerySection = () => {
 
   const getOriginalIndex = (index) => index % totalOriginalItems;
 
-  return (
-   <section id="journey" className="w-full mx-auto px-2 relative overflow-hidden bg-[#060608] py-20 sm:py-28">
-      <div className="container mx-auto overflow-hidden text-center">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-amber-400/30 bg-amber-400/10 text-amber-300 font-mono text-xs uppercase tracking-widest mb-4">
-          <span>INNOVERSE LEGACY ARCHIVES</span>
-        </div>
-        <h2 className="mb-2 text-center font-display text-3xl font-black uppercase tracking-tight text-white sm:text-5xl md:text-6xl">
-          The Journey <span className="text-amber-400">So Far</span>
-        </h2>
-        <p className="mb-12 text-center font-sans text-sm leading-relaxed text-gray-400 sm:text-base">
-          Highlights{" "}
-          <span className="text-amber-400">
-            from Past Editions
-          </span>{" "}
-          leading up to INNOVERSE 3.0
-        </p>
+  const [sectionRef, isVisible] = useScrollReveal();
 
-        <div className="slider overflow-hidden relative w-full lg:w-4/5 mx-auto rounded-xl py-3 sm:py-10">
+  return (
+    <section
+      ref={sectionRef}
+      id="journey"
+      data-section="gallery"
+      className="w-full mx-auto px-2 relative overflow-hidden bg-[#060608] scroll-mt-20 pt-16 sm:pt-24 pb-14 sm:pb-18 border-t border-white/5"
+    >
+      {/* Top Horizon Transition Beam */}
+      <div className="pointer-events-none absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-amber-400/40 to-transparent" />
+      <div className="pointer-events-none absolute top-0 inset-x-0 h-24 bg-gradient-to-b from-amber-500/[0.04] via-transparent to-transparent" />
+
+      {/* Atmospheric Glow */}
+      <div
+        className={`pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-purple-600/5 blur-[140px] rounded-full transition-opacity duration-1000 ease-out ${
+          isVisible ? 'opacity-100' : 'opacity-0'
+        }`}
+      />
+
+      <div className="container mx-auto overflow-hidden text-center relative z-10">
+        <div
+          className={`transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+            isVisible
+              ? 'opacity-100 translate-y-0 scale-100'
+              : 'opacity-0 translate-y-8 scale-[0.98]'
+          }`}
+        >
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-amber-400/30 bg-amber-400/10 text-amber-300 font-mono text-xs uppercase tracking-widest mb-4">
+            <span>INNOVERSE LEGACY ARCHIVES</span>
+          </div>
+          <h2 className="mb-2 text-center font-display text-3xl font-black uppercase tracking-tight text-white sm:text-5xl md:text-6xl">
+            The Journey <span className="text-amber-400">So Far</span>
+          </h2>
+          <p className="mb-12 text-center font-sans text-sm leading-relaxed text-gray-400 sm:text-base">
+            Highlights{" "}
+            <span className="text-amber-400">
+              from Past Editions
+            </span>{" "}
+            leading up to INNOVERSE 3.0
+          </p>
+        </div>
+
+        <div
+          className={`slider overflow-hidden relative w-full lg:w-4/5 mx-auto rounded-xl py-3 sm:py-10 transition-all duration-700 delay-150 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          }`}
+        >
           <div
             ref={containerRef}
             className="flex transition-transform duration-500 ease-in-out -mx-2"
@@ -138,7 +169,11 @@ const GallerySection = () => {
           </div>
         </div>
 
-        <div className="flex justify-center mt-8 space-x-2">
+        <div
+          className={`flex justify-center mt-8 space-x-2 transition-all duration-700 delay-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+          }`}
+        >
           {originalImages.map((_, index) => (
             <span
               key={index}
@@ -152,7 +187,6 @@ const GallerySection = () => {
             ></span>
           ))}
         </div>
-
       </div>
     </section>
   );
