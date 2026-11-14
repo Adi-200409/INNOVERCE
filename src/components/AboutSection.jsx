@@ -110,7 +110,7 @@ export default function AboutSection({ bgImage = '/about-bg.jpg' }) {
             </div>
 
             <a
-              href="https://git.edu/departments/department-of-master-of-computer-application/"
+              href="https://git.edu/programmes/pg/mca/academics"
               target="_blank"
               rel="noopener noreferrer"
               className="mx-auto mt-8 flex w-fit items-center gap-2 rounded-full border border-white/20 bg-white/5 px-6 py-3 font-mono text-xs font-semibold uppercase tracking-wider text-white transition-all hover:border-amber-400/40 hover:bg-white/10 cursor-pointer"
