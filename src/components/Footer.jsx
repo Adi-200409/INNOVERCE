@@ -50,11 +50,6 @@ export default function Footer({ onOpenRegister, onOpenTracks }) {
                 </a>
               </li>
               <li>
-                <a href="#sponsors" onClick={(e) => scrollToSection(e, 'sponsors')} className="hover:text-amber-400 transition-colors">
-                  Industry Partners
-                </a>
-              </li>
-              <li>
                 <a href="#tracks" onClick={(e) => scrollToSection(e, 'tracks')} className="hover:text-amber-400 transition-colors">
                   Sector Focus Areas
                 </a>

@@ -7,7 +7,6 @@ import Contact from './components/Contact';
 import TracksSection from './components/TracksSection';
 import TimelineSection from './components/TimelineSection';
 import PrizesSection from './components/PrizesSection';
-import SponsorsSection from './components/SponsorsSection';
 import GallerySection from './components/GallerySection';
 import TeamSection from './components/TeamSection';
 import Footer from './components/Footer';
@@ -161,10 +160,7 @@ function App() {
             onOpenTracks={() => setIsTracksOpen(true)}
           />
 
-          {/* 3. Industry & Innovation Partners Section (After MCA Department) */}
-          <SponsorsSection />
-
-          {/* 4. 5 Mission Arenas & Problem Tracks */}
+          {/* 3. 5 Mission Arenas & Problem Tracks */}
           <TracksSection
             onOpenRegister={handleOpenRegister}
             onSelectTrack={(trackId) => setIsTracksOpen(true)}

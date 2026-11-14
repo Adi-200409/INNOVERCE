@@ -9,7 +9,6 @@ import {
   Ticket,
   Phone,
   CheckCircle2,
-  ExternalLink,
   Sparkles,
   AlertCircle,
   LogIn,
@@ -81,9 +80,6 @@ export default function RegistrationPage({ onBackToHome, embedded = false, onSwi
   const setIsSubmitting = setSubmitting;
   const errorMessage = submitError;
   const setErrorMessage = setSubmitError;
-
-  const googleFormUrl =
-    'https://docs.google.com/forms/d/e/1FAIpQLSfPgaUONQ7VBSQ3rNObDOquTU1d7RGHTIsHHEvIsVa2JNRKzQ/viewform';
 
   const handleCopyUpi = () => {
     if (navigator?.clipboard?.writeText) {
@@ -1045,16 +1041,6 @@ export default function RegistrationPage({ onBackToHome, embedded = false, onSwi
             >
               <LogIn className="w-3.5 h-3.5 text-amber-400" />
               <span>Squad Login</span>
-            </a>
-
-            <a
-              href={googleFormUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-amber-500/30 bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 transition-all text-xs font-mono uppercase tracking-wider"
-            >
-              <span>Open in Google Forms</span>
-              <ExternalLink className="w-3.5 h-3.5" />
             </a>
           </div>
         </div>

@@ -1,14 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
-  Bot,
+  Sparkles,
   Send,
   X,
   Minus,
   Maximize2,
+  RotateCcw,
+  Info,
+  ChevronLeft,
   ArrowRight,
-  Radio,
-  Terminal,
-  Activity
+  Rocket,
+  Layers,
+  Trophy,
+  Clock
 } from 'lucide-react';
 
 function createMessageId(prefix) {
@@ -19,11 +23,85 @@ function getSystemTimestamp() {
   return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 }
 
+function AstronautHelmetIcon({ className = "w-6 h-6", glowing = false }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+    >
+      <defs>
+        <linearGradient id="helmetVisorAstra" x1="6" y1="8" x2="18" y2="15" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stopColor="#38bdf8" />
+          <stop offset="50%" stopColor="#818cf8" />
+          <stop offset="100%" stopColor="#c084fc" />
+        </linearGradient>
+      </defs>
+
+      {/* Side Audio / Communications Pods */}
+      <rect
+        x="1.5"
+        y="10"
+        width="2.5"
+        height="5"
+        rx="1"
+        fill="currentColor"
+        fillOpacity="0.3"
+        stroke="currentColor"
+        strokeWidth="1.2"
+      />
+      <rect
+        x="20"
+        y="10"
+        width="2.5"
+        height="5"
+        rx="1"
+        fill="currentColor"
+        fillOpacity="0.3"
+        stroke="currentColor"
+        strokeWidth="1.2"
+      />
+
+      {/* Outer Helmet Dome */}
+      <path
+        d="M4 11.5C4 6.8 7.58 3 12 3C16.42 3 20 6.8 20 11.5V14.5C20 16.98 17.98 19 15.5 19H8.5C6.02 19 4 16.98 4 14.5V11.5Z"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+
+      {/* Visor with Holographic Gradient & Subtle Shine */}
+      <path
+        d="M6.5 11C6.5 9.2 8.8 8 12 8C15.2 8 17.5 9.2 17.5 11V12.2C17.5 14 15.2 15.2 12 15.2C8.8 15.2 6.5 14 6.5 12.2V11Z"
+        fill="url(#helmetVisorAstra)"
+        fillOpacity={glowing ? "0.95" : "0.75"}
+        stroke="currentColor"
+        strokeWidth="1.3"
+      />
+
+      {/* Visor Glare / Specular Highlight Streak */}
+      <path
+        d="M8.5 10C9.5 9.2 10.8 8.8 12.2 8.8"
+        stroke="#ffffff"
+        strokeWidth="1.3"
+        strokeLinecap="round"
+        strokeOpacity="0.9"
+      />
+
+      {/* Helmet Neck Ring Seals */}
+      <path d="M6 19.8H18" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+      <path d="M8 21.8H16" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeOpacity="0.6" />
+    </svg>
+  );
+}
+
 /**
- * Procedural Web Audio Sound Synthesizer
- * Produces crisp, retro-futuristic telemetry chirps without external audio dependencies.
+ * Procedural Calming Audio Chime Synthesizer
+ * Produces gentle, ambient chime tones matching the serene Aria aesthetic.
  */
-function playSciFiSound(type = 'receive') {
+function playAriaChime(type = 'receive') {
   try {
     const AudioContextClass = window.AudioContext || window.webkitAudioContext;
     if (!AudioContextClass) return;
@@ -34,192 +112,446 @@ function playSciFiSound(type = 'receive') {
     gain.connect(ctx.destination);
 
     const now = ctx.currentTime;
+    osc.type = 'sine';
 
     if (type === 'send') {
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(540, now);
-      osc.frequency.exponentialRampToValueAtTime(1080, now + 0.08);
-      gain.gain.setValueAtTime(0.04, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
-      osc.start(now);
-      osc.stop(now + 0.08);
-    } else if (type === 'receive') {
-      osc.type = 'triangle';
-      osc.frequency.setValueAtTime(740, now);
-      osc.frequency.exponentialRampToValueAtTime(1240, now + 0.12);
+      osc.frequency.setValueAtTime(520, now);
+      osc.frequency.exponentialRampToValueAtTime(780, now + 0.12);
       gain.gain.setValueAtTime(0.04, now);
       gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
       osc.start(now);
       osc.stop(now + 0.12);
+    } else if (type === 'receive') {
+      osc.frequency.setValueAtTime(660, now);
+      osc.frequency.exponentialRampToValueAtTime(990, now + 0.18);
+      gain.gain.setValueAtTime(0.04, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+      osc.start(now);
+      osc.stop(now + 0.18);
     } else if (type === 'open') {
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(380, now);
-      osc.frequency.exponentialRampToValueAtTime(780, now + 0.15);
-      gain.gain.setValueAtTime(0.05, now);
+      osc.frequency.setValueAtTime(440, now);
+      osc.frequency.exponentialRampToValueAtTime(660, now + 0.15);
+      gain.gain.setValueAtTime(0.04, now);
       gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
       osc.start(now);
       osc.stop(now + 0.15);
     }
   } catch {
-    // AudioContext blocked by browser policy
+    // AudioContext blocked
   }
 }
 
-// Initial knowledge base triggers & answers
+// Comprehensive Knowledge Base scoped strictly to INNOVERSE 3.0 Website Data
 const KNOWLEDGE_BASE = [
   {
-    triggers: ['register', 'apply', 'signup', 'sign up', 'ticket', 'boarding pass', 'form', 'how to join'],
+    id: 'greeting',
+    triggers: [
+      'hi',
+      'hello',
+      'hey',
+      'greetings',
+      'who are you',
+      'what is astra',
+      'what can you do',
+      'help me',
+      'help'
+    ],
     response: {
-      text: "Ready to board **INNOVERSE 3.0**? Applications are open for both BCA and MCA builders nationwide!\n\n• **Step 1**: Assemble your squad of 3 builders from the same college.\n• **Step 2**: Prepare your project PPT for online evaluation.\n• **Step 3**: Submit your entry form along with the ₹300 entry fee through the Boarding Pass portal.",
+      text: "Hello! I am **Astra**, your autonomous flight copilot for **INNOVERSE 3.0** — the 24-Hour National-Level AI & Tech Hackathon organized by the **Department of MCA at KLS Gogte Institute of Technology (GIT), Belagavi**.\n\nI am strictly dedicated to providing facts and information published on the official **INNOVERSE 3.0** website.\n\nHow can I help you navigate the hackathon?",
+      actions: [
+        { label: '🚀 How to Register', type: 'register' },
+        { label: '🎯 4 Sector Tracks', type: 'tracks' },
+        { label: '🏆 Prize Breakdown', type: 'prizes' },
+        { label: '⏱️ Flight Schedule', type: 'timeline' }
+      ]
+    }
+  },
+  {
+    id: 'registration_fee',
+    triggers: [
+      'register',
+      'registration',
+      'apply',
+      'signup',
+      'sign up',
+      'ticket',
+      'boarding pass',
+      'how to register',
+      'form',
+      'entry fee',
+      'fee',
+      'cost',
+      'price',
+      '300',
+      'payment',
+      'pay',
+      'upi',
+      'qr',
+      'utr',
+      'screenshot',
+      'receipt',
+      'refund'
+    ],
+    response: {
+      text: "Official **INNOVERSE 3.0 Registration & Payment Telemetry**:\n\n• **Registration Fee**: Strictly **₹300 per squad** (fixed 3 members). The fee is **non-refundable**.\n• **Payment Method**: Scan the static UPI QR code (`9611606975@kbl`, *the chairman govrn body mca dept*, Karnataka Bank).\n• **Submission Requirements**: Enter your 12-digit UPI UTR transaction number and upload your payment screenshot (under 5MB, PNG/JPG).\n• **Confirmation ID**: Upon submission, your squad receives an instant unique ID (e.g. `INN-3.0-001`) and a downloadable digital Boarding Pass.\n• **Squad Login**: Track your application status anytime on `/login.html` using the team leader's email and Confirmation ID.",
       actions: [
         { label: '🚀 Claim Boarding Pass', type: 'register' },
-        { label: '🌌 Inspect 5 Arenas', type: 'tracks' }
-      ]
-    }
-  },
-  {
-    triggers: ['fee', 'cost', 'price', 'entry fee', 'payment', '300', 'money to pay', 'free'],
-    response: {
-      text: "The registration fee is strictly **₹300 per squad** (fixed 3 members).\n\nThis fee covers preliminary evaluation, technical faculty review, and for shortlisted finalists: complete on-campus access, meals, snacks, high-speed Wi-Fi 6, and hacker pod amenities during the 24-hour sprint at KLS GIT.",
-      actions: [
-        { label: '🎟️ Register Squad (₹300)', type: 'register' }
-      ]
-    }
-  },
-  {
-    triggers: ['team', 'team size', 'members', 'solo', 'cross college', 'partner', 'how many people'],
-    response: {
-      text: "Official squad telemetry specifications:\n\n• **Team Size**: Exactly **3 members per team (Fixed)**.\n• **Cross-College**: **Not permitted** — all 3 members must belong to the same institution.\n• **Competitive Leagues**: Open to undergrads & postgrads with separate podiums for **BCA** and **MCA** squads!",
-      actions: [
         { label: '📋 View Rules', type: 'rules' }
       ]
     }
   },
   {
-    triggers: ['prize', 'prizes', 'cash', 'reward', 'pool', 'bounty', '35000', '12000', '6000', 'trophy'],
+    id: 'team_eligibility',
+    triggers: [
+      'team',
+      'team size',
+      'members',
+      'member',
+      'solo',
+      'cross college',
+      'partner',
+      'eligibility',
+      'eligible',
+      'who can participate',
+      'stream',
+      'streams',
+      'bca',
+      'mca',
+      'college id',
+      'students'
+    ],
     response: {
-      text: "INNOVERSE 3.0 features a guaranteed **₹35,000+ Total Cash Bounty Pool** with balanced dual-league podiums:\n\n🏆 **MCA Competitive Track**:\n• **1st Prize**: ₹12,000 Cash + Champion Trophy\n• **2nd Prize**: ₹6,000 Cash + Runner-Up Trophy\n\n🏆 **BCA Competitive Track**:\n• **1st Prize**: ₹12,000 Cash + Champion Trophy\n• **2nd Prize**: ₹6,000 Cash + Runner-Up Trophy\n\n⚡ Plus special sponsor track bounties and certificates of excellence for all finalists!",
+      text: "Official **Squad Composition & Eligibility Rules**:\n\n• **Team Size**: Exactly **3 members per team (Fixed)**. Solo/individual participation is not permitted.\n• **Eligible Programs**: Students currently enrolled in **MCA** or **BCA** programs.\n• **Stream Representation**: Each team strictly represents only one stream (either MCA or BCA). Dual parallel leagues are judged separately.\n• **Same College Requirement**: All 3 members must belong to the **same institution** (cross-college squads are not allowed).\n• **ID Verification**: All participants must present their original college ID cards at check-in on 5th January 2027.",
+      actions: [
+        { label: '📋 Read Full Rules', type: 'rules' },
+        { label: '🚀 Register Squad', type: 'register' }
+      ]
+    }
+  },
+  {
+    id: 'tracks_sectors',
+    triggers: [
+      'track',
+      'tracks',
+      'domain',
+      'domains',
+      'sector',
+      'sectors',
+      'problem',
+      'problems',
+      'statement',
+      'statements',
+      'theme',
+      'themes',
+      'challenge',
+      'challenges',
+      'fintech',
+      'educational',
+      'edtech',
+      'healthcare',
+      'health',
+      'agriculture',
+      'agri'
+    ],
+    response: {
+      text: "INNOVERSE 3.0 features **4 Sector Focus Areas** (No pre-selection required; choose during the event):\n\n1. **Fintech (SEC-01 // FINTECH CORE)**: Digital payments, micro-lending, algorithmic fraud detection, smart contracts, and automated fiscal workflows.\n2. **Educational (SEC-02 // EDUTECH MATRIX)**: Adaptive learning engines, gamified pedagogy, automated assessments, vernacular accessibility, and interactive student classrooms.\n3. **Healthcare (SEC-03 // HEALTHCARE TELEMETRY)**: Telemedicine solutions, AI-assisted diagnostics, vital tracking, EHR systems, and optimized emergency response.\n4. **Agriculture (SEC-04 // AGRI-SOLUTIONS GRID)**: Precision farming, crop health diagnostics, smart irrigation IoT, direct farmer-to-market logistics, and soil analytics.",
+      actions: [
+        { label: '🎯 Inspect 4 Sectors', type: 'tracks' },
+        { label: '🚀 Register Squad', type: 'register' }
+      ]
+    }
+  },
+  {
+    id: 'prizes',
+    triggers: [
+      'prize',
+      'prizes',
+      'cash',
+      'reward',
+      'rewards',
+      'pool',
+      'bounty',
+      'bounties',
+      'trophy',
+      'trophies',
+      'winner',
+      'runner up',
+      '1st prize',
+      '2nd prize',
+      '12000',
+      '6000',
+      '35000'
+    ],
+    response: {
+      text: "🏆 **₹35,000+ Total Cash Prize Pool** with dual podium tracks:\n\n• **MCA Podium**:\n  - **1st Prize (Galactic Champion)**: **₹12,000** Direct Cash Award + Champion Trophy + Official Merit Certificates\n  - **2nd Prize (Silver Vanguard)**: **₹6,000** Direct Cash Award + Runner-Up Trophy + Official Merit Certificates\n\n• **BCA Podium**:\n  - **1st Prize (Galactic Champion)**: **₹12,000** Direct Cash Award + Champion Trophy + Official Merit Certificates\n  - **2nd Prize (Silver Vanguard)**: **₹6,000** Direct Cash Award + Runner-Up Trophy + Official Merit Certificates\n\n• Merit & Participation Certificates awarded to all shortlisted finalists!",
       actions: [
         { label: '🏆 View Prize Podiums', type: 'prizes' },
+        { label: '🚀 Register Squad', type: 'register' }
+      ]
+    }
+  },
+  {
+    id: 'timeline_dates',
+    triggers: [
+      'timeline',
+      'schedule',
+      'date',
+      'dates',
+      'when',
+      'time',
+      'rounds',
+      'phase',
+      'deadline',
+      'november',
+      'december',
+      'january',
+      '5 january',
+      '6 january',
+      '2026',
+      '2027',
+      'ppt evaluation'
+    ],
+    response: {
+      text: "📅 **INNOVERSE 3.0 Official Event Flight Plan**:\n\n• **16 Nov – 30 Nov 2026**: Team Registration Window (Active)\n• **1 Dec – 10 Dec 2026**: Final Idea Submission\n• **Step 03**: Idea-Based Shortlisting (Top 10 BCA & Top 10 MCA squads selected)\n• **Step 04**: Shortlisted Team Final Registration\n• **Phase 01**: Online Project PPT Evaluation by Technical Jury\n• **5 Jan – 6 Jan 2027**: **24-Hour Grand Finale Hackathon** at KLS GIT Belagavi Campus (Reporting at 9:00 AM on 5th Jan, concluding 6th Jan with final pitch demos & awards).",
+      actions: [
+        { label: '⏱️ View Full Timeline', type: 'timeline' },
+        { label: '📋 View Rules', type: 'rules' }
+      ]
+    }
+  },
+  {
+    id: 'venue_location',
+    triggers: [
+      'venue',
+      'location',
+      'where',
+      'git',
+      'kls git',
+      'belagavi',
+      'address',
+      'campus',
+      'city',
+      'state',
+      'karnataka',
+      'udyambag',
+      'mca dept',
+      'mca department',
+      'lab',
+      'wifi'
+    ],
+    response: {
+      text: "📍 **Official Mission Venue Coordinates**:\n\n**Department of Master of Computer Applications (MCA)**\n**KLS Gogte Institute of Technology (GIT)**\nJnana Ganga, Udyambag, Belagavi, Karnataka 590008, India.\n\n• **About KLS GIT MCA**: Established in 1999 (over two decades of technical excellence). Autonomous institution under VTU with NAAC 'A+' accreditation.\n• State-of-the-art air-conditioned labs, 1 Gbps high-speed internet, cafeteria, and resting amenities provided during the 24-hour sprint.",
+      actions: [
+        { label: '🗺️ Helpdesk & Contact', type: 'venue' }
+      ]
+    }
+  },
+  {
+    id: 'accommodation_food',
+    triggers: [
+      'accommodation',
+      'stay',
+      'night',
+      'sleep',
+      'food',
+      'meal',
+      'meals',
+      'snack',
+      'snacks',
+      'canteen',
+      'cafeteria',
+      'dinner',
+      'breakfast',
+      'amenities'
+    ],
+    response: {
+      text: "Official **Accommodation & Food Arrangements**:\n\n• **Accommodation**: Arranged on-campus strictly for the night of **5th January 2027** for shortlisted finalist squads.\n• **Food & Refreshments**: Meals, snacks, tea, and midnight refreshments are provided throughout the 24-hour hackathon.\n• **Hardware/Laptops**: Participants must bring their own laptops, chargers, extension cords, and any project-specific hardware.",
+      actions: [
+        { label: '📋 View Rules', type: 'rules' },
+        { label: '🗺️ Helpdesk Section', type: 'venue' }
+      ]
+    }
+  },
+  {
+    id: 'rules_guidelines',
+    triggers: [
+      'rules',
+      'guidelines',
+      'conduct',
+      'discipline',
+      'judging',
+      'criteria',
+      'evaluation',
+      'plagiarism',
+      'cheat',
+      'template',
+      'pre-built',
+      'repo',
+      'github',
+      'disqualification'
+    ],
+    response: {
+      text: "Crucial **Hackathon Rules & Evaluation Criteria**:\n\n• **Original Code**: All solutions must be built from scratch during the 24-hour sprint. Plagiarism or pre-built projects lead to immediate disqualification.\n• **Deliverables**: Each squad must submit a working prototype, project presentation (PPT), and documentation/README before final judging.\n• **Judging Criteria**:\n  1. Innovation and creativity\n  2. Technical implementation and complexity\n  3. Relevance to theme\n  4. User experience and design\n  5. Presentation and communication\n  6. Practical impact and problem solving\n• **Shortlisting**: Maximum 10 teams from BCA and 10 teams from MCA advance to the on-campus finale.",
+      actions: [
+        { label: '📋 Read All Rules', type: 'rules' }
+      ]
+    }
+  },
+  {
+    id: 'contacts_helpdesk',
+    triggers: [
+      'contact',
+      'contacts',
+      'helpdesk',
+      'phone',
+      'number',
+      'numbers',
+      'call',
+      'support',
+      'reach',
+      'vaishnavi',
+      'aditya belled',
+      'organizer contact',
+      'query',
+      'queries'
+    ],
+    response: {
+      text: "📞 **INNOVERSE 3.0 Student Helpdesk Contacts**:\n\n• **Vaishnavi Shivkale**: +91 79751 11929\n• **Aditya Belled**: +91 76766 87006\n\nReach out for any assistance regarding registration, payment verification, selection rounds, or travel coordinates to Belagavi.",
+      actions: [
+        { label: '📞 Helpdesk Section', type: 'venue' }
+      ]
+    }
+  },
+  {
+    id: 'industry_partner',
+    triggers: [
+      'partner',
+      'partners',
+      'sponsor',
+      'sponsors',
+      'dlithe',
+      'industry partner',
+      'company'
+    ],
+    response: {
+      text: "🤝 **Official Industry Partner**: **DLithe Consultancy Services**\n\n• **Website**: `https://dlithe.com/`\n• **Tagline**: Transforming Talent • Competency Development & Digital Solutions\n• DLithe is a premier product development, digital transformation, and EdTech consultancy collaborating with INNOVERSE 3.0 to empower builders with technical evaluation and industry excellence.",
+      actions: [
         { label: '🚀 Claim Boarding Pass', type: 'register' }
       ]
     }
   },
   {
-    triggers: ['track', 'tracks', 'arena', 'domains', 'problem statement', 'challenge', 'categories', 'theme', 'sector', 'sectors'],
+    id: 'developers_organizers',
+    triggers: [
+      'developer',
+      'developers',
+      'architect',
+      'architects',
+      'engineer',
+      'engineers',
+      'organizer',
+      'organizers',
+      'faculty coordinator',
+      'who made',
+      'who built',
+      'who developed'
+    ],
     response: {
-      text: "Builders will construct solutions across **4 Sector Focus Areas**:\n\n1. 💳 **Fintech**: Financial technology\n   *Digital payments, algorithmic fraud detection, micro-lending, fiscal AI*\n2. 🎓 **Educational**: Learning and education\n   *Adaptive learning engines, gamified pedagogy, automated assessment, vernacular access*\n3. 🩺 **Healthcare**: Health and wellbeing\n   *Telemedicine, AI-assisted diagnostics, vital tracking, remote monitoring*\n4. 🌱 **Agriculture**: Farming and agri-solutions\n   *Precision farming, crop disease diagnostics, agri IoT, supply chain logistics*\n\n💡 *Note: Sectors are open focus domains for real-world innovation—you do not need to lock in a sector during registration!*",
+      text: "The student architects, engineers, and faculty behind INNOVERSE 3.0 at KLS GIT Belagavi:\n\n• **Core Developers**: Platform Architecture, 3D WebGL Canvas, and API Infrastructure.\n• **Event Organizers**: Faculty Coordinators (Dept of MCA) and Lead Student Organizers.\n\nExplore their details in the Developers & Organizers section on the homepage!",
       actions: [
-        { label: '🌌 Explore 4 Sectors', type: 'tracks' }
+        { label: '🚀 Register Squad', type: 'register' }
       ]
     }
   },
   {
-    triggers: ['venue', 'where', 'location', 'git', 'belagavi', 'karnataka', 'campus', 'offline', 'place'],
+    id: 'login_portal',
+    triggers: [
+      'login',
+      'squad login',
+      'check status',
+      'confirmation id',
+      'serial number',
+      'inn-3.0'
+    ],
     response: {
-      text: "📍 **Mission Ground Coordinates**:\n\n• **Venue**: Department of Master of Computer Applications (MCA)\n• **Institution**: KLS Gogte Institute of Technology (KLS GIT)\n• **Location**: Belagavi, Karnataka – 590008, India\n• **Telemetry**: Latitude 15.8281° N • Longitude 74.4889° E\n\nEquipped with 24/7 air-conditioned labs, redundant generator power, and enterprise Wi-Fi 6.",
-      actions: [
-        { label: '📍 Ground Telemetry', type: 'venue' }
-      ]
-    }
-  },
-  {
-    triggers: ['round', 'rounds', 'stage', 'stages', 'selection', 'timeline', 'process', 'how does it work'],
-    response: {
-      text: "The hackathon has **Two Phases**:\n\n1. 🛰️ **Phase 1: Online PPT Evaluation**\n   Teams submit their project PPT for online jury evaluation. Selected teams advance to Phase 2.\n\n2. 🚀 **Phase 2: 24-Hour Hackathon**\n   Selected teams take part in the 24-hour on-campus hackathon at KLS GIT Belagavi, followed by project demos and judging.",
-      actions: [
-        { label: '📅 Event Timeline', type: 'timeline' }
-      ]
-    }
-  },
-  {
-    triggers: ['rule', 'rules', 'guideline', 'cheating', 'pre-existing', 'github', 'fresh code', 'criteria'],
-    response: {
-      text: "⚠️ **Core Flight Directives**:\n\n• **Fresh Codebase**: All project code must be developed from scratch during the 24-hour sprint. Pre-built apps are strictly prohibited.\n• **Allowed Tools**: Open-source libraries, APIs, and pre-trained LLMs (Gemini, Claude, GPT, Ollama) are fully allowed.\n• **Judging Rubric**: Technical Depth (30%), Originality (25%), Practical Impact (25%), and Demo Polish (20%).\n• **IP Ownership**: 100% retained by your team.",
-      actions: [
-        { label: '📖 Full Rules', type: 'rules' }
-      ]
-    }
-  },
-  {
-    triggers: ['food', 'stay', 'accommodation', 'sleep', 'facility', 'wifi', 'internet', 'snacks', 'eat'],
-    response: {
-      text: "We keep all squads energized throughout the 24-hour marathon!\n\n☕ Continuous tea, coffee & hydration stations\n🍕 Wholesome meals, dinner & midnight snack drops\n⚡ Dedicated power points at every team workstation\n📶 High-speed dual-band Wi-Fi 6\n🛋️ Recharging & chill-out rest pods",
+      text: "To access **Squad Login** and view your registered squad details:\n\n1. Visit the Squad Login page (`/login.html`).\n2. Enter your **Team Leader Email** and unique **Confirmation ID** (format: `INN-3.0-XXX`).\n3. View your verified submission details and download your digital Boarding Pass.",
       actions: [
         { label: '🚀 Claim Boarding Pass', type: 'register' }
-      ]
-    }
-  },
-  {
-    triggers: ['tech', 'stack', 'languages', 'tools', 'python', 'react', 'rust', 'ai', 'frameworks'],
-    response: {
-      text: "Squads have total freedom in technology selection. Popular recommended stacks:\n\n• **AI & Agents**: LangGraph, CrewAI, AutoGPT, Ollama, HuggingFace, PyTorch\n• **Frontend / 3D**: React, Vite, Tailwind CSS, Three.js, WebGPU, WebXR\n• **Backend**: Python (FastAPI/Django), Node.js, Go, Rust\n• **Decentralized**: Solidity, zk-SNARKs, Solana, Bittensor\n• **Edge Hardware**: MicroPython, Arduino, ESP32, TinyML",
-      actions: [
-        { label: '🌌 Inspect Mission Arenas', type: 'tracks' }
-      ]
-    }
-  },
-  {
-    triggers: ['who are you', 'astra', 'bot', 'what are you', 'hello', 'hi', 'hey', 'greetings', 'help'],
-    response: {
-      text: "Greetings, builder! I am **ASTRA 3.0**, the autonomous Orbital Mission Control Copilot for **INNOVERSE 3.0**.\n\nI monitor telemetry, rules, problem tracks, prize matrices, and registration status for squads competing at KLS GIT Belagavi. How can I assist your mission?",
-      actions: [
-        { label: '🚀 How to Register', type: 'register' },
-        { label: '🏆 Prize Matrix', type: 'prizes' },
-        { label: '🌌 5 Mission Arenas', type: 'tracks' }
-      ]
-    }
-  },
-  {
-    triggers: ['spaceship', 'shuttle', 'astronaut', 'globe', 'earth', 'graphics', 'space'],
-    response: {
-      text: "🌌 Telemetry Report: The **Nexus-1 Space Shuttle** orbiting the photorealistic 3D Earth represents the bold, exploratory spirit of INNOVERSE 3.0 builders!\n\nJust as space exploration requires precision and ambition, this hackathon challenges your team to push the outer boundary of what software, hardware, and AI can achieve.",
-      actions: [
-        { label: '🚀 Join the Mission', type: 'register' }
       ]
     }
   }
 ];
 
-// Fallback intelligent response generator
 function generateBotResponse(userInput) {
   const cleanInput = userInput.toLowerCase().trim();
 
+  // 1. Check against official INNOVERSE 3.0 Knowledge Base
   for (const item of KNOWLEDGE_BASE) {
     if (item.triggers.some((trigger) => cleanInput.includes(trigger))) {
       return item.response;
     }
   }
 
+  // 2. Strict Domain Guardrail: Polite refusal for any query outside INNOVERSE 3.0 website data
   return {
-    text: `Transmission received regarding "${userInput}".\n\nHere are the critical mission coordinates:\n• **Event**: INNOVERSE 3.0 — 24-Hour AI & Tech Hackathon\n• **Venue**: KLS GIT Belagavi (Dept of MCA)\n• **Team**: Strictly 3 members (same institution)\n• **Fee**: ₹300 per squad\n• **Prizes**: ₹35,000+ total pool across BCA & MCA leagues!\n\nSelect a frequency channel below for instant telemetry:`,
+    text: "I am **Astra**, the dedicated assistant for **INNOVERSE 3.0**.\n\nI can only answer questions strictly based on the information published on the **INNOVERSE 3.0 website** (Department of MCA, KLS GIT Belagavi).\n\nPlease select one of the official hackathon topics below:",
     actions: [
-      { label: '🚀 How to Register', type: 'register' },
-      { label: '🏆 Prize Breakdown', type: 'prizes' },
-      { label: '🌌 5 Mission Arenas', type: 'tracks' }
+      { label: '🚀 Registration & Fee (₹300)', type: 'register' },
+      { label: '🎯 4 Sector Tracks', type: 'tracks' },
+      { label: '🏆 ₹35,000+ Prize Pool', type: 'prizes' },
+      { label: '⏱️ Flight Schedule & Timeline', type: 'timeline' },
+      { label: '📋 Rules & Eligibility', type: 'rules' },
+      { label: '📍 Venue & Helpdesk', type: 'venue' }
     ]
   };
 }
 
-const QUICK_CHANNELS = [
-  { id: 'CH-01', label: 'Registration', query: 'How to Register?' },
-  { id: 'CH-02', label: '₹300 Squad Fee', query: 'Team Size & Entry Fee?' },
-  { id: 'CH-03', label: '₹35K Prizes', query: 'Prize Pool & Distribution' },
-  { id: 'CH-04', label: '4 Sectors', query: 'What are the Sector Focus Areas?' },
-  { id: 'CH-05', label: 'KLS GIT Venue', query: 'Where is the Venue?' },
-  { id: 'CH-06', label: 'Flight Rules', query: 'Selection Rounds & Rules' }
+// 2x2 Quick Category Cards (Aria Style - 100% Aligned with Website Data)
+const ARIA_CATEGORIES = [
+  {
+    id: 'reg',
+    title: 'Registration & Fee',
+    subtitle: '₹300 squad fee & UTR upload',
+    query: 'How do I register and what are the squad payment details?',
+    icon: Rocket,
+    iconColor: 'text-amber-400',
+    bgGlow: 'group-hover:border-amber-400/50'
+  },
+  {
+    id: 'tracks',
+    title: '4 Sector Focus Tracks',
+    subtitle: 'Fintech, EdTech, Health, Agri',
+    query: 'What are the 4 sector focus areas and problem tracks?',
+    icon: Layers,
+    iconColor: 'text-purple-400',
+    bgGlow: 'group-hover:border-purple-400/50'
+  },
+  {
+    id: 'prizes',
+    title: '₹35,000 Prizes',
+    subtitle: 'MCA & BCA cash podiums',
+    query: 'What is the prize pool and cash bounty breakdown?',
+    icon: Trophy,
+    iconColor: 'text-amber-300',
+    bgGlow: 'group-hover:border-amber-400/50'
+  },
+  {
+    id: 'rules',
+    title: 'Rules & Timeline',
+    subtitle: '5-6 Jan 2027 24h schedule',
+    query: 'What are the squad rules and 24-hour event timeline?',
+    icon: Clock,
+    iconColor: 'text-cyan-400',
+    bgGlow: 'group-hover:border-cyan-400/50'
+  }
 ];
 
-/**
- * Sci-Fi Text Parser
- * Highlights bold terms, code pills, and diamond bullets with high-tech HUD colors.
- */
-function renderSciFiFormattedText(rawText) {
+function renderAriaFormattedText(rawText) {
   if (!rawText) return null;
   const paragraphs = rawText.split('\n\n');
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-2.5">
       {paragraphs.map((para, pIdx) => {
         const lines = para.split('\n');
         return (
@@ -232,10 +564,9 @@ function renderSciFiFormattedText(rawText) {
               const content = isBullet
                 ? trimmed.replace(/^[•-]\s*/, '')
                 : isNumberBullet
-                ? trimmed.replace(/^\d+\.\s*/, '')
-                : trimmed;
+                  ? trimmed.replace(/^\d+\.\s*/, '')
+                  : trimmed;
 
-              // Parse tokens: **bold** and `code`
               const parts = [];
               const regex = /(\*\*[^*]+\*\*|`[^`]+`)/g;
               let lastIndex = 0;
@@ -250,7 +581,7 @@ function renderSciFiFormattedText(rawText) {
                   parts.push(
                     <strong
                       key={`${lIdx}-${match.index}`}
-                      className="font-bold text-amber-300 drop-shadow-[0_0_8px_rgba(245,158,11,0.3)]"
+                      className="font-semibold text-white drop-shadow-[0_0_8px_rgba(168,85,247,0.3)]"
                     >
                       {token.slice(2, -2)}
                     </strong>
@@ -259,7 +590,7 @@ function renderSciFiFormattedText(rawText) {
                   parts.push(
                     <code
                       key={`${lIdx}-${match.index}`}
-                      className="px-1.5 py-0.5 mx-0.5 rounded bg-cyan-950/70 border border-cyan-400/40 text-cyan-300 font-mono text-[10px] tracking-tight shadow-[0_0_8px_rgba(6,182,212,0.2)]"
+                      className="px-1.5 py-0.5 mx-0.5 rounded bg-purple-950/60 border border-purple-400/30 text-purple-200 font-mono text-[11px]"
                     >
                       {token.slice(1, -1)}
                     </code>
@@ -273,9 +604,9 @@ function renderSciFiFormattedText(rawText) {
 
               if (isBullet) {
                 return (
-                  <div key={lIdx} className="flex items-start gap-2 pl-0.5 text-zinc-200">
-                    <span className="text-amber-400 font-mono text-[10px] leading-5 shrink-0 select-none">
-                      ◈
+                  <div key={lIdx} className="flex items-start gap-2 pl-0.5 text-zinc-300">
+                    <span className="text-purple-400 text-xs leading-5 shrink-0 select-none">
+                      ✦
                     </span>
                     <span className="flex-1 leading-relaxed text-xs sm:text-[13px]">{parts}</span>
                   </div>
@@ -286,9 +617,9 @@ function renderSciFiFormattedText(rawText) {
                 const numMatch = trimmed.match(/^(\d+)\./);
                 const num = numMatch ? numMatch[1] : '•';
                 return (
-                  <div key={lIdx} className="flex items-start gap-2 pl-0.5 text-zinc-200">
-                    <span className="font-mono text-[9px] font-bold text-cyan-300 px-1.5 py-0.5 rounded bg-cyan-500/15 border border-cyan-400/30 shrink-0 select-none mt-0.5 shadow-[0_0_6px_rgba(6,182,212,0.2)]">
-                      0{num}
+                  <div key={lIdx} className="flex items-start gap-2 pl-0.5 text-zinc-300">
+                    <span className="font-mono text-[9px] font-bold text-purple-300 px-1.5 py-0.5 rounded bg-purple-500/15 border border-purple-400/30 shrink-0 select-none mt-0.5">
+                      {num}
                     </span>
                     <span className="flex-1 leading-relaxed text-xs sm:text-[13px]">{parts}</span>
                   </div>
@@ -296,7 +627,7 @@ function renderSciFiFormattedText(rawText) {
               }
 
               return (
-                <p key={lIdx} className="leading-relaxed text-zinc-200 text-xs sm:text-[13px]">
+                <p key={lIdx} className="leading-relaxed text-zinc-300 text-xs sm:text-[13px]">
                   {parts}
                 </p>
               );
@@ -311,23 +642,13 @@ function renderSciFiFormattedText(rawText) {
 export default function MissionControlChatbot({ onOpenRegister, onOpenTracks }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
-  const soundEnabled = true;
+  const [viewMode, setViewMode] = useState('home'); // 'home' (cards) | 'chat' (messages)
   const [hasUnread, setHasUnread] = useState(true);
-  const [messages, setMessages] = useState([
-    {
-      id: 'welcome-1',
-      sender: 'bot',
-      time: 'SYSTEM READY',
-      text: "🌌 **Welcome to Orbital Mission Control, Builder!**\n\nI am **ASTRA 3.0**, your autonomous flight copilot for **INNOVERSE 3.0** at KLS GIT Belagavi.\n\nAsk me anything about registration, squad rules, the ₹35,000 cash pool, or the 5 problem arenas!",
-      actions: [
-        { label: '🚀 Claim Boarding Pass', type: 'register' },
-        { label: '👥 Squad Rules & Fee', type: 'team' },
-        { label: '🌌 5 Mission Arenas', type: 'tracks' }
-      ]
-    }
-  ]);
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [showInfoModal, setShowInfoModal] = useState(false);
+
+  const [messages, setMessages] = useState([]);
 
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
@@ -337,25 +658,33 @@ export default function MissionControlChatbot({ onOpenRegister, onOpenTracks }) 
   };
 
   useEffect(() => {
-    if (isOpen && !isMinimized) {
+    if (isOpen && viewMode === 'chat') {
       scrollToBottom();
     }
-  }, [messages, isOpen, isMinimized, isTyping]);
+  }, [messages, isOpen, viewMode, isTyping]);
 
   const handleToggleOpen = () => {
     if (!isOpen) {
       setIsOpen(true);
       setIsMinimized(false);
       setHasUnread(false);
-      if (soundEnabled) playSciFiSound('open');
+      playAriaChime('open');
       setTimeout(() => inputRef.current?.focus(), 250);
     } else {
       setIsOpen(false);
     }
   };
 
+  const handleResetChat = () => {
+    setMessages([]);
+    setViewMode('home');
+    setInputValue('');
+    playAriaChime('open');
+    setTimeout(() => inputRef.current?.focus(), 150);
+  };
+
   const handleActionClick = (action) => {
-    if (soundEnabled) playSciFiSound('send');
+    playAriaChime('send');
 
     if (action.type === 'register') {
       if (onOpenRegister) {
@@ -381,8 +710,6 @@ export default function MissionControlChatbot({ onOpenRegister, onOpenTracks }) 
     } else if (action.type === 'venue') {
       const el = document.getElementById('footer');
       if (el) el.scrollIntoView({ behavior: 'smooth' });
-    } else if (action.type === 'team') {
-      handleUserSubmit('What are the team size rules and entry fee?');
     }
   };
 
@@ -390,7 +717,8 @@ export default function MissionControlChatbot({ onOpenRegister, onOpenTracks }) 
     const textToSend = overrideText || inputValue;
     if (!textToSend.trim() || isTyping) return;
 
-    if (soundEnabled) playSciFiSound('send');
+    playAriaChime('send');
+    setViewMode('chat');
 
     const userMsg = {
       id: createMessageId('user'),
@@ -415,8 +743,9 @@ export default function MissionControlChatbot({ onOpenRegister, onOpenTracks }) 
 
       setMessages((prev) => [...prev, botMsg]);
       setIsTyping(false);
-      if (soundEnabled) playSciFiSound('receive');
-    }, 550);
+      playAriaChime('receive');
+      setTimeout(() => inputRef.current?.focus(), 100);
+    }, 450);
   };
 
   const handleKeyDown = (e) => {
@@ -429,31 +758,27 @@ export default function MissionControlChatbot({ onOpenRegister, onOpenTracks }) 
   return (
     <>
       {/* =====================================================================
-          COMPACT FLOATING ICON TRIGGER BUTTON (Bottom Right)
-          Clean, elegant circular icon button without wide pill or bulky elements.
+          FLOATING LAUNCHER BUTTON (Aria / Indigo Aesthetic with Astronaut Helmet)
           ===================================================================== */}
       <div className="fixed bottom-5 sm:bottom-6 right-5 sm:right-6 z-50 select-none">
         {!isOpen && (
           <button
             id="open-chatbot-btn"
             onClick={handleToggleOpen}
-            aria-label="Open Mission Control AI Assistant"
-            className="group relative flex items-center justify-center w-12 h-12 rounded-full bg-[#0a0a14]/95 hover:bg-[#121222] border border-amber-400/50 hover:border-amber-300 text-amber-300 hover:text-white backdrop-blur-xl shadow-[0_4px_25px_rgba(0,0,0,0.85),0_0_15px_rgba(245,158,11,0.3)] hover:shadow-[0_6px_30px_rgba(245,158,11,0.55)] transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer"
+            aria-label="Open Astra AI Assistant"
+            className="group relative flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-tr from-[#1b1736] via-[#16132e] to-[#251f47] hover:from-[#231e47] hover:to-[#2e2659] border border-purple-400/40 hover:border-purple-300 text-purple-200 hover:text-white backdrop-blur-2xl shadow-[0_8px_30px_rgba(0,0,0,0.85),0_0_20px_rgba(168,85,247,0.35)] hover:shadow-[0_10px_35px_rgba(168,85,247,0.55)] transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer"
           >
-            {/* Subtle Rotating Orbital Dashed Ring */}
-            <span className="absolute inset-[-3px] rounded-full border border-dashed border-amber-400/30 group-hover:border-amber-400/70 animate-spin [animation-duration:12s] pointer-events-none" />
+            {/* Ambient outer pulse ring */}
+            <span className="absolute inset-[-4px] rounded-full border border-purple-400/25 group-hover:border-purple-400/60 animate-pulse pointer-events-none" />
 
-            {/* Clean, Nicely Proportioned Bot Icon (Not oversized) */}
-            <Bot className="w-5 h-5 text-amber-300 group-hover:scale-110 transition-transform duration-200" />
+            {/* Astronaut Helmet Icon */}
+            <AstronautHelmetIcon className="w-7 h-7 text-purple-200 group-hover:text-white group-hover:scale-110 transition-all duration-200" glowing />
 
-            {/* Tiny Live Status Pip */}
-            <span className="absolute bottom-1 right-1 w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_6px_#34d399]" />
-
-            {/* Unread Alert Ping */}
+            {/* Unread Alert Notification Ping */}
             {hasUnread && (
-              <span className="absolute -top-0.5 -right-0.5 flex h-3 w-3">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-3 w-3 bg-cyan-400 shadow-[0_0_8px_#38bdf8]" />
+              <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-gradient-to-r from-purple-400 to-indigo-400 shadow-[0_0_8px_#a855f7]" />
               </span>
             )}
           </button>
@@ -461,229 +786,259 @@ export default function MissionControlChatbot({ onOpenRegister, onOpenTracks }) 
       </div>
 
       {/* =====================================================================
-          EXPANDED SCI-FI MISSION CONTROL HUD TERMINAL
+          ARIA THEME CHAT MODAL (Phone / Obsidian Glass Card Design)
           ===================================================================== */}
       {isOpen && (
         <div
-          className={`fixed bottom-5 sm:bottom-6 right-5 sm:right-6 z-50 flex flex-col w-[calc(100vw-2.5rem)] sm:w-[430px] max-w-[450px] rounded-2xl border border-amber-500/40 bg-[#06060c]/98 backdrop-blur-2xl shadow-[0_0_60px_rgba(0,0,0,0.95),0_0_35px_rgba(245,158,11,0.25),inset_0_1px_1px_rgba(255,255,255,0.15)] overflow-hidden transition-all duration-300 font-sans ${
-            isMinimized ? 'h-14 sm:h-16' : 'h-[560px] sm:h-[620px] max-h-[88vh]'
-          }`}
+          className={`fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-50 flex flex-col w-[calc(100vw-2rem)] sm:w-[390px] max-w-[420px] rounded-[32px] border border-white/[0.12] bg-gradient-to-b from-[#141226] via-[#0d0c1b] to-[#070611] backdrop-blur-3xl shadow-[0_25px_60px_rgba(0,0,0,0.95),0_0_40px_rgba(139,92,246,0.18)] overflow-hidden transition-all duration-300 font-sans ${isMinimized ? 'h-16' : 'h-[600px] sm:h-[640px] max-h-[90vh]'
+            }`}
         >
-          {/* High-Tech HUD Corner Accents */}
-          <span className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-amber-400 pointer-events-none z-20" />
-          <span className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-amber-400 pointer-events-none z-20" />
-          <span className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-cyan-400 pointer-events-none z-20" />
-          <span className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-cyan-400 pointer-events-none z-20" />
+          {/* Subtle Ambient Radial Lighting in Background */}
+          <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[340px] h-[220px] bg-[radial-gradient(ellipse_at_top,rgba(168,85,247,0.16)_0%,rgba(99,102,241,0.06)_50%,transparent_80%)] blur-2xl" />
 
-          {/* Top Multi-Color Energy Hairline */}
-          <div className="h-[2px] w-full bg-gradient-to-r from-cyan-400 via-amber-400 to-orange-500 shrink-0" />
-
-          {/* HUD Header Strip */}
-          <div className="relative flex items-center justify-between px-3.5 sm:px-4 py-2.5 sm:py-3 border-b border-white/10 bg-black/70 backdrop-blur-xl shrink-0 select-none">
-            {/* Left Identity & Telemetry */}
-            <div className="flex items-center gap-2.5">
-              <div className="relative flex items-center justify-center w-8 sm:w-9 h-8 sm:h-9 rounded-lg bg-gradient-to-br from-amber-500/20 via-black to-cyan-500/20 border border-amber-400/50 shadow-[0_0_12px_rgba(245,158,11,0.3)]">
-                <Bot className="w-4 sm:w-5 h-4 sm:h-5 text-amber-300" />
-                <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_6px_#34d399]" />
-              </div>
-              <div className="flex flex-col">
-                <div className="flex items-center gap-1.5">
-                  <span className="font-mono text-xs sm:text-sm font-bold tracking-wider bg-gradient-to-r from-amber-300 via-amber-400 to-orange-400 bg-clip-text text-transparent">
-                    ASTRA 3.0
-                  </span>
-                  <span className="px-1.5 py-0.2 rounded bg-emerald-500/15 border border-emerald-400/30 text-[8px] sm:text-[9px] font-mono text-emerald-300 font-semibold uppercase tracking-wider">
-                    ONLINE
-                  </span>
-                </div>
-              </div>
+          {/* Top Status Bar (Aria Style) */}
+          <div className="relative flex items-center justify-between px-5 pt-4 pb-2 z-10 shrink-0 select-none">
+            {/* Left Brand Badge */}
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-purple-400/25 bg-purple-500/10 text-purple-300 text-xs font-medium tracking-wide">
+              <AstronautHelmetIcon className="w-3.5 h-3.5 text-purple-300" glowing />
+              <span>Astra AI • 24h Copilot</span>
             </div>
 
-            {/* Right HUD Controls */}
-            <div className="flex items-center gap-1">
-              {/* Minimize Window */}
+            {/* Right Quick Controls */}
+            <div className="flex items-center gap-1.5 text-zinc-400">
               <button
-                onClick={() => setIsMinimized(!isMinimized)}
-                title={isMinimized ? 'Expand HUD' : 'Minimize HUD'}
-                className="p-1.5 rounded-md hover:bg-white/10 text-zinc-400 hover:text-white transition-colors cursor-pointer"
+                type="button"
+                onClick={() => setShowInfoModal(!showInfoModal)}
+                title="About Astra AI"
+                className="p-1.5 rounded-full hover:bg-white/10 hover:text-white transition-colors cursor-pointer"
               >
-                {isMinimized ? <Maximize2 className="w-3.5 h-3.5" /> : <Minus className="w-3.5 h-3.5" />}
+                <Info className="w-4 h-4" />
               </button>
 
-              {/* Close Button */}
               <button
+                type="button"
+                onClick={handleResetChat}
+                title="Reset conversation"
+                className="p-1.5 rounded-full hover:bg-white/10 hover:text-white transition-colors cursor-pointer"
+              >
+                <RotateCcw className="w-4 h-4" />
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setIsMinimized(!isMinimized)}
+                title={isMinimized ? 'Expand' : 'Minimize'}
+                className="p-1.5 rounded-full hover:bg-white/10 hover:text-white transition-colors cursor-pointer"
+              >
+                {isMinimized ? <Maximize2 className="w-4 h-4" /> : <Minus className="w-4 h-4" />}
+              </button>
+
+              <button
+                type="button"
                 onClick={() => setIsOpen(false)}
-                title="Disconnect HUD"
-                className="p-1.5 rounded-md hover:bg-rose-500/20 text-zinc-400 hover:text-rose-400 transition-colors cursor-pointer"
+                title="Close"
+                className="p-1.5 rounded-full hover:bg-rose-500/20 hover:text-rose-400 transition-colors cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
           </div>
 
-          {/* Minimized Telemetry Bar Preview */}
+          {/* Minimized Bar Preview */}
           {isMinimized && (
             <div
               onClick={() => setIsMinimized(false)}
-              className="flex-1 flex items-center justify-between px-4 bg-[#0a0a14] cursor-pointer hover:bg-[#101020] transition-colors"
+              className="flex-1 flex items-center justify-between px-5 cursor-pointer hover:bg-white/5 transition-colors"
             >
-              <div className="flex items-center gap-2 font-mono text-[10px] text-zinc-300">
-                <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
-                <span>[ ◈ ASTRA 3.0 // STANDBY MODE // CLICK TO EXPAND ]</span>
+              <div className="flex items-center gap-2 text-xs text-purple-200">
+                <AstronautHelmetIcon className="w-4 h-4 text-purple-300" glowing />
+                <span>Astra is ready • Click to expand</span>
               </div>
-              <div className="flex items-center gap-1 font-mono text-[9px] text-cyan-400">
-                <Radio className="w-3 h-3 animate-pulse" />
-                <span>READY</span>
-              </div>
+              <ChevronLeft className="w-4 h-4 text-zinc-400 -rotate-90" />
             </div>
           )}
 
           {/* Window Body (When Not Minimized) */}
           {!isMinimized && (
             <>
-              {/* Transmission Message Logs */}
-              <div className="flex-1 overflow-y-auto px-3.5 sm:px-4 py-3.5 space-y-3.5 scrollbar-thin scrollbar-thumb-amber-500/30 scrollbar-track-black/40">
-                {messages.map((msg) => (
-                  <div
-                    key={msg.id}
-                    className={`flex flex-col ${
-                      msg.sender === 'user' ? 'items-end' : 'items-start'
-                    }`}
-                  >
-                    {/* Timestamp & Transmission Callout */}
-                    <div className="flex items-center gap-1.5 font-mono text-[9px] text-zinc-400 uppercase tracking-wider mb-1 px-1">
-                      {msg.sender === 'user' ? (
-                        <>
-                          <span className="text-cyan-400 font-bold">◈ SQUAD TRANSMISSION</span>
-                          <span>•</span>
-                          <span>{msg.time}</span>
-                        </>
-                      ) : (
-                        <>
-                          <span className="text-amber-400 font-bold">◈ ASTRA // TELEMETRY DIRECTIVE</span>
-                          <span>•</span>
-                          <span>{msg.time}</span>
-                        </>
-                      )}
-                    </div>
-
-                    {/* High-Tech Message Card */}
-                    <div
-                      className={`max-w-[92%] sm:max-w-[88%] rounded-xl p-3 sm:p-3.5 text-xs sm:text-[13px] leading-relaxed shadow-lg transition-all relative overflow-hidden ${
-                        msg.sender === 'user'
-                          ? 'bg-gradient-to-r from-amber-500/25 via-amber-500/15 to-transparent border border-amber-400/50 rounded-tr-none text-white shadow-[0_0_20px_rgba(245,158,11,0.15)] backdrop-blur-md'
-                          : 'bg-[#0d0e1a]/95 text-zinc-200 border border-white/10 border-l-2 border-l-amber-400 rounded-tl-none shadow-[0_4px_25px_rgba(0,0,0,0.8)] backdrop-blur-md'
-                      }`}
-                    >
-                      {/* Subtle Background Glow Accent for Bot */}
-                      {msg.sender === 'bot' && (
-                        <div className="absolute top-0 right-0 w-24 h-24 bg-amber-500/5 rounded-full blur-xl pointer-events-none" />
-                      )}
-
-                      {/* Sci-Fi Formatted Body */}
-                      {msg.sender === 'bot' ? (
-                        renderSciFiFormattedText(msg.text)
-                      ) : (
-                        <p className="whitespace-pre-line font-sans text-white/95 leading-relaxed">
-                          {msg.text}
-                        </p>
-                      )}
-
-                      {/* Tactical Action Chips */}
-                      {msg.actions && msg.actions.length > 0 && (
-                        <div className="mt-3 pt-2.5 border-t border-white/10 flex flex-wrap gap-1.5 sm:gap-2">
-                          {msg.actions.map((act, aIdx) => (
-                            <button
-                              key={aIdx}
-                              onClick={() => handleActionClick(act)}
-                              className="group inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-amber-400/50 hover:border-amber-400 bg-amber-400/10 hover:bg-amber-400/20 text-amber-300 hover:text-white font-mono text-[10px] sm:text-[11px] font-bold tracking-wide transition-all shadow-[0_2px_10px_rgba(245,158,11,0.15)] hover:shadow-[0_0_15px_rgba(245,158,11,0.35)] hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
-                            >
-                              <span>{act.label}</span>
-                              <ArrowRight className="w-3 h-3 text-amber-400 group-hover:translate-x-0.5 transition-transform" />
-                            </button>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ))}
-
-                {/* Telemetry Decoding State (Typing Indicator) */}
-                {isTyping && (
-                  <div className="flex flex-col items-start space-y-1">
-                    <span className="font-mono text-[9px] text-amber-400/80 uppercase tracking-widest px-1">
-                      ◈ ASTRA // DECODING TELEMETRY STREAM...
-                    </span>
-                    <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl rounded-tl-none bg-[#0d0e1a] border border-amber-500/30 shadow-[0_0_15px_rgba(245,158,11,0.15)]">
-                      <div className="flex items-center gap-1">
-                        <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-bounce [animation-delay:-0.3s]" />
-                        <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-bounce [animation-delay:-0.15s]" />
-                        <span className="w-1.5 h-1.5 rounded-full bg-amber-300 animate-bounce" />
-                      </div>
-                      <span className="font-mono text-[10px] text-zinc-400">ANALYZING QUERY</span>
-                    </div>
-                  </div>
-                )}
-
-                <div ref={messagesEndRef} />
-              </div>
-
-              {/* Quick Telemetry Channels Strip */}
-              <div className="px-3 py-2 border-t border-white/[0.08] bg-black/60 shrink-0 select-none">
-                <div className="flex items-center justify-between mb-1.5 px-0.5">
-                  <span className="font-mono text-[9px] text-amber-400/80 font-bold tracking-wider flex items-center gap-1">
-                    <Radio className="w-2.5 h-2.5 text-cyan-400" />
-                    FREQUENCY CHANNELS
-                  </span>
-                  <span className="font-mono text-[8px] text-zinc-400">SELECT FREQUENCY</span>
-                </div>
-                <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-0.5">
-                  {QUICK_CHANNELS.map((ch) => (
+              {/* Optional Info Dropdown */}
+              {showInfoModal && (
+                <div className="mx-5 mb-2 p-3 rounded-2xl border border-purple-400/20 bg-[#16142c]/95 text-xs text-zinc-300 space-y-1.5 z-20 shadow-xl animate-fadeIn">
+                  <div className="flex items-center justify-between font-semibold text-white">
+                    <span>About Astra Assistant</span>
                     <button
-                      key={ch.id}
-                      onClick={() => handleUserSubmit(ch.query)}
-                      disabled={isTyping}
-                      className="whitespace-nowrap px-2.5 py-1 rounded-md border border-white/10 hover:border-amber-400/60 bg-white/[0.03] hover:bg-amber-400/10 text-zinc-300 hover:text-amber-300 font-mono text-[10px] tracking-wide transition-all cursor-pointer disabled:opacity-40 shrink-0 shadow-sm flex items-center gap-1 hover:shadow-[0_0_10px_rgba(245,158,11,0.2)]"
+                      type="button"
+                      onClick={() => setShowInfoModal(false)}
+                      className="text-zinc-400 hover:text-white cursor-pointer"
                     >
-                      <span className="text-amber-400/60 font-bold text-[8px]">{ch.id}:</span>
-                      <span>{ch.label}</span>
+                      <X className="w-3.5 h-3.5" />
                     </button>
-                  ))}
+                  </div>
+                  <p className="text-[11px] leading-relaxed text-zinc-400">
+                    Astra is the autonomous event copilot for INNOVERSE 3.0 at KLS GIT Belagavi. Type any question below or pick a category card.
+                  </p>
                 </div>
-              </div>
+              )}
 
-              {/* Command Input Console */}
-              <div className="p-3 sm:p-3.5 border-t border-white/10 bg-[#05050a] shrink-0">
+              {/* View 1: ARIA HOME VIEW (Greeting + 2x2 Categories) */}
+              {viewMode === 'home' && (
+                <div className="flex-1 flex flex-col justify-between px-5 pt-3 pb-3 overflow-y-auto">
+                  {/* Big Hero Greeting (Exact Aria Typography Layout with Astronaut Helmet Avatar) */}
+                  <div className="space-y-1.5 pt-2">
+                    <div className="flex items-center gap-2.5">
+                      <div className="flex items-center justify-center w-9 h-9 rounded-2xl bg-gradient-to-tr from-purple-500/20 to-indigo-500/20 border border-purple-400/30 shadow-[0_0_15px_rgba(168,85,247,0.25)] shrink-0">
+                        <AstronautHelmetIcon className="w-5 h-5 text-purple-200" glowing />
+                      </div>
+                      <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-white font-sans leading-none">
+                        Hi, I'm Astra
+                      </h3>
+                    </div>
+
+                    <h4 className="text-xl sm:text-2xl font-bold tracking-tight bg-gradient-to-r from-purple-300 via-violet-300 to-indigo-300 bg-clip-text text-transparent font-sans">
+                      I can help you today
+                    </h4>
+                    <p className="text-xs sm:text-[13px] text-gray-400 font-sans leading-relaxed pt-1 max-w-[95%]">
+                      Take a deep breath. I'm ready when you are. Choose what you'd like to work on:
+                    </p>
+                  </div>
+
+                  {/* 2x2 Category Cards Grid */}
+                  <div className="grid grid-cols-2 gap-3 my-auto py-3">
+                    {ARIA_CATEGORIES.map((cat) => {
+                      const IconComponent = cat.icon;
+                      return (
+                        <button
+                          key={cat.id}
+                          type="button"
+                          onClick={() => handleUserSubmit(cat.query)}
+                          className={`group relative rounded-2xl border border-white/[0.08] bg-[#16142a]/80 hover:bg-[#201d3d]/90 p-4 flex flex-col justify-between h-28 sm:h-30 text-left transition-all duration-300 hover:shadow-[0_8px_25px_rgba(139,92,246,0.25)] hover:-translate-y-0.5 cursor-pointer ${cat.bgGlow}`}
+                        >
+                          {/* Top-left Icon */}
+                          <div className="w-8 h-8 rounded-xl bg-white/[0.06] border border-white/10 flex items-center justify-center group-hover:scale-105 transition-transform">
+                            <IconComponent className={`w-4 h-4 ${cat.iconColor}`} />
+                          </div>
+
+                          {/* Bottom Details */}
+                          <div>
+                            <span className="block font-medium text-white text-xs sm:text-sm group-hover:text-purple-200 transition-colors">
+                              {cat.title}
+                            </span>
+                            <span className="block text-[10px] text-zinc-400 mt-0.5 truncate">
+                              {cat.subtitle}
+                            </span>
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* View 2: CHAT CONVERSATION VIEW */}
+              {viewMode === 'chat' && (
+                <div className="flex-1 overflow-y-auto px-4 py-3 space-y-3.5 scrollbar-thin scrollbar-thumb-purple-500/30">
+                  {messages.map((msg) => (
+                    <div
+                      key={msg.id}
+                      className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'
+                        }`}
+                    >
+                      {/* Message Bubble */}
+                      <div
+                        className={`max-w-[88%] rounded-2xl p-3.5 text-xs sm:text-[13px] leading-relaxed shadow-md transition-all ${msg.sender === 'user'
+                          ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-tr-none shadow-[0_4px_20px_rgba(168,85,247,0.3)]'
+                          : 'bg-[#18162d]/90 text-zinc-200 border border-white/10 rounded-tl-none shadow-[0_4px_25px_rgba(0,0,0,0.6)] backdrop-blur-md'
+                          }`}
+                      >
+                        {msg.sender === 'bot' ? (
+                          renderAriaFormattedText(msg.text)
+                        ) : (
+                          <p className="whitespace-pre-line text-white">{msg.text}</p>
+                        )}
+
+                        {/* Interactive Action Chips */}
+                        {msg.actions && msg.actions.length > 0 && (
+                          <div className="mt-3 pt-2.5 border-t border-white/10 flex flex-wrap gap-1.5">
+                            {msg.actions.map((act, aIdx) => (
+                              <button
+                                key={aIdx}
+                                type="button"
+                                onClick={() => handleActionClick(act)}
+                                className="group inline-flex items-center gap-1 px-3 py-1.5 rounded-full border border-purple-400/40 hover:border-purple-300 bg-purple-500/15 hover:bg-purple-500/30 text-purple-200 hover:text-white text-[11px] font-medium transition-all shadow-sm cursor-pointer"
+                              >
+                                <span>{act.label}</span>
+                                <ArrowRight className="w-3 h-3 text-purple-400 group-hover:translate-x-0.5 transition-transform" />
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+
+                      <span className="text-[10px] text-zinc-500 mt-1 px-1">
+                        {msg.time}
+                      </span>
+                    </div>
+                  ))}
+
+                  {/* Typing Indicator */}
+                  {isTyping && (
+                    <div className="flex items-center gap-2 px-3 py-2 rounded-2xl bg-[#18162d]/80 border border-white/10 w-fit">
+                      <div className="flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-bounce [animation-delay:-0.3s]" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-bounce [animation-delay:-0.15s]" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-purple-300 animate-bounce" />
+                      </div>
+                      <span className="text-[11px] text-zinc-400">Astra is thinking...</span>
+                    </div>
+                  )}
+
+                  <div ref={messagesEndRef} />
+                </div>
+              )}
+
+              {/* =====================================================================
+                  PERMANENT BOTTOM TYPING BAR (Aria Aesthetic)
+                  Replaced voice orb with always-accessible typing console
+                  ===================================================================== */}
+              <div className="p-4 pt-1 z-20">
                 <form
                   onSubmit={(e) => {
                     e.preventDefault();
                     handleUserSubmit();
                   }}
-                  className="relative flex items-center gap-2"
+                  className="mx-auto w-full rounded-full border border-white/15 bg-[#121024]/90 backdrop-blur-2xl p-1.5 pl-3 pr-1.5 flex items-center gap-2 shadow-[0_8px_30px_rgba(0,0,0,0.8)] focus-within:border-purple-400/50 focus-within:shadow-[0_0_25px_rgba(168,85,247,0.3)] transition-all"
                 >
-                  <div className="relative flex-1 flex items-center">
-                    <div className="absolute left-3 flex items-center gap-1 text-amber-400 font-mono font-bold text-[11px] pointer-events-none select-none">
-                      <Terminal className="w-3.5 h-3.5 text-amber-400" />
-                      <span>&gt;</span>
-                    </div>
-                    <input
-                      ref={inputRef}
-                      type="text"
-                      value={inputValue}
-                      onChange={(e) => setInputValue(e.target.value)}
-                      onKeyDown={handleKeyDown}
-                      placeholder="Ask Astra anything about INNOVERSE 3.0..."
-                      className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-white/15 bg-white/[0.04] focus:bg-white/[0.08] focus:border-amber-400 focus:outline-none focus:ring-1 focus:ring-amber-400/50 text-xs sm:text-sm text-white placeholder-zinc-500 font-sans tracking-wide transition-all"
-                    />
-                  </div>
+                  {/* Left: Back Arrow (visible in chat view to easily return to the 4 category cards) */}
+                  {viewMode === 'chat' && (
+                    <button
+                      type="button"
+                      onClick={() => setViewMode('home')}
+                      title="Back to categories"
+                      className="p-1.5 rounded-full text-zinc-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer shrink-0"
+                    >
+                      <ChevronLeft className="w-4 h-4" />
+                    </button>
+                  )}
 
+                  {/* Text Typing Input */}
+                  <input
+                    ref={inputRef}
+                    type="text"
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    placeholder="Type a message or ask Astra..."
+                    className="flex-1 bg-transparent px-2 py-1.5 text-xs sm:text-sm text-white placeholder-zinc-500 font-sans focus:outline-none"
+                  />
+
+                  {/* Send Button: Glowing iridescent purple/indigo gradient circular button */}
                   <button
                     type="submit"
                     disabled={!inputValue.trim() || isTyping}
-                    aria-label="Transmit telemetry query"
-                    className="flex items-center justify-center gap-1.5 px-3 sm:px-3.5 h-10 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-black hover:from-amber-300 hover:to-amber-400 disabled:opacity-30 disabled:hover:from-amber-400 disabled:hover:to-amber-500 transition-all font-mono font-bold text-xs cursor-pointer disabled:cursor-not-allowed shrink-0 shadow-[0_0_20px_rgba(245,158,11,0.4)] hover:scale-[1.02] active:scale-[0.98]"
+                    aria-label="Send message"
+                    className="flex items-center justify-center w-9 h-9 rounded-full bg-gradient-to-tr from-purple-600 via-indigo-500 to-pink-500 text-white disabled:opacity-30 disabled:cursor-not-allowed hover:shadow-[0_0_20px_rgba(168,85,247,0.7)] transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer shrink-0"
                   >
-                    <span className="hidden sm:inline">SEND</span>
-                    <Send className="w-3.5 h-3.5 text-black" />
+                    <Send className="w-4 h-4 text-white" />
                   </button>
                 </form>
               </div>

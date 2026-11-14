@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShieldCheck, Mail, ExternalLink, Globe, Sparkles } from 'lucide-react';
+import { ShieldCheck, ExternalLink, Globe, Sparkles } from 'lucide-react';
 
 export default function SponsorsSection() {
   const partners = [
@@ -111,22 +111,6 @@ export default function SponsorsSection() {
               </div>
             </div>
           ))}
-        </div>
-
-        {/* Sponsor Inquiries Capsule */}
-        <div className="rounded-2xl border border-white/10 bg-[#0e0e16]/60 p-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
-          <div className="flex items-center gap-3">
-            <Mail className="w-5 h-5 text-amber-400 shrink-0" />
-            <p className="text-xs sm:text-sm text-gray-300 font-sans">
-              Want to partner with 1,500+ top software engineers and sponsor custom challenge bounties?
-            </p>
-          </div>
-          <a
-            href="mailto:sponsor@innoverce.tech"
-            className="px-5 py-2.5 rounded-full border border-amber-400/30 hover:border-amber-400 bg-amber-400/10 hover:bg-amber-400 text-amber-300 hover:text-black font-mono text-xs uppercase tracking-wider font-semibold transition-all shrink-0 cursor-pointer"
-          >
-            Become a Sponsor
-          </a>
         </div>
       </div>
     </section>
