@@ -1,16 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Clock,
-  Calendar,
   CheckCircle2,
   Zap,
-  Coffee,
-  Trophy,
-  Code2,
   Compass,
   Sparkles,
   Users,
-  Ticket,
   Rocket
 } from 'lucide-react';
 import { useScrollReveal } from '../hooks/useScrollReveal';
@@ -69,121 +64,8 @@ const TIMELINE_JOURNEY = [
   }
 ];
 
-const TIMELINE_DAY_1 = [
-  {
-    time: '08:00 AM',
-    title: 'Hacker Check-In & Breakfast',
-    desc: 'Selected teams arrive on campus. Verify digital boarding passes, collect hacker kits, badges, and breakfast.',
-    category: 'LOGISTICS',
-    icon: Coffee,
-    active: true
-  },
-  {
-    time: '09:30 AM',
-    title: 'Opening Ceremony & Track Briefing',
-    desc: 'Welcome keynote by faculty and guest tech leaders. Track problem statements and evaluation criteria revealed.',
-    category: 'KEYNOTE',
-    icon: Compass,
-    active: true
-  },
-  {
-    time: '10:00 AM',
-    title: 'HACKING COMMENCES (T-00:00:00)',
-    desc: '24-hour marathon timer begins! GitHub repositories initialize and compute environments activate.',
-    category: 'HACKING',
-    icon: Zap,
-    highlight: true,
-    active: true
-  },
-  {
-    time: '01:30 PM',
-    title: 'Networking Lunch & Team Connect',
-    desc: 'Catered lunch at the dining hall. Connect with fellow builders, organizers, and tech communities.',
-    category: 'MEALS',
-    icon: Coffee,
-    active: false
-  },
-  {
-    time: '04:00 PM',
-    title: 'Mentorship Checkpoint 1',
-    desc: '1-on-1 progress reviews with industry mentors. Clarify architectural doubts, refine UX, and optimize data models.',
-    category: 'MENTORSHIP',
-    icon: Code2,
-    active: false
-  },
-  {
-    time: '11:00 PM',
-    title: 'Midnight Lightning Sprints & Snacks',
-    desc: 'Midnight snacks, coffee, and mini technical lightning demos to keep adrenaline pumping.',
-    category: 'NIGHT SPRINT',
-    icon: Sparkles,
-    active: false
-  }
-];
-
-const TIMELINE_DAY_2 = [
-  {
-    time: '03:00 AM',
-    title: 'The Witching Hour Code Sprint',
-    desc: 'Late-night flow state coding sessions with curated ambient tunes and continuous coding momentum.',
-    category: 'FLOW STATE',
-    icon: Zap,
-    active: false
-  },
-  {
-    time: '07:30 AM',
-    title: 'Sunrise Breakfast & Submission Prep',
-    desc: 'Hot breakfast served. Final submission checklist and repository guidelines distributed to squad leads.',
-    category: 'MEALS',
-    icon: Coffee,
-    active: false
-  },
-  {
-    time: '09:30 AM',
-    title: 'Soft Submission & Code Lock Warning',
-    desc: 'Draft project demos, repository links, and architecture decks submitted for preliminary verification.',
-    category: 'DEADLINE',
-    icon: CheckCircle2,
-    active: false
-  },
-  {
-    time: '10:00 AM',
-    title: 'HACKING ENDS (T+24:00:00)',
-    desc: 'Pencils down! Code commits freeze across all repositories. Preparation begins for on-site jury demonstrations.',
-    category: 'MILESTONE',
-    icon: CheckCircle2,
-    highlight: true,
-    active: false
-  },
-  {
-    time: '11:30 AM',
-    title: 'Project Expo & Live Jury Demonstration',
-    desc: 'Live table-top demonstrations before judges for MCA and BCA tracks. Evaluated on innovation, complexity, and design.',
-    category: 'JUDGING',
-    icon: Trophy,
-    active: false
-  },
-  {
-    time: '02:30 PM',
-    title: 'Grand Finale & ₹35,000 Award Ceremony',
-    desc: 'Stage presentations, announcement of MCA & BCA Champions, and distribution of ₹12K (1st Prize), ₹6K (2nd Prize), trophies, and certificates.',
-    category: 'CEREMONY',
-    icon: Trophy,
-    highlight: true,
-    active: false
-  }
-];
-
 export default function TimelineSection() {
-  const [activeTab, setActiveTab] = useState('journey'); // 'journey' | 'day1' | 'day2'
   const [sectionRef, isVisible] = useScrollReveal();
-
-  const events =
-    activeTab === 'journey'
-      ? TIMELINE_JOURNEY
-      : activeTab === 'day1'
-      ? TIMELINE_DAY_1
-      : TIMELINE_DAY_2;
 
   return (
     <section
@@ -205,7 +87,7 @@ export default function TimelineSection() {
       <div className="relative max-w-5xl mx-auto">
         {/* Header */}
         <div
-          className={`flex flex-col items-start md:items-center md:text-center mb-12 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+          className={`flex flex-col items-start md:items-center md:text-center mb-10 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
             isVisible
               ? 'opacity-100 translate-y-0 scale-100'
               : 'opacity-0 translate-y-8 scale-[0.98]'
@@ -213,89 +95,25 @@ export default function TimelineSection() {
         >
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-300 font-mono text-xs uppercase tracking-widest mb-4">
             <Clock className="w-3.5 h-3.5" />
-            <span>INNOVERSE 3.0 • TWO-PHASE MISSION TIMELINE</span>
+            <span>INNOVERSE 3.0 • MISSION ROADMAP</span>
           </div>
 
           <h2 className="font-display font-black text-3xl sm:text-5xl text-white tracking-tight uppercase">
-            Hackathon <span className="text-amber-400">Roadmap</span>
+            Full Journey <span className="text-amber-400">Roadmap</span>
           </h2>
           <p className="mt-4 text-sm sm:text-base text-gray-300 max-w-2xl font-sans">
             Register, submit an idea, and qualify through shortlisting before the two hackathon phases.
           </p>
-
-          {/* Quick Specifications Pill Strip */}
-          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mt-6">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-white/10 bg-white/[0.03] text-xs font-mono text-gray-300">
-              <Users className="w-3.5 h-3.5 text-amber-400" />
-              <span>Squad: <strong>3 Members (Fixed)</strong></span>
-            </span>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-white/10 bg-white/[0.03] text-xs font-mono text-gray-300">
-              <Ticket className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Entry: <strong>₹300 / Team</strong></span>
-            </span>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-white/10 bg-white/[0.03] text-xs font-mono text-gray-300">
-              <Trophy className="w-3.5 h-3.5 text-yellow-400" />
-              <span>Prize Pool: <strong>₹35,000 (MCA & BCA)</strong></span>
-            </span>
-          </div>
-
-          {/* Full journey and the two days of the Phase 2 hackathon */}
-          <div className="mt-8 flex flex-wrap items-center justify-center p-1.5 rounded-full border border-white/15 bg-[#0e0e14] backdrop-blur-xl gap-1">
-            <button
-              onClick={() => setActiveTab('journey')}
-              className={`flex items-center gap-2 px-4 sm:px-5 py-2 rounded-full font-mono text-xs uppercase tracking-wider font-semibold transition-all cursor-pointer ${
-                activeTab === 'journey'
-                  ? 'bg-amber-400 text-black shadow-[0_0_15px_rgba(245,158,11,0.5)]'
-                  : 'text-white/60 hover:text-white'
-              }`}
-            >
-              <Compass className="w-3.5 h-3.5" />
-              <span>Full Journey</span>
-            </button>
-            <button
-              onClick={() => setActiveTab('day1')}
-              className={`flex items-center gap-2 px-4 sm:px-5 py-2 rounded-full font-mono text-xs uppercase tracking-wider font-semibold transition-all cursor-pointer ${
-                activeTab === 'day1'
-                  ? 'bg-amber-400 text-black shadow-[0_0_15px_rgba(245,158,11,0.5)]'
-                  : 'text-white/60 hover:text-white'
-              }`}
-            >
-              <Calendar className="w-3.5 h-3.5" />
-              <span>Phase 2: Day 1 (Jan 5, 2027)</span>
-            </button>
-            <button
-              onClick={() => setActiveTab('day2')}
-              className={`flex items-center gap-2 px-4 sm:px-5 py-2 rounded-full font-mono text-xs uppercase tracking-wider font-semibold transition-all cursor-pointer ${
-                activeTab === 'day2'
-                  ? 'bg-amber-400 text-black shadow-[0_0_15px_rgba(245,158,11,0.5)]'
-                  : 'text-white/60 hover:text-white'
-              }`}
-            >
-              <Calendar className="w-3.5 h-3.5" />
-              <span>Phase 2: Day 2 (Jan 6, 2027)</span>
-            </button>
-          </div>
         </div>
 
         {/* Informative Round Header Note */}
-        {activeTab === 'journey' && (
-          <div
-            className={`mb-8 p-4 rounded-2xl border border-amber-500/20 bg-amber-500/[0.04] text-center font-mono text-xs text-amber-300 transition-all duration-700 delay-100 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
-            }`}
-          >
-            📋 Registration closes <strong>30 November 2026</strong>, final idea submission runs <strong>1-10 December 2026</strong>, and the hackathon begins <strong>5 January 2027</strong> and concludes <strong>6 January 2027</strong>.
-          </div>
-        )}
-        {(activeTab === 'day1' || activeTab === 'day2') && (
-          <div
-            className={`mb-8 p-4 rounded-2xl border border-emerald-500/20 bg-emerald-500/[0.04] text-center font-mono text-xs text-emerald-300 transition-all duration-700 delay-100 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
-            }`}
-          >
-            ⚡ <strong>Phase 2:</strong> Selected teams take part in the 24-hour on-campus hackathon and compete for ₹35,000 in cash prizes.
-          </div>
-        )}
+        <div
+          className={`mb-10 p-4 rounded-2xl border border-amber-500/20 bg-amber-500/[0.04] text-center font-mono text-xs text-amber-300 transition-all duration-700 delay-100 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+          }`}
+        >
+          📋 Registration closes <strong>30 November 2026</strong>, final idea submission runs <strong>1-10 December 2026</strong>, and the hackathon begins <strong>5 January 2027</strong> and concludes <strong>6 January 2027</strong>.
+        </div>
 
         {/* Milestone Timeline Spine */}
         <div
@@ -303,7 +121,7 @@ export default function TimelineSection() {
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}
         >
-          {events.map((item, idx) => {
+          {TIMELINE_JOURNEY.map((item, idx) => {
             const Icon = item.icon;
             const isHighlight = item.highlight;
 
@@ -369,3 +187,4 @@ export default function TimelineSection() {
     </section>
   );
 }
+

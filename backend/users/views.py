@@ -9,6 +9,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from .models import Registration
 from .serializers import RegistrationSerializer
+from .emails import send_registration_confirmation_email
 
 
 class RegistrationCreateView(generics.CreateAPIView):
@@ -21,12 +22,17 @@ class RegistrationCreateView(generics.CreateAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         registration = serializer.save()
+
+        # Dispatch confirmation email with login link, confirmation ID, and WhatsApp group invite
+        email_sent, _ = send_registration_confirmation_email(registration)
+
         headers = self.get_success_headers(serializer.data)
         return Response(
             {
                 "success": True,
                 "message": f"Team '{registration.team_name}' successfully registered for INNOVERSE 3.0!",
                 "confirmationId": registration.confirmation_id,
+                "emailSent": email_sent,
                 "data": serializer.data,
             },
             status=status.HTTP_200_OK,

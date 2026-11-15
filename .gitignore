@@ -23,6 +23,11 @@ dist-ssr
 *.sln
 *.sw?
 
+# Environment files
+.env
+*.env
+backend/.env
+
 # Python / Django
 __pycache__/
 *.py[cod]
@@ -30,3 +35,4 @@ __pycache__/
 backend/db.sqlite3
 backend/media/
 media/
+*.csv

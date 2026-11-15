@@ -8,7 +8,10 @@ import {
   Users,
   Ticket,
   Phone,
+  Mail,
   CheckCircle2,
+  ExternalLink,
+  MessageCircle,
   Sparkles,
   AlertCircle,
   LogIn,
@@ -25,6 +28,7 @@ import BoardingPass from './BoardingPass';
 
 const API_BASE = (import.meta.env.VITE_API_URL || 'http://localhost:8000').replace(/\/+$/, '');
 const LOCAL_REGISTRATIONS_KEY = 'innoverce_local_registrations';
+const WHATSAPP_GROUP_URL = import.meta.env.VITE_WHATSAPP_GROUP_URL || 'https://chat.whatsapp.com/GaEZLOprIum8Y0AXXyHuI3?s=sh&p=a&iam=2';
 
 function saveLocalRegistration(formData, confirmationId) {
   try {
@@ -946,10 +950,46 @@ export default function RegistrationPage({ onBackToHome, embedded = false, onSwi
               Thank you for registering squad <strong className="text-white">{formData.teamName}</strong> for <strong className="text-amber-400">INNOVERSE 3.0</strong>! Your response and payment verification details have been recorded.
             </p>
             {formData.utrNumber && (
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-300 font-mono text-xs mb-8">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-300 font-mono text-xs mb-6">
                 <span>UTR Reference: <strong>{formData.utrNumber}</strong></span>
               </div>
             )}
+
+            {/* Email Dispatch Notice */}
+            <div className="p-4 sm:p-5 rounded-2xl border border-blue-500/30 bg-blue-500/10 text-blue-200 text-xs sm:text-sm font-sans max-w-xl mx-auto mb-6 flex items-start gap-3.5 text-left shadow-[0_0_20px_rgba(59,130,246,0.15)]">
+              <Mail className="w-5 h-5 text-blue-400 shrink-0 mt-0.5" />
+              <div className="space-y-1">
+                <span className="font-bold text-white block uppercase tracking-wider font-mono text-xs">
+                  Confirmation Email Dispatched
+                </span>
+                <p className="text-white/80 leading-relaxed text-xs sm:text-[13px]">
+                  A confirmation email has been sent to <strong className="text-cyan-300 font-mono">{formData.leaderEmail}</strong> containing your squad login credentials, Confirmation ID (<strong className="text-amber-400 font-mono">{confirmationId}</strong>), and direct dashboard links.
+                </p>
+              </div>
+            </div>
+
+            {/* WhatsApp Group Invite Card */}
+            <div className="p-5 sm:p-6 rounded-2xl border border-emerald-500/40 bg-gradient-to-b from-emerald-500/15 to-emerald-500/5 max-w-xl mx-auto mb-8 text-center space-y-3.5 shadow-[0_0_30px_rgba(37,211,102,0.15)]">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 font-mono text-[11px] font-bold uppercase tracking-wider">
+                <MessageCircle className="w-3.5 h-3.5" />
+                <span>Join Official WhatsApp Group</span>
+              </div>
+              <p className="text-xs sm:text-sm text-gray-200 font-sans leading-relaxed">
+                Stay updated with round-1 shortlists, mentor feedback, flight schedules, and live hackathon briefings. All squad members should join!
+              </p>
+              <div>
+                <a
+                  href={WHATSAPP_GROUP_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-7 py-3 rounded-full bg-[#25D366] hover:bg-[#20ba5a] text-white font-sans text-xs sm:text-sm font-bold uppercase tracking-wider transition-all shadow-[0_0_25px_rgba(37,211,102,0.4)] hover:scale-105 active:scale-95"
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  <span>Join WhatsApp Community</span>
+                  <ExternalLink className="w-3.5 h-3.5 ml-0.5 text-white/80" />
+                </a>
+              </div>
+            </div>
 
             <div className="mb-8">
               <BoardingPass

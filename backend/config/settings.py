@@ -10,10 +10,39 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Automatically load environment variables from .env
+try:
+    from dotenv import load_dotenv
+    load_dotenv(BASE_DIR / '.env')
+    load_dotenv(BASE_DIR.parent / '.env')
+except ImportError:
+    pass
+
+def _load_env_file(filepath):
+    if not filepath.exists():
+        return
+    try:
+        with open(filepath, 'r', encoding='utf-8') as f:
+            for line in f:
+                line = line.strip()
+                if not line or line.startswith('#') or '=' not in line:
+                    continue
+                k, v = line.split('=', 1)
+                k = k.strip()
+                v = v.strip().strip("'\"")
+                if k and k not in os.environ:
+                    os.environ[k] = v
+    except Exception:
+        pass
+
+_load_env_file(BASE_DIR / '.env')
+_load_env_file(BASE_DIR.parent / '.env')
 
 
 # Quick-start development settings - unsuitable for production
@@ -137,3 +166,31 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CORS_ALLOW_CREDENTIALS = True
+
+# Email Configuration
+# Uses SMTP if EMAIL_HOST_USER is provided, otherwise prints to Console in development
+EMAIL_BACKEND = os.environ.get(
+    'DJANGO_EMAIL_BACKEND',
+    'django.core.mail.backends.smtp.EmailBackend' if os.environ.get('EMAIL_HOST_USER')
+    else 'django.core.mail.backends.console.EmailBackend'
+)
+EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.gmail.com')
+EMAIL_PORT = int(os.environ.get('EMAIL_PORT', 587))
+EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'True').lower() in ('true', '1')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
+
+from email.utils import formataddr, parseaddr
+_raw_from = os.environ.get('DEFAULT_FROM_EMAIL', '')
+if _raw_from:
+    _name, _addr = parseaddr(_raw_from)
+    DEFAULT_FROM_EMAIL = formataddr((_name, _addr)) if _addr else _raw_from
+else:
+    DEFAULT_FROM_EMAIL = formataddr(("INNOVERSE 3.0", EMAIL_HOST_USER or 'noreply@innoverse.git.edu'))
+
+# App Links for Emails & Notifications
+FRONTEND_URL = os.environ.get('FRONTEND_URL', 'http://localhost:5173')
+WHATSAPP_GROUP_URL = os.environ.get(
+    'WHATSAPP_GROUP_URL',
+    'https://chat.whatsapp.com/GaEZLOprIum8Y0AXXyHuI3?s=sh&p=a&iam=2'
+)

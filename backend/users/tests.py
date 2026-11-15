@@ -54,6 +54,36 @@ class RegistrationAPITestCase(TestCase):
         self.assertTrue(bool(reg.payment_screenshot))
         self.assertEqual(reg.payment_status, "PENDING")
 
+    def test_registration_confirmation_email_sent(self):
+        from django.core import mail
+        mail.outbox = []
+
+        payload = self.valid_payload.copy()
+        payload['payment_screenshot'] = create_test_image('pay_email.png')
+        response = self.client.post(reverse('register'), data=payload, format='multipart')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        conf_id = response.data['confirmationId']
+
+        # Verify email dispatched
+        self.assertEqual(len(mail.outbox), 1)
+        sent_email = mail.outbox[0]
+        self.assertIn("Registration Confirmed", sent_email.subject)
+        self.assertEqual(sent_email.to, ["alex@example.com"])
+
+        # Verify confirmation ID, login email, login link and WhatsApp link are included
+        self.assertIn(conf_id, sent_email.body)
+        self.assertIn("alex@example.com", sent_email.body)
+        self.assertIn("/login", sent_email.body)
+        self.assertIn("chat.whatsapp.com", sent_email.body)
+
+        # Check HTML alternative
+        self.assertEqual(len(sent_email.alternatives), 1)
+        html_body, mimetype = sent_email.alternatives[0]
+        self.assertEqual(mimetype, "text/html")
+        self.assertIn(conf_id, html_body)
+        self.assertIn("alex@example.com", html_body)
+        self.assertIn("chat.whatsapp.com", html_body)
+
     def test_sequential_serial_confirmation_ids(self):
         # Register squad 1
         payload1 = self.valid_payload.copy()
@@ -277,3 +307,37 @@ class RegistrationAPITestCase(TestCase):
             format='json'
         )
         self.assertEqual(bad_res.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_export_registrations_command(self):
+        from django.core.management import call_command
+        import tempfile
+
+        # Create sample registration
+        Registration.objects.create(
+            team_name="Command Team",
+            leader_name="Captain Kirk",
+            leader_email="kirk@enterprise.org",
+            leader_contact="9876543210",
+            member1_name="Spock",
+            member2_name="McCoy",
+            institution_name="Starfleet Academy",
+            college_address="San Francisco",
+            stream="MCA",
+            utr_number="998877665544"
+        )
+
+        with tempfile.NamedTemporaryFile(suffix='.csv', delete=False) as tmp:
+            tmp_path = tmp.name
+
+        try:
+            call_command('export_registrations', output=tmp_path)
+            with open(tmp_path, 'r', encoding='utf-8-sig') as f:
+                content = f.read()
+            self.assertIn("Command Team", content)
+            self.assertIn("998877665544", content)
+            self.assertIn("INN-3.0-001", content)
+        finally:
+            import os
+            if os.path.exists(tmp_path):
+                os.remove(tmp_path)
+

@@ -39,6 +39,24 @@ const DEVELOPERS = [
     type: 'developer',
     image: null,
     email: 'developer@innoverse.com'
+  },
+  {
+    id: 'dev-5',
+    name: 'Developer Name',
+    role: 'DevOps & Cloud Engineer',
+    department: 'Infrastructure & Security',
+    type: 'developer',
+    image: null,
+    email: 'developer@innoverse.com'
+  },
+  {
+    id: 'dev-6',
+    name: 'Developer Name',
+    role: 'QA & Security Engineer',
+    department: 'Testing & Security Ops',
+    type: 'developer',
+    image: null,
+    email: 'developer@innoverse.com'
   }
 ];
 
@@ -79,15 +97,33 @@ const ORGANIZERS = [
     type: 'organizer',
     image: null,
     email: 'contact@git.edu'
+  },
+  {
+    id: 'org-5',
+    name: 'Organizer Name',
+    role: 'Technical Lead & Mentorship',
+    department: 'Hackathon Coordination',
+    type: 'organizer',
+    image: null,
+    email: 'contact@git.edu'
+  },
+  {
+    id: 'org-6',
+    name: 'Organizer Name',
+    role: 'Creative & Media Head',
+    department: 'Digital Media & Coverage',
+    type: 'organizer',
+    image: null,
+    email: 'contact@git.edu'
   }
 ];
 
 function TeamMemberCard({ member }) {
   const isDev = member.type === 'developer';
   return (
-    <div className="group relative rounded-3xl border border-white/10 bg-[#0d0d14]/80 backdrop-blur-xl p-6 flex flex-col items-center text-center transition-all duration-300 hover:border-amber-400/40 hover:-translate-y-1 hover:shadow-[0_12px_35px_rgba(0,0,0,0.6)]">
+    <div className="group relative rounded-3xl border border-white/10 bg-[#0d0d14]/80 backdrop-blur-xl p-5 sm:p-6 flex flex-col items-center text-center transition-all duration-300 hover:border-amber-400/40 hover:-translate-y-1 hover:shadow-[0_12px_35px_rgba(0,0,0,0.6)]">
       {/* Circular Picture Frame (Blank Placeholder until photos are added) */}
-      <div className="relative mb-5 flex h-28 w-28 items-center justify-center rounded-full border-2 border-dashed border-white/20 bg-gradient-to-b from-white/[0.08] to-white/[0.02] shadow-[0_0_20px_rgba(0,0,0,0.6)] transition-all duration-300 group-hover:border-amber-400/60 group-hover:shadow-[0_0_25px_rgba(245,158,11,0.2)]">
+      <div className="relative mb-5 flex h-24 w-24 sm:h-28 sm:w-28 items-center justify-center rounded-full border-2 border-dashed border-white/20 bg-gradient-to-b from-white/[0.08] to-white/[0.02] shadow-[0_0_20px_rgba(0,0,0,0.6)] transition-all duration-300 group-hover:border-amber-400/60 group-hover:shadow-[0_0_25px_rgba(245,158,11,0.2)]">
         {member.image ? (
           <img
             src={member.image}
@@ -96,7 +132,7 @@ function TeamMemberCard({ member }) {
           />
         ) : (
           <div className="flex flex-col items-center justify-center text-white/30">
-            <User className="h-11 w-11 text-white/30 transition-colors group-hover:text-amber-400/80" />
+            <User className="h-10 w-10 sm:h-11 sm:w-11 text-white/30 transition-colors group-hover:text-amber-400/80" />
             <span className="text-[9px] font-mono tracking-widest uppercase mt-0.5 text-white/35">
               Photo
             </span>
@@ -248,7 +284,7 @@ export default function TeamSection() {
                 </span>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {DEVELOPERS.map((member) => (
                   <TeamMemberCard key={member.id} member={member} />
                 ))}
@@ -275,7 +311,7 @@ export default function TeamSection() {
                 </span>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {ORGANIZERS.map((member) => (
                   <TeamMemberCard key={member.id} member={member} />
                 ))}
