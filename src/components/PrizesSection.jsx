@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Trophy,
   Medal,
@@ -7,14 +7,11 @@ import {
   Sparkles,
   Users,
   Ticket,
-  GraduationCap,
-  Laptop,
   ArrowRight
 } from 'lucide-react';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 
 export default function PrizesSection({ onOpenRegister }) {
-  const [activeTab, setActiveTab] = useState('both'); // 'both' | 'mca' | 'bca'
   const [sectionRef, isVisible] = useScrollReveal();
 
   const PODIUM_TIERS = [
@@ -132,55 +129,14 @@ export default function PrizesSection({ onOpenRegister }) {
           </div>
         </div>
 
-        {/* Dual League Breakdown Indicator Tabs */}
+        {/* Dual League Breakdown Indicator */}
         <div className="flex items-center justify-center mb-10">
           <div className="inline-flex items-center p-1.5 rounded-full border border-white/15 bg-[#0e0e14] backdrop-blur-xl">
-            <button
-              onClick={() => setActiveTab('both')}
-              className={`px-4 sm:px-6 py-2 rounded-full font-sans text-xs uppercase tracking-wider font-semibold transition-all cursor-pointer ${
-                activeTab === 'both'
-                  ? 'bg-amber-400 text-black shadow-[0_0_15px_rgba(245,158,11,0.5)]'
-                  : 'text-white/60'
-              }`}
-            >
+            <span className="px-5 sm:px-6 py-2 rounded-full font-sans text-xs uppercase tracking-wider font-semibold bg-amber-400 text-black shadow-[0_0_15px_rgba(245,158,11,0.5)]">
               Both Tracks (MCA + BCA)
-            </button>
-            <button
-              onClick={() => setActiveTab('mca')}
-              className={`flex items-center gap-1.5 px-4 sm:px-6 py-2 rounded-full font-sans text-xs uppercase tracking-wider font-semibold transition-all cursor-pointer ${
-                activeTab === 'mca'
-                  ? 'bg-amber-400 text-black shadow-[0_0_15px_rgba(245,158,11,0.5)]'
-                  : 'text-white/60'
-              }`}
-            >
-              <GraduationCap className="w-3.5 h-3.5" />
-              <span>MCA Track</span>
-            </button>
-            <button
-              onClick={() => setActiveTab('bca')}
-              className={`flex items-center gap-1.5 px-4 sm:px-6 py-2 rounded-full font-sans text-xs uppercase tracking-wider font-semibold transition-all cursor-pointer ${
-                activeTab === 'bca'
-                  ? 'bg-blue-500 text-white shadow-[0_0_15px_rgba(59,130,246,0.5)]'
-                  : 'text-white/60'
-              }`}
-            >
-              <Laptop className="w-3.5 h-3.5" />
-              <span>BCA Track</span>
-            </button>
+            </span>
           </div>
         </div>
-
-        {/* Track Banner Context */}
-        {activeTab === 'mca' && (
-          <div className="mb-8 p-4 rounded-2xl border border-amber-500/30 bg-amber-500/10 text-center font-sans text-xs text-amber-300">
-            🎓 Viewing <strong className="text-white">MCA Track (Postgraduate League)</strong> — Competing for ₹12K (1st) & ₹6K (2nd) + PG Championship Trophies.
-          </div>
-        )}
-        {activeTab === 'bca' && (
-          <div className="mb-8 p-4 rounded-2xl border border-blue-500/30 bg-blue-500/10 text-center font-sans text-xs text-blue-300">
-            💻 Viewing <strong className="text-white">BCA Track (Undergraduate League)</strong> — Competing for ₹12K (1st) & ₹6K (2nd) + UG Championship Trophies.
-          </div>
-        )}
 
         {/* Podium Cards Grid (1st Prize ₹12K & 2nd Prize ₹6K) */}
         <div

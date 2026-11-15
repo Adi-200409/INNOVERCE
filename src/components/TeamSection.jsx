@@ -2,61 +2,90 @@ import React, { useState } from 'react';
 import { Code2, User, ShieldCheck, Mail, Sparkles } from 'lucide-react';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 
-// Developers Configuration - Replace names, roles and image URLs when photos are ready
+// Developer Profile Photos
+import adityaPhoto from '../images/Aditya.png';
+import nehaPhoto from '../images/Neha.jpeg';
+import zaidPhoto from '../images/Zaid.jpg';
+import bharatPhoto from '../images/bharat.jpg';
+
+// Crisp inline SVGs for developer social links
+function GithubIcon({ className = "w-3.5 h-3.5" }) {
+  return (
+    <svg className={className} fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />
+    </svg>
+  );
+}
+
+function LinkedinIcon({ className = "w-3.5 h-3.5" }) {
+  return (
+    <svg className={className} fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+    </svg>
+  );
+}
+
+// Developers Configuration - Replace names, images, and add your real LinkedIn & GitHub profile links
 const DEVELOPERS = [
   {
     id: 'dev-1',
-    name: 'Developer Name',
+    name: 'Aditya Patil',
     role: 'Lead Full-Stack Developer',
     department: 'Core Platform Architecture',
     type: 'developer',
-    image: null, // e.g. '/team/dev1.jpg'
-    email: 'developer@innoverse.com'
+    image: adityaPhoto,
+    github: 'https://github.com/Adi-200409',
+    linkedin: 'https://www.linkedin.com/in/aditya-patil-6971052a3?utm_source=share_via&utm_content=profile&utm_medium=member_android'
   },
   {
     id: 'dev-2',
-    name: 'Developer Name',
-    role: 'Frontend & 3D Engineer',
-    department: 'WebGL & Interactive UI',
+    name: 'Neha Kumbar',
+    role: 'Frontend Developer',
+    department: 'UI Architecture & Interactive Design',
     type: 'developer',
-    image: null,
-    email: 'developer@innoverse.com'
+    image: nehaPhoto,
+    github: 'https://github.com/NehaNK2705',
+    linkedin: 'https://www.linkedin.com/in/neha-kumbar-560b1341b?utm_source=share_via&utm_content=profile&utm_medium=member_android'
   },
   {
     id: 'dev-3',
-    name: 'Developer Name',
-    role: 'Backend & Systems Engineer',
-    department: 'APIs & Database Architecture',
+    name: 'Megha Desai',
+    role: 'Frontend Developer',
+    department: 'Component Systems & Web Experience',
     type: 'developer',
     image: null,
-    email: 'developer@innoverse.com'
+    github: 'https://github.com/megha2004-web',
+    linkedin: 'https://www.linkedin.com/in/megha-desai-1a3862344/'
   },
   {
     id: 'dev-4',
-    name: 'Developer Name',
-    role: 'UI/UX & Creative Designer',
-    department: 'Visual Design & Motion',
+    name: 'Mohammad Zaid Shaikh',
+    role: 'Backend & Systems Engineer',
+    department: 'APIs & Database Architecture',
     type: 'developer',
-    image: null,
-    email: 'developer@innoverse.com'
+    image: zaidPhoto,
+    github: 'https://github.com',
+    linkedin: 'https://linkedin.com'
   },
   {
     id: 'dev-5',
-    name: 'Developer Name',
-    role: 'DevOps & Cloud Engineer',
-    department: 'Infrastructure & Security',
+    name: 'Shashank Katwe',
+    role: 'Backend & Systems Engineer',
+    department: 'Distributed Systems & Auth Engines',
     type: 'developer',
-    image: null,
-    email: 'developer@innoverse.com'
+    image: shashankPhoto,
+    github: 'https://github.com/shashankkk09',
+    linkedin: 'https://www.linkedin.com/in/shashank-katwe/'
   },
   {
     id: 'dev-6',
-    name: 'Developer Name',
-    role: 'QA & Security Engineer',
-    department: 'Testing & Security Ops',
+    name: 'Bharat Joshi',
+    role: 'UI/UX & Creative Designer',
+    department: 'Visual Design & Motion',
     type: 'developer',
-    image: null,
-    email: 'developer@innoverse.com'
+    image: bharatPhoto,
+    github: 'https://github.com/BharatBinaga',
+    linkedin: 'https://www.linkedin.com/in/bharat-joshi-203542318?utm_source=share_via&utm_content=profile&utm_medium=member_android'
   }
 ];
 
@@ -69,6 +98,8 @@ const ORGANIZERS = [
     department: 'Department of MCA',
     type: 'organizer',
     image: null, // e.g. '/team/organizer1.jpg'
+    github: null,
+    linkedin: 'https://linkedin.com',
     email: 'contact@git.edu'
   },
   {
@@ -78,6 +109,8 @@ const ORGANIZERS = [
     department: 'INNOVERSE 3.0 Lead',
     type: 'organizer',
     image: null,
+    github: null,
+    linkedin: 'https://linkedin.com',
     email: 'contact@git.edu'
   },
   {
@@ -87,6 +120,8 @@ const ORGANIZERS = [
     department: 'Event Operations',
     type: 'organizer',
     image: null,
+    github: null,
+    linkedin: 'https://linkedin.com',
     email: 'contact@git.edu'
   },
   {
@@ -96,6 +131,8 @@ const ORGANIZERS = [
     department: 'Public Relations',
     type: 'organizer',
     image: null,
+    github: null,
+    linkedin: 'https://linkedin.com',
     email: 'contact@git.edu'
   },
   {
@@ -105,6 +142,8 @@ const ORGANIZERS = [
     department: 'Hackathon Coordination',
     type: 'organizer',
     image: null,
+    github: null,
+    linkedin: 'https://linkedin.com',
     email: 'contact@git.edu'
   },
   {
@@ -114,6 +153,8 @@ const ORGANIZERS = [
     department: 'Digital Media & Coverage',
     type: 'organizer',
     image: null,
+    github: null,
+    linkedin: 'https://linkedin.com',
     email: 'contact@git.edu'
   }
 ];
@@ -171,16 +212,44 @@ function TeamMemberCard({ member }) {
         {member.department}
       </p>
 
-      {/* Contact/Email Action */}
-      {member.email && (
-        <a
-          href={`mailto:${member.email}`}
-          className="mt-4 inline-flex items-center gap-1.5 text-[11px] font-mono text-white/40 hover:text-amber-300 transition-colors"
-        >
-          <Mail className="w-3 h-3" />
-          <span>Connect</span>
-        </a>
-      )}
+      {/* Social / Connect Action Links: GitHub & LinkedIn */}
+      <div className="mt-4 flex items-center justify-center gap-2.5">
+        {member.github && (
+          <a
+            href={member.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            title={`${member.name} on GitHub`}
+            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-white/10 bg-white/5 text-[11px] font-mono text-gray-300 hover:text-white hover:border-amber-400/50 hover:bg-amber-400/10 transition-all"
+          >
+            <GithubIcon className="w-3.5 h-3.5 text-gray-300 group-hover:text-amber-300" />
+            <span>GitHub</span>
+          </a>
+        )}
+
+        {member.linkedin && (
+          <a
+            href={member.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            title={`${member.name} on LinkedIn`}
+            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-white/10 bg-white/5 text-[11px] font-mono text-gray-300 hover:text-white hover:border-sky-400/50 hover:bg-sky-400/10 transition-all"
+          >
+            <LinkedinIcon className="w-3.5 h-3.5 text-sky-400" />
+            <span>LinkedIn</span>
+          </a>
+        )}
+
+        {!member.github && !member.linkedin && member.email && (
+          <a
+            href={`mailto:${member.email}`}
+            className="inline-flex items-center gap-1.5 text-[11px] font-mono text-white/40 hover:text-amber-300 transition-colors"
+          >
+            <Mail className="w-3 h-3" />
+            <span>Connect</span>
+          </a>
+        )}
+      </div>
     </div>
   );
 }
