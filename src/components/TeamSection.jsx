@@ -164,20 +164,24 @@ function TeamMemberCard({ member }) {
   const isDev = member.type === 'developer';
   return (
     <div
-      className="group relative rounded-2xl sm:rounded-3xl border border-white/10 bg-[#0d0d14]/80 backdrop-blur-xl p-4 sm:p-6 flex flex-col items-center text-center transition-all duration-300 hover:border-amber-400/50 hover:-translate-y-1.5 hover:shadow-[0_16px_35px_rgba(245,158,11,0.12)]"
+      className="group relative rounded-2xl sm:rounded-3xl border border-white/10 bg-[#0d0d14]/80 backdrop-blur-xl p-5 sm:p-7 flex flex-col items-center text-center transition-all duration-300 hover:border-amber-400/50 hover:-translate-y-1.5 hover:shadow-[0_16px_35px_rgba(245,158,11,0.15)]"
     >
-      {/* Circular Picture Frame (Blank Placeholder until photos are added) */}
-      <div className="relative mb-4 sm:mb-5 flex h-20 w-20 sm:h-28 sm:w-28 items-center justify-center rounded-full border-2 border-dashed border-white/20 bg-gradient-to-b from-white/[0.08] to-white/[0.02] shadow-[0_0_20px_rgba(0,0,0,0.6)] transition-all duration-300 group-hover:border-amber-400/60 group-hover:shadow-[0_0_25px_rgba(245,158,11,0.2)]">
+      {/* Circular Picture Frame */}
+      <div className={`relative mb-4 sm:mb-6 flex h-28 w-28 sm:h-36 sm:w-36 items-center justify-center rounded-full transition-all duration-300 shadow-[0_0_25px_rgba(0,0,0,0.7)] group-hover:shadow-[0_0_30px_rgba(245,158,11,0.3)] ${
+        member.image
+          ? 'border-2 border-white/15 p-1 bg-gradient-to-b from-white/10 to-transparent group-hover:border-amber-400/70 group-hover:scale-105'
+          : 'border-2 border-dashed border-white/20 bg-gradient-to-b from-white/[0.08] to-white/[0.02] group-hover:border-amber-400/60'
+      }`}>
         {member.image ? (
           <img
             src={member.image}
             alt={member.name}
-            className="h-full w-full rounded-full object-cover"
+            className="h-full w-full rounded-full object-cover shadow-inner"
           />
         ) : (
           <div className="flex flex-col items-center justify-center text-white/30">
-            <User className="h-8 w-8 sm:h-11 sm:w-11 text-white/30 transition-colors group-hover:text-amber-400/80" />
-            <span className="text-[8px] sm:text-[9px] font-mono tracking-widest uppercase mt-0.5 text-white/35">
+            <User className="h-12 w-12 sm:h-16 sm:w-16 text-white/30 transition-colors group-hover:text-amber-400/80" />
+            <span className="text-[9px] sm:text-[10px] font-mono tracking-widest uppercase mt-1 text-white/35">
               Photo
             </span>
           </div>
@@ -186,23 +190,23 @@ function TeamMemberCard({ member }) {
         {/* Sub-badge: Organizer vs Developer */}
         <span
           title={isDev ? 'Core Developer' : 'Event Organizer'}
-          className="absolute bottom-0 right-0 flex h-6 w-6 sm:h-7 sm:w-7 items-center justify-center rounded-full border border-white/15 bg-[#0b0b10] text-amber-400 shadow-md"
+          className="absolute bottom-0 right-0 flex h-7 w-7 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-white/20 bg-[#0b0b10] text-amber-400 shadow-lg group-hover:scale-110 transition-transform"
         >
           {isDev ? (
-            <Code2 className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+            <Code2 className="h-3.5 w-3.5 sm:h-4.5 sm:w-4.5" />
           ) : (
-            <ShieldCheck className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+            <ShieldCheck className="h-3.5 w-3.5 sm:h-4.5 sm:w-4.5" />
           )}
         </span>
       </div>
 
       {/* Member Details */}
-      <h4 className="font-display font-bold text-base sm:text-lg text-white group-hover:text-amber-300 transition-colors">
+      <h4 className="font-display font-bold text-base sm:text-xl text-white group-hover:text-amber-300 transition-colors">
         {member.name}
       </h4>
 
       <div
-        className={`mt-1 sm:mt-1.5 inline-flex items-center px-2.5 py-0.5 rounded-full border font-sans text-[11px] sm:text-xs font-semibold ${isDev
+        className={`mt-1 sm:mt-1.5 inline-flex items-center px-3 py-0.5 rounded-full border font-sans text-[11px] sm:text-xs font-semibold ${isDev
           ? 'border-amber-400/25 bg-amber-400/10 text-amber-300'
           : 'border-cyan-400/25 bg-cyan-400/10 text-cyan-300'
           }`}
@@ -210,12 +214,12 @@ function TeamMemberCard({ member }) {
         {member.role}
       </div>
 
-      <p className="mt-1.5 sm:mt-2 text-[11px] sm:text-xs font-mono text-gray-400">
+      <p className="mt-1.5 sm:mt-2 text-xs sm:text-sm font-mono text-gray-400">
         {member.department}
       </p>
 
       {/* Social / Connect Action Links: GitHub & LinkedIn */}
-      <div className="mt-3.5 sm:mt-4 flex flex-wrap items-center justify-center gap-2 sm:gap-2.5">
+      <div className="mt-4 sm:mt-5 flex flex-wrap items-center justify-center gap-2 sm:gap-2.5">
         {member.github && (
           <a
             href={member.github}

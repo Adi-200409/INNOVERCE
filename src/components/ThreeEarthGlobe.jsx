@@ -271,9 +271,17 @@ function ThreeEarthGlobe({
     const height = container.clientHeight;
 
     const getResponsiveCameraZ = (w, h) => {
-      if (w < 480) return 8.6;
-      if (w < 640 || w < h) return 7.4;
-      return 6.0;
+      const aspect = (w && h) ? w / h : 1.0;
+      // Target visible diameter of the Earth including atmosphere and orbital halo (~4.35 world units)
+      const targetDiameter = 4.35;
+      const vHalf = (40 * Math.PI) / 360; // 20 deg half-angle for 40 deg FOV
+      const tanVHalf = Math.tan(vHalf);   // ~0.36397
+
+      // Guarantee the entire Earth sphere fits completely inside visible screen width & height on all mobile viewports
+      const fitZ = targetDiameter / (2 * tanVHalf * Math.min(1.0, aspect));
+
+      // 6.0 is the desktop baseline; on mobile portrait it scales smoothly (e.g. ~12.5 on phones) so Earth is 100% visible
+      return Math.max(6.0, fitZ);
     };
 
     const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 1000);
