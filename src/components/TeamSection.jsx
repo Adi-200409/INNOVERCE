@@ -9,6 +9,7 @@ import zaidPhoto from '../images/Zaid.jpg';
 import shashankPhoto from '../images/Shashank.jpeg';
 import meghaPhoto from '../images/Megha.png';
 import bharatPhoto from '../images/bharat.jpg';
+import MeghaPhoto from '../images/Megha.png';
 
 
 // Crisp inline SVGs for developer social links
@@ -56,7 +57,11 @@ const DEVELOPERS = [
     role: 'Frontend Developer',
     department: 'Component Systems & Web Experience',
     type: 'developer',
+<<<<<<< Updated upstream
     image: meghaPhoto,
+=======
+    image: MeghaPhoto,
+>>>>>>> Stashed changes
     github: 'https://github.com/megha2004-web',
     linkedin: 'https://www.linkedin.com/in/megha-desai-1a3862344/'
   },
@@ -67,8 +72,8 @@ const DEVELOPERS = [
     department: 'APIs & Database Architecture',
     type: 'developer',
     image: zaidPhoto,
-    github: 'https://github.com',
-    linkedin: 'https://linkedin.com'
+    github: 'https://github.com/ZaidShaikhm',
+    linkedin: 'https://www.linkedin.com/in/mammadzaid-shaikh-86a350382?utm_source=share_via&utm_content=profile&utm_medium=member_android'
   },
   {
     id: 'dev-5',
