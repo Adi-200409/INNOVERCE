@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Code2, User, ShieldCheck, Mail, Sparkles } from 'lucide-react';
 import { useScrollReveal } from '../hooks/useScrollReveal';
-import TeamTabRocket from './TeamTabRocket';
 
 // Developer Profile Photos
 import adityaPhoto from '../images/Aditya.png';
@@ -203,11 +202,10 @@ function TeamMemberCard({ member }) {
       </h4>
 
       <div
-        className={`mt-1 sm:mt-1.5 inline-flex items-center px-2.5 py-0.5 rounded-full border font-sans text-[11px] sm:text-xs font-semibold ${
-          isDev
-            ? 'border-amber-400/25 bg-amber-400/10 text-amber-300'
-            : 'border-cyan-400/25 bg-cyan-400/10 text-cyan-300'
-        }`}
+        className={`mt-1 sm:mt-1.5 inline-flex items-center px-2.5 py-0.5 rounded-full border font-sans text-[11px] sm:text-xs font-semibold ${isDev
+          ? 'border-amber-400/25 bg-amber-400/10 text-amber-300'
+          : 'border-cyan-400/25 bg-cyan-400/10 text-cyan-300'
+          }`}
       >
         {member.role}
       </div>
@@ -274,19 +272,17 @@ export default function TeamSection() {
 
       {/* Background ambient lighting */}
       <div
-        className={`pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[450px] bg-[radial-gradient(ellipse_at_center,rgba(245,158,11,0.06)_0%,rgba(59,130,246,0.04)_60%,transparent_80%)] blur-[100px] transition-opacity duration-1000 ease-out ${
-          isVisible ? 'opacity-100' : 'opacity-0'
-        }`}
+        className={`pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[450px] bg-[radial-gradient(ellipse_at_center,rgba(245,158,11,0.06)_0%,rgba(59,130,246,0.04)_60%,transparent_80%)] blur-[100px] transition-opacity duration-1000 ease-out ${isVisible ? 'opacity-100' : 'opacity-0'
+          }`}
       />
 
       <div className="relative max-w-6xl mx-auto space-y-10 sm:space-y-12">
         {/* Main Section Header */}
         <div
-          className={`flex flex-col items-start md:items-center md:text-center transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-            isVisible
-              ? 'opacity-100 translate-y-0 scale-100'
-              : 'opacity-0 translate-y-8 scale-[0.98]'
-          }`}
+          className={`flex flex-col items-start md:items-center md:text-center transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${isVisible
+            ? 'opacity-100 translate-y-0 scale-100'
+            : 'opacity-0 translate-y-8 scale-[0.98]'
+            }`}
         >
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-amber-400/30 bg-amber-400/10 text-amber-300 font-mono text-xs uppercase tracking-widest mb-4">
             <Code2 className="w-3.5 h-3.5" />
@@ -300,20 +296,40 @@ export default function TeamSection() {
             The student architects, engineers, and organizers behind INNOVERSE 3.0 at KLS Gogte Institute of Technology.
           </p>
 
-          {/* Interactive Spaceship Tab Rocket Dock */}
-          <TeamTabRocket
-            activeTab={activeTab}
-            onTabChange={setActiveTab}
-            developersCount={DEVELOPERS.length}
-            organizersCount={ORGANIZERS.length}
-          />
+          {/* Toggle Button: Switch between Developers & Organizers */}
+          <div className="mt-6 sm:mt-8 w-full max-w-sm sm:w-auto flex items-center justify-center p-1 sm:p-1.5 rounded-full border border-white/15 bg-[#0e0e14] backdrop-blur-xl shadow-[0_0_25px_rgba(0,0,0,0.5)]">
+            <button
+              type="button"
+              onClick={() => setActiveTab('developers')}
+              className={`flex-1 sm:flex-initial flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2 sm:py-2.5 rounded-full font-mono text-[11px] min-[380px]:text-xs uppercase tracking-wider font-bold transition-all duration-300 cursor-pointer ${
+                activeTab === 'developers'
+                  ? 'bg-amber-400 text-black shadow-[0_0_20px_rgba(245,158,11,0.55)] scale-100'
+                  : 'text-white/60 hover:text-white hover:bg-white/5'
+              }`}
+            >
+              <Code2 className="w-3.5 h-3.5 shrink-0" />
+              <span>Developers ({DEVELOPERS.length})</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setActiveTab('organizers')}
+              className={`flex-1 sm:flex-initial flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2 sm:py-2.5 rounded-full font-mono text-[11px] min-[380px]:text-xs uppercase tracking-wider font-bold transition-all duration-300 cursor-pointer ${
+                activeTab === 'organizers'
+                  ? 'bg-amber-400 text-black shadow-[0_0_20px_rgba(245,158,11,0.55)] scale-100'
+                  : 'text-white/60 hover:text-white hover:bg-white/5'
+              }`}
+            >
+              <ShieldCheck className="w-3.5 h-3.5 shrink-0" />
+              <span>Organizers ({ORGANIZERS.length})</span>
+            </button>
+          </div>
         </div>
 
         {/* Display: Shows Developers by default, switches to Organizers on toggle */}
         <div
-          className={`transition-all duration-700 delay-150 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-          }`}
+          className={`transition-all duration-700 delay-150 ease-[cubic-bezier(0.16,1,0.3,1)] ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+            }`}
         >
           {activeTab === 'developers' ? (
             <div id="developers" className="space-y-6">
