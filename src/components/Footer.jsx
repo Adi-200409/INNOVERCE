@@ -18,9 +18,9 @@ export default function Footer({ onOpenRegister, onOpenTracks }) {
     <footer id="footer" className="relative w-full border-t border-white/10 bg-[#040406] text-white pt-16 pb-12 px-4 sm:px-6 lg:px-8 z-20">
       <div className="max-w-6xl mx-auto">
         {/* Main Footer Row */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 sm:gap-10 mb-10 sm:mb-12">
           {/* Brand Column */}
-          <div className="space-y-4">
+          <div className="space-y-4 sm:col-span-2 md:col-span-1">
             <div className="flex items-center gap-2">
               <span className="font-display font-black tracking-wider text-xl text-white">
                 INNO<span className="text-amber-400">VERSE</span>
@@ -29,7 +29,7 @@ export default function Footer({ onOpenRegister, onOpenTracks }) {
                 3.0
               </span>
             </div>
-            <p className="text-xs text-gray-400 leading-relaxed font-sans">
+            <p className="text-xs text-gray-400 leading-relaxed font-sans max-w-sm">
               National Level AI & Technology Hackathon. Accelerating the frontiers of autonomous intelligence, distributed systems, and galactic engineering.
             </p>
             <div className="flex items-center gap-2 font-mono text-[11px] text-white/50">
@@ -76,7 +76,7 @@ export default function Footer({ onOpenRegister, onOpenTracks }) {
               <li>
                 <button
                   onClick={onOpenRegister}
-                  className="hover:text-amber-400 transition-colors cursor-pointer"
+                  className="hover:text-amber-400 transition-colors cursor-pointer text-left"
                 >
                   Boarding Pass Registration
                 </button>
@@ -84,7 +84,7 @@ export default function Footer({ onOpenRegister, onOpenTracks }) {
               <li>
                 <button
                   onClick={onOpenTracks}
-                  className="hover:text-amber-400 transition-colors cursor-pointer"
+                  className="hover:text-amber-400 transition-colors cursor-pointer text-left"
                 >
                   Track Problem Statements
                 </button>
@@ -99,7 +99,7 @@ export default function Footer({ onOpenRegister, onOpenTracks }) {
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs text-gray-500">
+        <div className="pt-6 sm:pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs text-gray-500 text-center sm:text-left">
           <p>© 2026 INNOVERSE 3.0 HACKATHON. ALL ORBITAL RIGHTS RESERVED.</p>
           <div className="flex items-center gap-4">
             <button

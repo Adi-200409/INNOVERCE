@@ -270,9 +270,15 @@ function ThreeEarthGlobe({
     const width = container.clientWidth;
     const height = container.clientHeight;
 
+    const getResponsiveCameraZ = (w, h) => {
+      if (w < 480) return 8.6;
+      if (w < 640 || w < h) return 7.4;
+      return 6.0;
+    };
+
     const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 1000);
     // Camera positioned with clean cosmic headroom above Earth for the navbar
-    camera.position.set(0, 0.18, 6.0);
+    camera.position.set(0, 0.18, getResponsiveCameraZ(width, height));
 
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
@@ -993,6 +999,7 @@ function ThreeEarthGlobe({
       const w = container.clientWidth;
       const h = container.clientHeight;
       camera.aspect = w / h;
+      camera.position.z = getResponsiveCameraZ(w, h);
       camera.updateProjectionMatrix();
       renderer.setSize(w, h);
     };

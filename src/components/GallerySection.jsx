@@ -111,10 +111,10 @@ const GallerySection = () => {
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-amber-400/30 bg-amber-400/10 text-amber-300 font-mono text-xs uppercase tracking-widest mb-4">
             <span>INNOVERSE LEGACY ARCHIVES</span>
           </div>
-          <h2 className="mb-2 text-center font-display text-3xl font-black uppercase tracking-tight text-white sm:text-5xl md:text-6xl">
+          <h2 className="mb-2 text-center font-display text-2xl min-[380px]:text-3xl font-black uppercase tracking-tight text-white sm:text-5xl md:text-6xl">
             The Journey <span className="text-amber-400">So Far</span>
           </h2>
-          <p className="mb-12 text-center font-sans text-sm leading-relaxed text-gray-400 sm:text-base">
+          <p className="mb-8 sm:mb-12 text-center font-sans text-xs leading-relaxed text-gray-400 sm:text-base">
             Highlights{" "}
             <span className="text-amber-400">
               from Past Editions
@@ -124,7 +124,7 @@ const GallerySection = () => {
         </div>
 
         <div
-          className={`slider overflow-hidden relative w-full lg:w-4/5 mx-auto rounded-xl py-3 sm:py-10 transition-all duration-700 delay-150 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+          className={`slider overflow-hidden relative w-full lg:w-4/5 mx-auto rounded-xl py-2 sm:py-10 transition-all duration-700 delay-150 ease-[cubic-bezier(0.16,1,0.3,1)] ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}
         >
@@ -148,10 +148,12 @@ const GallerySection = () => {
                     className={`relative w-full transition-all duration-300 transform cursor-pointer rounded-xl
                       ${
                         isHighlighted
-                          ? "scale-110 shadow-md shadow-slate-900/50 z-10 bg-gray-900"
+                          ? isMobile
+                            ? "scale-100 shadow-md shadow-slate-900/50 z-10 bg-gray-900"
+                            : "scale-110 shadow-md shadow-slate-900/50 z-10 bg-gray-900"
                           : "scale-90 opacity-70 shadow-md bg-gray-800"
                       }`}
-                    style={{ padding: isMobile ? '16px' : '20px' }}
+                    style={{ padding: isMobile ? '12px' : '20px' }}
                   >
                     <div className="relative w-full aspect-video">
                       <img
@@ -170,7 +172,7 @@ const GallerySection = () => {
         </div>
 
         <div
-          className={`flex justify-center mt-8 space-x-2 transition-all duration-700 delay-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+          className={`flex justify-center mt-6 sm:mt-8 space-x-1.5 sm:space-x-2 transition-all duration-700 delay-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
           }`}
         >
@@ -178,7 +180,7 @@ const GallerySection = () => {
             <span
               key={index}
               onClick={() => setActiveIndex(index + totalOriginalItems)}
-              className={`w-3 h-3 rounded-full cursor-pointer transition-colors duration-300 ${
+              className={`w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full cursor-pointer transition-colors duration-300 ${
                 getOriginalIndex(activeIndex) === index
                   ? "bg-amber-400 shadow-md shadow-amber-400/40"
                   : "bg-white/20 hover:bg-white/40"

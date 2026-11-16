@@ -40,7 +40,7 @@ export default function Navbar({ onOpenRegister, _onOpenTracks, isReady = true }
         }`}
     >
       <div className="mx-auto max-w-6xl rounded-full border border-white/15 bg-[#08080c]/92 backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,0,0,0.85),0_0_20px_rgba(168,85,247,0.12)] hover:border-white/30 transition-all duration-300 pointer-events-auto">
-        <nav className="flex h-14 sm:h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
+        <nav className="flex h-14 sm:h-16 items-center justify-between px-3 sm:px-6 lg:px-8">
           {/* Logo & Brand Wordmark with Glowing Accent Dots */}
           <a
             href="#"
@@ -52,12 +52,12 @@ export default function Navbar({ onOpenRegister, _onOpenTracks, isReady = true }
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }
             }}
-            className="flex items-center gap-3 group shrink-0"
+            className="flex items-center gap-2 sm:gap-3 group shrink-0"
           >
-            <div className="flex flex-col items-start gap-1">
-              <span className="font-display font-black tracking-wider text-base sm:text-lg text-white group-hover:text-amber-300 transition-colors flex items-center gap-1.5">
+            <div className="flex flex-col items-start gap-0.5 sm:gap-1">
+              <span className="font-display font-black tracking-wider text-sm min-[360px]:text-base sm:text-lg text-white group-hover:text-amber-300 transition-colors flex items-center gap-1.5">
                 <span>INNO<span className="text-amber-400">VERSE</span></span>
-                <span className="text-[10px] sm:text-xs font-mono font-bold text-amber-400 px-1.5 py-0.5 rounded-full bg-amber-400/10 border border-amber-400/30 shadow-[0_0_8px_rgba(245,158,11,0.2)] [font-variant-numeric:lining-nums_slashed-zero]">3.0</span>
+                <span className="text-[9px] sm:text-xs font-mono font-bold text-amber-400 px-1.5 py-0.5 rounded-full bg-amber-400/10 border border-amber-400/30 shadow-[0_0_8px_rgba(245,158,11,0.2)] [font-variant-numeric:lining-nums_slashed-zero]">3.0</span>
               </span>
               {/* Brand Telemetry Sequence Dots */}
               <div className="flex items-center gap-1.5 opacity-80 group-hover:opacity-100 transition-opacity">
@@ -90,13 +90,13 @@ export default function Navbar({ onOpenRegister, _onOpenTracks, isReady = true }
           </ul>
 
           {/* Right Action Items */}
-          <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             {/* Quick Action Primary Button - Solid Golden Amber Pill (Orbit24 style) */}
             <button
               onClick={onOpenRegister}
-              className="relative group/btn font-mono text-xs uppercase tracking-wider font-bold rounded-full px-5 py-2 bg-amber-400 text-black hover:bg-amber-300 transition-all duration-300 active:scale-95 flex items-center gap-1.5 cursor-pointer shadow-[0_2px_20px_rgba(245,158,11,0.35)] hover:shadow-[0_4px_30px_rgba(245,158,11,0.55)] whitespace-nowrap"
+              className="relative group/btn font-mono text-[11px] sm:text-xs uppercase tracking-wider font-bold rounded-full px-3.5 sm:px-5 py-1.5 sm:py-2 bg-amber-400 text-black hover:bg-amber-300 transition-all duration-300 active:scale-95 flex items-center gap-1 sm:gap-1.5 cursor-pointer shadow-[0_2px_20px_rgba(245,158,11,0.35)] hover:shadow-[0_4px_30px_rgba(245,158,11,0.55)] whitespace-nowrap"
             >
-              <Sparkles className="w-3.5 h-3.5 text-black/75 group-hover/btn:text-black transition-colors" />
+              <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-black/75 group-hover/btn:text-black transition-colors" />
               <span>Register</span>
               <ArrowUpRight className="w-3 h-3 text-black/70 group-hover/btn:text-black group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
             </button>
@@ -104,7 +104,7 @@ export default function Navbar({ onOpenRegister, _onOpenTracks, isReady = true }
             {/* Mobile Hamburger Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="xl:hidden flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-white/80 hover:text-white bg-white/5 active:scale-95 cursor-pointer transition-all"
+              className="xl:hidden flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-white/80 hover:text-white bg-white/5 active:scale-95 cursor-pointer transition-all shrink-0"
               aria-label="Toggle Navigation"
               aria-expanded={mobileMenuOpen}
             >
@@ -115,8 +115,8 @@ export default function Navbar({ onOpenRegister, _onOpenTracks, isReady = true }
 
         {/* Mobile Dropdown Menu */}
         {mobileMenuOpen && (
-          <div className="xl:hidden border-t border-white/10 px-6 py-5 bg-[#08080c]/98 rounded-b-[24px] backdrop-blur-2xl">
-            <div className="flex flex-col gap-3 font-mono">
+          <div className="xl:hidden border-t border-white/10 px-5 sm:px-6 py-4 sm:py-5 bg-[#08080c]/98 rounded-b-[24px] backdrop-blur-2xl max-h-[calc(100vh-5rem)] overflow-y-auto">
+            <div className="flex flex-col gap-2.5 sm:gap-3 font-mono">
               {navigationLinks.map((link) => (
                 <a
                   key={link.label}

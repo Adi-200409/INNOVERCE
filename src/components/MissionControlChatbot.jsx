@@ -760,19 +760,19 @@ export default function MissionControlChatbot({ onOpenRegister, onOpenTracks }) 
       {/* =====================================================================
           FLOATING LAUNCHER BUTTON (Aria / Indigo Aesthetic with Astronaut Helmet)
           ===================================================================== */}
-      <div className="fixed bottom-5 sm:bottom-6 right-5 sm:right-6 z-50 select-none">
+      <div className="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-50 select-none">
         {!isOpen && (
           <button
             id="open-chatbot-btn"
             onClick={handleToggleOpen}
             aria-label="Open Astra AI Assistant"
-            className="group relative flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-tr from-[#1b1736] via-[#16132e] to-[#251f47] hover:from-[#231e47] hover:to-[#2e2659] border border-purple-400/40 hover:border-purple-300 text-purple-200 hover:text-white backdrop-blur-2xl shadow-[0_8px_30px_rgba(0,0,0,0.85),0_0_20px_rgba(168,85,247,0.35)] hover:shadow-[0_10px_35px_rgba(168,85,247,0.55)] transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer"
+            className="group relative flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-tr from-[#1b1736] via-[#16132e] to-[#251f47] hover:from-[#231e47] hover:to-[#2e2659] border border-purple-400/40 hover:border-purple-300 text-purple-200 hover:text-white backdrop-blur-2xl shadow-[0_8px_30px_rgba(0,0,0,0.85),0_0_20px_rgba(168,85,247,0.35)] hover:shadow-[0_10px_35px_rgba(168,85,247,0.55)] transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer"
           >
             {/* Ambient outer pulse ring */}
             <span className="absolute inset-[-4px] rounded-full border border-purple-400/25 group-hover:border-purple-400/60 animate-pulse pointer-events-none" />
 
             {/* Astronaut Helmet Icon */}
-            <AstronautHelmetIcon className="w-7 h-7 text-purple-200 group-hover:text-white group-hover:scale-110 transition-all duration-200" glowing />
+            <AstronautHelmetIcon className="w-6 h-6 sm:w-7 sm:h-7 text-purple-200 group-hover:text-white group-hover:scale-110 transition-all duration-200" glowing />
 
             {/* Unread Alert Notification Ping */}
             {hasUnread && (
@@ -790,7 +790,7 @@ export default function MissionControlChatbot({ onOpenRegister, onOpenTracks }) 
           ===================================================================== */}
       {isOpen && (
         <div
-          className={`fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-50 flex flex-col w-[calc(100vw-2rem)] sm:w-[390px] max-w-[420px] rounded-[32px] border border-white/[0.12] bg-gradient-to-b from-[#141226] via-[#0d0c1b] to-[#070611] backdrop-blur-3xl shadow-[0_25px_60px_rgba(0,0,0,0.95),0_0_40px_rgba(139,92,246,0.18)] overflow-hidden transition-all duration-300 font-sans ${isMinimized ? 'h-16' : 'h-[600px] sm:h-[640px] max-h-[90vh]'
+          className={`fixed bottom-3 sm:bottom-6 right-3 sm:right-6 z-50 flex flex-col w-[calc(100vw-1.5rem)] sm:w-[390px] max-w-[420px] rounded-[28px] sm:rounded-[32px] border border-white/[0.12] bg-gradient-to-b from-[#141226] via-[#0d0c1b] to-[#070611] backdrop-blur-3xl shadow-[0_25px_60px_rgba(0,0,0,0.95),0_0_40px_rgba(139,92,246,0.18)] overflow-hidden transition-all duration-300 font-sans ${isMinimized ? 'h-14 sm:h-16' : 'h-[520px] sm:h-[640px] max-h-[88vh]'
             }`}
         >
           {/* Subtle Ambient Radial Lighting in Background */}
@@ -884,26 +884,26 @@ export default function MissionControlChatbot({ onOpenRegister, onOpenTracks }) 
               {viewMode === 'home' && (
                 <div className="flex-1 flex flex-col justify-between px-5 pt-3 pb-3 overflow-y-auto">
                   {/* Big Hero Greeting (Exact Aria Typography Layout with Astronaut Helmet Avatar) */}
-                  <div className="space-y-1.5 pt-2">
-                    <div className="flex items-center gap-2.5">
-                      <div className="flex items-center justify-center w-9 h-9 rounded-2xl bg-gradient-to-tr from-purple-500/20 to-indigo-500/20 border border-purple-400/30 shadow-[0_0_15px_rgba(168,85,247,0.25)] shrink-0">
-                        <AstronautHelmetIcon className="w-5 h-5 text-purple-200" glowing />
+                  <div className="space-y-1 sm:space-y-1.5 pt-1 sm:pt-2">
+                    <div className="flex items-center gap-2 sm:gap-2.5">
+                      <div className="flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-2xl bg-gradient-to-tr from-purple-500/20 to-indigo-500/20 border border-purple-400/30 shadow-[0_0_15px_rgba(168,85,247,0.25)] shrink-0">
+                        <AstronautHelmetIcon className="w-4 h-4 sm:w-5 sm:h-5 text-purple-200" glowing />
                       </div>
-                      <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-white font-sans leading-none">
+                      <h3 className="text-xl sm:text-3xl font-bold tracking-tight text-white font-sans leading-none">
                         Hi, I'm Astra
                       </h3>
                     </div>
 
-                    <h4 className="text-xl sm:text-2xl font-bold tracking-tight bg-gradient-to-r from-purple-300 via-violet-300 to-indigo-300 bg-clip-text text-transparent font-sans">
+                    <h4 className="text-lg sm:text-2xl font-bold tracking-tight bg-gradient-to-r from-purple-300 via-violet-300 to-indigo-300 bg-clip-text text-transparent font-sans">
                       I can help you today
                     </h4>
-                    <p className="text-xs sm:text-[13px] text-gray-400 font-sans leading-relaxed pt-1 max-w-[95%]">
+                    <p className="text-xs sm:text-[13px] text-gray-400 font-sans leading-relaxed pt-0.5 sm:pt-1 max-w-[95%]">
                       Take a deep breath. I'm ready when you are. Choose what you'd like to work on:
                     </p>
                   </div>
 
                   {/* 2x2 Category Cards Grid */}
-                  <div className="grid grid-cols-2 gap-3 my-auto py-3">
+                  <div className="grid grid-cols-2 gap-2.5 sm:gap-3 my-auto py-2 sm:py-3">
                     {ARIA_CATEGORIES.map((cat) => {
                       const IconComponent = cat.icon;
                       return (
@@ -911,11 +911,11 @@ export default function MissionControlChatbot({ onOpenRegister, onOpenTracks }) 
                           key={cat.id}
                           type="button"
                           onClick={() => handleUserSubmit(cat.query)}
-                          className={`group relative rounded-2xl border border-white/[0.08] bg-[#16142a]/80 hover:bg-[#201d3d]/90 p-4 flex flex-col justify-between h-28 sm:h-30 text-left transition-all duration-300 hover:shadow-[0_8px_25px_rgba(139,92,246,0.25)] hover:-translate-y-0.5 cursor-pointer ${cat.bgGlow}`}
+                          className={`group relative rounded-xl sm:rounded-2xl border border-white/[0.08] bg-[#16142a]/80 hover:bg-[#201d3d]/90 p-3 sm:p-4 flex flex-col justify-between h-24 sm:h-30 text-left transition-all duration-300 hover:shadow-[0_8px_25px_rgba(139,92,246,0.25)] hover:-translate-y-0.5 cursor-pointer ${cat.bgGlow}`}
                         >
                           {/* Top-left Icon */}
-                          <div className="w-8 h-8 rounded-xl bg-white/[0.06] border border-white/10 flex items-center justify-center group-hover:scale-105 transition-transform">
-                            <IconComponent className={`w-4 h-4 ${cat.iconColor}`} />
+                          <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-white/[0.06] border border-white/10 flex items-center justify-center group-hover:scale-105 transition-transform">
+                            <IconComponent className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${cat.iconColor}`} />
                           </div>
 
                           {/* Bottom Details */}
@@ -923,7 +923,7 @@ export default function MissionControlChatbot({ onOpenRegister, onOpenTracks }) 
                             <span className="block font-medium text-white text-xs sm:text-sm group-hover:text-purple-200 transition-colors">
                               {cat.title}
                             </span>
-                            <span className="block text-[10px] text-zinc-400 mt-0.5 truncate">
+                            <span className="block text-[9px] sm:text-[10px] text-zinc-400 mt-0.5 truncate">
                               {cat.subtitle}
                             </span>
                           </div>

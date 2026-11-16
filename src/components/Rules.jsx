@@ -134,41 +134,41 @@ const RULE_SECTIONS = [
 
 export default function Rules() {
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#060608] px-4 pb-20 pt-28 text-white sm:px-6 sm:pt-32">
+    <main className="relative min-h-screen overflow-hidden bg-[#060608] px-4 pb-16 pt-24 text-white sm:px-6 sm:pt-32">
       <div className="pointer-events-none absolute -left-40 top-40 h-96 w-96 rounded-full bg-amber-500/10 blur-[140px]" />
       <div className="pointer-events-none absolute -right-40 top-1/3 h-96 w-96 rounded-full bg-blue-600/10 blur-[140px]" />
 
       <div className="relative z-10 mx-auto max-w-6xl">
         <a
           href="/"
-          className="mb-10 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 font-mono text-xs uppercase tracking-wider text-gray-300 transition-colors hover:border-amber-400/40 hover:text-white"
+          className="mb-8 sm:mb-10 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 font-mono text-xs uppercase tracking-wider text-gray-300 transition-colors hover:border-amber-400/40 hover:text-white"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to Home
         </a>
 
-        <header className="mb-12 text-center sm:mb-16">
+        <header className="mb-10 text-center sm:mb-16">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-amber-400/30 bg-amber-400/10 text-amber-300 font-mono text-xs uppercase tracking-widest mb-4">
             <span>INNOVERSE 3.0 PROTOCOLS</span>
           </div>
-          <h1 className="font-display text-3xl font-black tracking-tight uppercase text-white sm:text-5xl md:text-6xl">
+          <h1 className="font-display text-2xl min-[380px]:text-3xl font-black tracking-tight uppercase text-white sm:text-5xl md:text-6xl">
             INNOVERSE 3.0{' '}
             <span className="text-amber-400">
               Rules &amp; Guidelines
             </span>
           </h1>
-          <div className="mx-auto mt-5 h-1 w-24 rounded-full bg-gradient-to-r from-amber-400 to-yellow-500" />
+          <div className="mx-auto mt-4 sm:mt-5 h-1 w-20 sm:w-24 rounded-full bg-gradient-to-r from-amber-400 to-yellow-500" />
         </header>
 
-        <div className="space-y-5">
+        <div className="space-y-4 sm:space-y-5">
           {RULE_SECTIONS.map(({ title, icon: Icon, points }) => (
             <section
               key={title}
-              className="group rounded-2xl border border-white/10 bg-[#0c0c12]/80 p-6 shadow-[0_8px_30px_rgba(0,0,0,0.5)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:border-amber-400/40 sm:p-8"
+              className="group rounded-xl sm:rounded-2xl border border-white/10 bg-[#0c0c12]/80 p-4 sm:p-8 shadow-[0_8px_30px_rgba(0,0,0,0.5)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:border-amber-400/40"
             >
-              <div className="mb-5 flex items-center gap-4">
-                <Icon className="h-8 w-8 shrink-0 text-amber-400 sm:h-10 sm:w-10" strokeWidth={2} />
-                <h2 className="font-display text-lg font-bold leading-snug text-white">
+              <div className="mb-4 sm:mb-5 flex items-center gap-3 sm:gap-4">
+                <Icon className="h-6 w-6 sm:h-10 sm:w-10 shrink-0 text-amber-400" strokeWidth={2} />
+                <h2 className="font-display text-base sm:text-lg font-bold leading-snug text-white">
                   {title}
                 </h2>
               </div>

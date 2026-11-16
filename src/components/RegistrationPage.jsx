@@ -301,16 +301,16 @@ export default function RegistrationPage({ onBackToHome, embedded = false, onSwi
             {/* =========================================================================
                 EVENT HEADER & DOSSIER CARD
                 ========================================================================= */}
-            <div className="rounded-3xl border border-white/15 bg-[#0a0a0e]/95 p-6 sm:p-10 shadow-[0_20px_60px_rgba(0,0,0,0.8)] relative overflow-hidden">
+            <div className="rounded-2xl sm:rounded-3xl border border-white/15 bg-[#0a0a0e]/95 p-4 sm:p-10 shadow-[0_20px_60px_rgba(0,0,0,0.8)] relative overflow-hidden">
               <div className="absolute top-0 right-0 w-80 h-80 bg-amber-500/[0.08] rounded-full blur-3xl pointer-events-none" />
 
               {/* Eyebrow Pill */}
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-300 font-mono text-[11px] sm:text-xs uppercase tracking-widest mb-4">
+              <div className="inline-flex items-center gap-2 px-3 sm:px-3.5 py-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-300 font-mono text-[10px] sm:text-xs uppercase tracking-widest mb-3 sm:mb-4">
                 <Rocket className="w-3.5 h-3.5" />
                 <span>OFFICIAL HACKATHON REGISTRATION</span>
               </div>
 
-              <h1 className="font-display font-black text-2xl sm:text-4xl md:text-5xl text-white tracking-tight leading-tight">
+              <h1 className="font-display font-black text-xl sm:text-4xl md:text-5xl text-white tracking-tight leading-tight">
                 INNOVERSE 3.0 –{' '}
                 <span className="bg-gradient-to-r from-amber-200 via-amber-400 to-yellow-500 bg-clip-text text-transparent">
                   National Level Hackathon
@@ -1058,7 +1058,7 @@ export default function RegistrationPage({ onBackToHome, embedded = false, onSwi
   }
 
   return (
-    <div className="relative min-h-screen w-full bg-[#060608] text-white selection:bg-amber-400 selection:text-black py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
+    <div className="relative min-h-screen w-full bg-[#060608] text-white selection:bg-amber-400 selection:text-black py-6 sm:py-12 px-3 sm:px-6 lg:px-8">
       {/* Background Ambience */}
       <div className="pointer-events-none fixed -top-40 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-amber-500/10 blur-[150px] rounded-full z-0" />
       <div className="pointer-events-none fixed top-1/2 -right-40 w-[600px] h-[600px] bg-blue-600/10 blur-[170px] rounded-full z-0" />

@@ -99,11 +99,11 @@ export default function TracksSection({ onOpenRegister }) {
             <span>INNOVERSE 3.0 • 4 SECTOR FOCUS AREAS</span>
           </div>
 
-          <h2 className="font-display font-black text-3xl sm:text-5xl md:text-6xl text-white tracking-tight uppercase">
+          <h2 className="font-display font-black text-2xl min-[380px]:text-3xl sm:text-5xl md:text-6xl text-white tracking-tight uppercase">
             Sector Focus <span className="text-amber-400">Areas</span>
           </h2>
 
-          <p className="mt-4 text-sm sm:text-base text-gray-400 max-w-2xl font-sans leading-relaxed">
+          <p className="mt-3 sm:mt-4 text-xs sm:text-base text-gray-400 max-w-2xl font-sans leading-relaxed">
             Innovate and engineer real-world solutions across four vital industry sectors.
             All tracks are purely informational focus areas—no pre-selection is required to participate.
           </p>
@@ -111,7 +111,7 @@ export default function TracksSection({ onOpenRegister }) {
 
         {/* Sectors Grid */}
         <div
-          className={`grid grid-cols-1 md:grid-cols-2 gap-6 mb-12 transition-all duration-700 delay-150 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+          className={`grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 mb-10 sm:mb-12 transition-all duration-700 delay-150 ease-[cubic-bezier(0.16,1,0.3,1)] ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}
         >
@@ -121,16 +121,16 @@ export default function TracksSection({ onOpenRegister }) {
             return (
               <div
                 key={track.id}
-                className={`relative rounded-3xl border ${track.borderColor} bg-[#0c0c12]/80 backdrop-blur-xl p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 hover:shadow-[0_0_30px_${track.glowColor}]`}
+                className={`relative rounded-2xl sm:rounded-3xl border ${track.borderColor} bg-[#0c0c12]/80 backdrop-blur-xl p-5 sm:p-8 flex flex-col justify-between transition-all duration-300 hover:shadow-[0_0_30px_${track.glowColor}]`}
               >
                 <div className="relative z-10">
                   {/* Top Bar: Subsystem Telemetry & Domain Badge */}
-                  <div className="flex items-center justify-between gap-3 mb-5">
+                  <div className="flex flex-wrap items-center justify-between gap-2 mb-4 sm:mb-5">
                     <span className="font-mono text-[10px] text-white/40 tracking-wider">
                       {track.subsystems}
                     </span>
                     <span
-                      className="px-3 py-1 rounded-full font-mono text-[11px] font-semibold border flex items-center gap-1.5"
+                      className="px-2.5 sm:px-3 py-1 rounded-full font-mono text-[10px] sm:text-[11px] font-semibold border flex items-center gap-1.5"
                       style={{
                         backgroundColor: `${track.color}15`,
                         color: track.color,
@@ -198,19 +198,19 @@ export default function TracksSection({ onOpenRegister }) {
 
         {/* Global Track Perks Banner */}
         <div
-          className={`relative rounded-3xl border border-white/10 bg-gradient-to-r from-amber-500/10 via-blue-500/5 to-purple-500/10 p-6 sm:p-8 backdrop-blur-xl flex flex-col md:flex-row items-center justify-between gap-6 transition-all duration-700 delay-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+          className={`relative rounded-2xl sm:rounded-3xl border border-white/10 bg-gradient-to-r from-amber-500/10 via-blue-500/5 to-purple-500/10 p-5 sm:p-8 backdrop-blur-xl flex flex-col md:flex-row items-center justify-between gap-6 transition-all duration-700 delay-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-2xl bg-amber-400/20 border border-amber-400/40 flex items-center justify-center shrink-0">
-              <Terminal className="w-6 h-6 text-amber-400" />
+          <div className="flex items-center gap-3.5 sm:gap-4">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-amber-400/20 border border-amber-400/40 flex items-center justify-center shrink-0">
+              <Terminal className="w-5 h-5 sm:w-6 sm:h-6 text-amber-400" />
             </div>
             <div>
-              <h4 className="font-display font-bold text-white text-base sm:text-lg">
+              <h4 className="font-display font-bold text-white text-sm sm:text-lg">
                 Multi-Sector & Interdisciplinary Innovations Welcome
               </h4>
-              <p className="text-xs sm:text-sm text-gray-400">
+              <p className="text-xs sm:text-sm text-gray-400 mt-0.5">
                 You do not need to choose or lock in a sector during registration. Teams are free to address real-world challenges across any of these 4 vital domains.
               </p>
             </div>
@@ -218,7 +218,7 @@ export default function TracksSection({ onOpenRegister }) {
 
           <button
             onClick={onOpenRegister}
-            className="shrink-0 px-6 py-3 rounded-full bg-amber-400 hover:bg-amber-300 text-black font-mono text-xs font-bold uppercase tracking-wider transition-all shadow-[0_0_20px_rgba(245,158,11,0.3)] hover:scale-105 cursor-pointer"
+            className="w-full md:w-auto text-center shrink-0 px-6 py-3 rounded-full bg-amber-400 hover:bg-amber-300 text-black font-mono text-xs font-bold uppercase tracking-wider transition-all shadow-[0_0_20px_rgba(245,158,11,0.3)] hover:scale-105 cursor-pointer"
           >
             Claim Your Boarding Pass
           </button>

@@ -43,45 +43,52 @@ export default function Contact() {
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-amber-400/30 bg-amber-400/10 text-amber-300 font-mono text-xs uppercase tracking-widest mb-4">
             <span>INNOVERSE 3.0 HELPDESK</span>
           </div>
-          <h1 className="font-display text-3xl font-black tracking-tight uppercase sm:text-5xl md:text-6xl">
+          <h1 className="font-display text-2xl min-[380px]:text-3xl font-black tracking-tight uppercase sm:text-5xl md:text-6xl">
             Get in{' '}
             <span className="text-amber-400">
               Touch
             </span>
           </h1>
-          <p className="mx-auto mt-4 max-w-2xl font-sans text-sm leading-relaxed text-gray-400 sm:text-base">
+          <p className="mx-auto mt-3 sm:mt-4 max-w-2xl font-sans text-xs leading-relaxed text-gray-400 sm:text-base">
             Have questions about INNOVERSE 3.0? We’re here to help! Reach out to our team for any inquiries.
           </p>
         </header>
 
         <section
-          className={`group mx-auto max-w-3xl rounded-3xl border border-white/10 bg-[#0c0c12]/80 p-6 shadow-[0_20px_60px_rgba(0,0,0,0.4)] backdrop-blur-xl transition-all duration-700 delay-150 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1 hover:border-amber-400/30 hover:shadow-[0_24px_64px_rgba(0,0,0,0.5)] sm:p-8 ${
+          className={`group mx-auto max-w-3xl rounded-2xl sm:rounded-3xl border border-white/10 bg-[#0c0c12]/80 p-5 shadow-[0_20px_60px_rgba(0,0,0,0.4)] backdrop-blur-xl transition-all duration-700 delay-150 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1 hover:border-amber-400/30 hover:shadow-[0_24px_64px_rgba(0,0,0,0.5)] sm:p-8 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}
         >
-          <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl border border-amber-400/25 bg-amber-400/10 transition-transform duration-300 group-hover:scale-105">
-            <MessageCircle aria-hidden="true" className="h-9 w-9 text-amber-400" strokeWidth={1.8} />
+          <div className="mb-5 sm:mb-6 flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-2xl border border-amber-400/25 bg-amber-400/10 transition-transform duration-300 group-hover:scale-105">
+            <MessageCircle aria-hidden="true" className="h-8 w-8 sm:h-9 sm:w-9 text-amber-400" strokeWidth={1.8} />
           </div>
-          <h2 className="mb-5 font-display text-lg font-bold text-white">
+          <h2 className="mb-4 sm:mb-5 font-display text-base sm:text-lg font-bold text-white">
             Registration &amp; Queries
           </h2>
 
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {CONTACTS.map(({ name, phone }) => (
-              <div
+              <a
                 key={phone}
-                className="flex items-start gap-4 rounded-xl bg-white/[0.03] p-4 sm:p-5"
+                href={`tel:${phone.replace(/\s+/g, '')}`}
+                className="flex items-center justify-between gap-4 rounded-xl bg-white/[0.03] hover:bg-white/[0.07] hover:border-amber-400/30 border border-transparent p-4 sm:p-5 transition-all group/item"
+                title={`Call ${name}`}
               >
-                <Phone aria-hidden="true" className="mt-1 h-5 w-5 shrink-0 text-amber-400" />
-                <span>
-                  <span className="block font-sans text-sm font-semibold text-white sm:text-base">
-                    {name}
-                  </span>
-                  <span className="mt-1 block font-sans text-xs text-amber-400 sm:text-sm">
-                    {phone}
-                  </span>
+                <div className="flex items-start gap-3 sm:gap-4">
+                  <Phone aria-hidden="true" className="mt-0.5 h-4 w-4 sm:h-5 sm:w-5 shrink-0 text-amber-400" />
+                  <div>
+                    <span className="block font-sans text-sm font-semibold text-white sm:text-base group-hover/item:text-amber-300 transition-colors">
+                      {name}
+                    </span>
+                    <span className="mt-0.5 block font-mono text-xs text-amber-400 sm:text-sm">
+                      {phone}
+                    </span>
+                  </div>
+                </div>
+                <span className="font-mono text-[10px] sm:text-xs uppercase tracking-wider text-white/50 group-hover/item:text-amber-300 transition-colors shrink-0">
+                  Tap to Call 📞
                 </span>
-              </div>
+              </a>
             ))}
           </div>
         </section>

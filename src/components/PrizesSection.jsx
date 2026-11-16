@@ -94,35 +94,35 @@ export default function PrizesSection({ onOpenRegister }) {
       <div className="relative max-w-6xl mx-auto">
         {/* Header */}
         <div
-          className={`flex flex-col items-start md:items-center md:text-center mb-12 sm:mb-16 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+          className={`flex flex-col items-start md:items-center md:text-center mb-10 sm:mb-16 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
             isVisible
               ? 'opacity-100 translate-y-0 scale-100'
               : 'opacity-0 translate-y-8 scale-[0.98]'
           }`}
         >
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-amber-400/30 bg-amber-400/10 text-amber-300 font-sans text-xs uppercase tracking-widest mb-4">
-            <Trophy className="w-3.5 h-3.5" />
+          <div className="inline-flex items-center gap-2 px-3 sm:px-3.5 py-1.5 rounded-2xl sm:rounded-full border border-amber-400/30 bg-amber-400/10 text-amber-300 font-sans text-[10px] min-[400px]:text-xs uppercase tracking-widest mb-4 text-center">
+            <Trophy className="w-3.5 h-3.5 shrink-0" />
             <span>INNOVERSE 3.0 • ₹35,000 TOTAL PRIZE POOL • DUAL LEAGUES (MCA & BCA)</span>
           </div>
 
-          <h2 className="font-display font-black text-3xl sm:text-5xl md:text-6xl text-white tracking-tight uppercase">
+          <h2 className="font-display font-black text-2xl min-[380px]:text-3xl sm:text-5xl md:text-6xl text-white tracking-tight uppercase">
             Prizes & <span className="text-amber-400">Honors</span>
           </h2>
-          <p className="mt-4 text-sm sm:text-base text-gray-300 max-w-2xl font-sans">
+          <p className="mt-3 sm:mt-4 text-xs sm:text-base text-gray-300 max-w-2xl font-sans leading-relaxed">
             Separate competitive tracks for <strong className="text-white">MCA (Postgraduate)</strong> and <strong className="text-white">BCA (Undergraduate)</strong> students. Teams first complete an online PPT evaluation, followed by the 24-hour hackathon.
           </p>
 
           {/* Quick Specifications Pill Bar */}
-          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mt-8">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-white/10 bg-white/[0.03] text-xs font-sans text-gray-300">
+          <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-3 mt-6 sm:mt-8">
+            <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-full border border-white/10 bg-white/[0.03] text-[11px] sm:text-xs font-sans text-gray-300">
               <Users className="w-3.5 h-3.5 text-amber-400" />
               <span>Team Size: <strong className="text-white">3 Members (Fixed)</strong></span>
             </div>
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-white/10 bg-white/[0.03] text-xs font-sans text-gray-300">
+            <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-full border border-white/10 bg-white/[0.03] text-[11px] sm:text-xs font-sans text-gray-300">
               <Ticket className="w-3.5 h-3.5 text-emerald-400" />
               <span>Registration Fee: <strong className="text-white">₹300 / Team</strong></span>
             </div>
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-white/10 bg-white/[0.03] text-xs font-sans text-gray-300">
+            <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-full border border-white/10 bg-white/[0.03] text-[11px] sm:text-xs font-sans text-gray-300">
               <Trophy className="w-3.5 h-3.5 text-yellow-400" />
               <span>Pool: <strong className="text-amber-400">₹35,000 Cash</strong></span>
             </div>
@@ -130,9 +130,9 @@ export default function PrizesSection({ onOpenRegister }) {
         </div>
 
         {/* Dual League Breakdown Indicator */}
-        <div className="flex items-center justify-center mb-10">
-          <div className="inline-flex items-center p-1.5 rounded-full border border-white/15 bg-[#0e0e14] backdrop-blur-xl">
-            <span className="px-5 sm:px-6 py-2 rounded-full font-sans text-xs uppercase tracking-wider font-semibold bg-amber-400 text-black shadow-[0_0_15px_rgba(245,158,11,0.5)]">
+        <div className="flex items-center justify-center mb-8 sm:mb-10">
+          <div className="inline-flex items-center p-1 sm:p-1.5 rounded-full border border-white/15 bg-[#0e0e14] backdrop-blur-xl">
+            <span className="px-4 sm:px-6 py-1.5 sm:py-2 rounded-full font-sans text-[11px] sm:text-xs uppercase tracking-wider font-semibold bg-amber-400 text-black shadow-[0_0_15px_rgba(245,158,11,0.5)]">
               Both Tracks (MCA + BCA)
             </span>
           </div>
@@ -140,7 +140,7 @@ export default function PrizesSection({ onOpenRegister }) {
 
         {/* Podium Cards Grid (1st Prize ₹12K & 2nd Prize ₹6K) */}
         <div
-          className={`grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-16 transition-all duration-700 delay-150 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+          className={`grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 max-w-4xl mx-auto mb-12 sm:mb-16 transition-all duration-700 delay-150 ease-[cubic-bezier(0.16,1,0.3,1)] ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}
         >
@@ -149,7 +149,7 @@ export default function PrizesSection({ onOpenRegister }) {
             return (
               <div
                 key={item.id}
-                className={`relative rounded-3xl border ${item.borderColor} bg-[#0e0e16]/90 backdrop-blur-xl p-7 sm:p-9 flex flex-col justify-between ${
+                className={`relative rounded-2xl sm:rounded-3xl border ${item.borderColor} bg-[#0e0e16]/90 backdrop-blur-xl p-5 sm:p-9 flex flex-col justify-between ${
                   item.featured
                     ? 'bg-gradient-to-b from-amber-500/10 via-[#0e0e16] to-[#0e0e16]'
                     : 'bg-gradient-to-b from-blue-500/10 via-[#0e0e16] to-[#0e0e16]'
@@ -158,7 +158,7 @@ export default function PrizesSection({ onOpenRegister }) {
                 <div className="relative z-10">
                   <div className="flex items-center justify-between mb-4">
                     <span
-                      className="px-3 py-1 rounded-full font-sans text-[10px] font-bold tracking-wider uppercase border"
+                      className="px-2.5 sm:px-3 py-1 rounded-full font-sans text-[10px] font-bold tracking-wider uppercase border"
                       style={{
                         backgroundColor: `${item.color}15`,
                         color: item.color,
@@ -167,28 +167,28 @@ export default function PrizesSection({ onOpenRegister }) {
                     >
                       {item.badge}
                     </span>
-                    <div className="w-12 h-12 rounded-xl flex items-center justify-center border border-white/10 bg-white/5">
-                      <Icon className="w-6 h-6" style={{ color: item.color }} />
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center border border-white/10 bg-white/5">
+                      <Icon className="w-5 h-5 sm:w-6 sm:h-6" style={{ color: item.color }} />
                     </div>
                   </div>
 
-                  <h3 className="font-display font-bold text-xl text-white">
+                  <h3 className="font-display font-bold text-lg sm:text-xl text-white">
                     {item.place}
                   </h3>
                   <p className="font-sans text-xs text-amber-300/90 mt-1 mb-4">
                     {item.streamNote}
                   </p>
 
-                  <div className="mb-6 p-4 rounded-2xl bg-white/[0.03] border border-white/10">
-                    <span className="font-sans [font-variant-numeric:lining-nums_slashed-zero] font-black text-4xl sm:text-5xl text-white tracking-tight">
+                  <div className="mb-6 p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-white/[0.03] border border-white/10">
+                    <span className="font-sans [font-variant-numeric:lining-nums_slashed-zero] font-black text-3xl min-[380px]:text-4xl sm:text-5xl text-white tracking-tight">
                       {item.amount}
                     </span>
-                    <span className="font-sans text-xs text-white/50 block mt-1">
+                    <span className="font-sans text-[11px] sm:text-xs text-white/50 block mt-1">
                       Direct Cash Award + Championship Trophy
                     </span>
                   </div>
 
-                  <ul className="space-y-2.5 pt-4 border-t border-white/10 mb-8">
+                  <ul className="space-y-2.5 pt-4 border-t border-white/10 mb-6 sm:mb-8">
                     {item.perks.map((perk, pIdx) => (
                       <li key={pIdx} className="flex items-start gap-2.5 text-xs text-gray-300">
                         <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-400 mt-0.5" />
@@ -201,7 +201,7 @@ export default function PrizesSection({ onOpenRegister }) {
                 <div className="relative z-10">
                   <button
                     onClick={onOpenRegister}
-                    className="w-full py-3.5 rounded-full font-sans text-xs uppercase tracking-wider font-bold border border-white/15 bg-amber-400 text-black cursor-pointer shadow-[0_0_12px_rgba(245,158,11,0.2)] flex items-center justify-center gap-2"
+                    className="w-full py-3 sm:py-3.5 rounded-full font-sans text-xs uppercase tracking-wider font-bold border border-white/15 bg-amber-400 text-black cursor-pointer shadow-[0_0_12px_rgba(245,158,11,0.2)] flex items-center justify-center gap-2"
                   >
                     <span>Register 3-Member Team</span>
                     <ArrowRight className="w-4 h-4" />

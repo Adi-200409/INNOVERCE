@@ -133,7 +133,7 @@ export default function LoginPage({ onBackToHome }) {
   const isPaid = squad?.payment_status === 'PAID';
 
   return (
-    <div className="relative min-h-screen w-full bg-[#060608] text-white selection:bg-amber-400 selection:text-black py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
+    <div className="relative min-h-screen w-full bg-[#060608] text-white selection:bg-amber-400 selection:text-black py-6 sm:py-12 px-3 sm:px-6 lg:px-8">
       {/* Background Ambience */}
       <div className="pointer-events-none fixed -top-40 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-amber-500/10 blur-[150px] rounded-full z-0" />
       <div className="pointer-events-none fixed top-1/2 -right-40 w-[600px] h-[600px] bg-blue-600/10 blur-[170px] rounded-full z-0" />

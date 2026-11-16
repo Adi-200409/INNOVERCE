@@ -44,26 +44,26 @@ export default function TracksModal({ isOpen, onClose }) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in">
+    <div className="fixed inset-0 z-[200] flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-fade-in">
       <div
-        className="relative w-full max-w-4xl max-h-[88vh] rounded-3xl border border-white/15 bg-[#0a0a0d] p-6 sm:p-8 shadow-[0_0_60px_rgba(245,158,11,0.25)] text-white overflow-hidden flex flex-col"
+        className="relative w-full max-w-4xl max-h-[88vh] rounded-2xl sm:rounded-3xl border border-white/15 bg-[#0a0a0d] p-4 sm:p-8 shadow-[0_0_60px_rgba(245,158,11,0.25)] text-white overflow-hidden flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute right-5 top-5 p-2 rounded-full border border-white/10 text-white/60 hover:text-white hover:bg-white/10 transition-colors z-10"
+          className="absolute right-4 top-4 sm:right-5 sm:top-5 p-2 rounded-full border border-white/10 text-white/60 hover:text-white hover:bg-white/10 transition-colors z-10 cursor-pointer"
         >
           <X className="w-4 h-4" />
         </button>
 
         {/* Header */}
-        <div className="mb-6">
+        <div className="mb-4 sm:mb-6">
           <div className="flex items-center gap-2 mb-2">
             <span className="w-2 h-2 rounded-full bg-amber-400 shadow-[0_0_8px_#f59e0b]" />
-            <p className="font-mono text-xs uppercase tracking-widest text-amber-400">INNOVERSE 3.0 • SECTOR FOCUS AREAS</p>
+            <p className="font-mono text-[10px] sm:text-xs uppercase tracking-widest text-amber-400">INNOVERSE 3.0 • SECTOR FOCUS AREAS</p>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-display font-black text-white tracking-tight">
+          <h2 className="text-xl sm:text-3xl font-display font-black text-white tracking-tight">
             Sector Focus Areas
           </h2>
           <p className="text-xs sm:text-sm text-gray-400 mt-1">

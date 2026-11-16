@@ -88,7 +88,7 @@ export default function Preloader({ onComplete, onStartExit }) {
 
   return (
     <div
-      className={`fixed inset-0 z-[100] flex flex-col justify-between p-6 sm:p-12 bg-black text-white select-none transition-all duration-500 ease-[cubic-bezier(0.85,0,0.15,1)] ${isExiting
+      className={`fixed inset-0 z-[100] flex flex-col justify-between p-4 sm:p-12 bg-black text-white select-none transition-all duration-500 ease-[cubic-bezier(0.85,0,0.15,1)] ${isExiting
           ? 'opacity-0 scale-105 pointer-events-none'
           : 'opacity-100 scale-100'
         }`}
@@ -104,10 +104,10 @@ export default function Preloader({ onComplete, onStartExit }) {
 
       {/* Top Header in Loader */}
       <div
-        className={`relative z-10 flex items-center justify-between font-mono text-[11px] text-white/40 uppercase tracking-widest transition-all duration-500 ${isContentFading ? 'opacity-0 -translate-y-2' : 'opacity-100 translate-y-0'
+        className={`relative z-10 flex items-center justify-between font-mono text-[10px] sm:text-[11px] text-white/40 uppercase tracking-widest transition-all duration-500 ${isContentFading ? 'opacity-0 -translate-y-2' : 'opacity-100 translate-y-0'
           }`}
       >
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2">
           <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse shadow-[0_0_6px_#f59e0b]" />
           <span>INNOVERSE // 3.0</span>
         </div>
@@ -122,27 +122,27 @@ export default function Preloader({ onComplete, onStartExit }) {
           }`}
       >
         {/* Brand Logo with Innoverse Animated Dots */}
-        <div className="flex flex-col items-center gap-3 mb-8">
-          <h1 className="font-display font-black text-4xl sm:text-6xl md:text-7xl tracking-wider text-white">
+        <div className="flex flex-col items-center gap-2 sm:gap-3 mb-6 sm:mb-8">
+          <h1 className="font-display font-black text-3xl min-[360px]:text-4xl sm:text-6xl md:text-7xl tracking-wider text-white">
             Innoverse<span className="font-mono text-stroke-amber ml-2 [font-variant-numeric:lining-nums_slashed-zero]">3.0</span>
           </h1>
 
           {/* Glowing Animated Sequence Dots */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             <span
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${progress > 15 ? 'bg-white shadow-[0_0_8px_white]' : 'bg-white/20'
+              className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full transition-all duration-300 ${progress > 15 ? 'bg-white shadow-[0_0_8px_white]' : 'bg-white/20'
                 }`}
             />
             <span
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${progress > 40 ? 'bg-white shadow-[0_0_8px_white]' : 'bg-white/20'
+              className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full transition-all duration-300 ${progress > 40 ? 'bg-white shadow-[0_0_8px_white]' : 'bg-white/20'
                 }`}
             />
             <span
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${progress > 70 ? 'bg-white shadow-[0_0_8px_white]' : 'bg-white/20'
+              className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full transition-all duration-300 ${progress > 70 ? 'bg-white shadow-[0_0_8px_white]' : 'bg-white/20'
                 }`}
             />
             <span
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${isCompleted
+              className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full transition-all duration-300 ${isCompleted
                 ? 'bg-amber-400 shadow-[0_0_14px_#fbbf24] scale-125'
                 : progress > 90
                   ? 'bg-amber-500 shadow-[0_0_12px_#f59e0b] scale-110'
@@ -155,7 +155,7 @@ export default function Preloader({ onComplete, onStartExit }) {
         {/* Large Monospace Progress Counter (Smooth Non-Skipping 000 to 100) */}
         <div className="flex items-baseline justify-center gap-1 font-mono select-none">
           <span
-            className={`text-6xl sm:text-8xl md:text-9xl font-black tracking-tight tabular-nums transition-all duration-300 ${isCompleted
+            className={`text-5xl min-[360px]:text-6xl sm:text-8xl md:text-9xl font-black tracking-tight tabular-nums transition-all duration-300 ${isCompleted
               ? 'text-white drop-shadow-[0_0_35px_rgba(245,158,11,0.85)] scale-105'
               : 'text-white/90'
               }`}
@@ -163,7 +163,7 @@ export default function Preloader({ onComplete, onStartExit }) {
             {String(progress).padStart(3, '0')}
           </span>
           <span
-            className={`text-xl sm:text-3xl font-bold transition-all duration-300 ${isCompleted ? 'text-amber-400 drop-shadow-[0_0_15px_#fbbf24]' : 'text-amber-500'
+            className={`text-lg sm:text-3xl font-bold transition-all duration-300 ${isCompleted ? 'text-amber-400 drop-shadow-[0_0_15px_#fbbf24]' : 'text-amber-500'
               }`}
           >
             %
@@ -171,7 +171,7 @@ export default function Preloader({ onComplete, onStartExit }) {
         </div>
 
         {/* Dynamic Telemetry Status */}
-        <div className="mt-6 flex items-center gap-2.5 font-mono text-xs sm:text-sm text-gray-400 tracking-widest uppercase transition-all duration-300">
+        <div className="mt-4 sm:mt-6 flex items-center justify-center gap-2 font-mono text-[10px] sm:text-sm text-gray-400 tracking-wider sm:tracking-widest uppercase transition-all duration-300 text-center px-2">
           {isCompleted ? (
             <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_12px_#34d399]" />
           ) : (
