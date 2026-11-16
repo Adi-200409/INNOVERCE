@@ -33,9 +33,9 @@ function AstronautHelmetIcon({ className = "w-6 h-6", glowing = false }) {
     >
       <defs>
         <linearGradient id="helmetVisorAstra" x1="6" y1="8" x2="18" y2="15" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="#38bdf8" />
-          <stop offset="50%" stopColor="#818cf8" />
-          <stop offset="100%" stopColor="#c084fc" />
+          <stop offset="0%" stopColor="#fbbf24" />
+          <stop offset="50%" stopColor="#f59e0b" />
+          <stop offset="100%" stopColor="#d97706" />
         </linearGradient>
       </defs>
 
@@ -523,8 +523,8 @@ const ARIA_CATEGORIES = [
     subtitle: 'Fintech, EdTech, Health, Agri',
     query: 'What are the 4 sector focus areas and problem tracks?',
     icon: Layers,
-    iconColor: 'text-purple-400',
-    bgGlow: 'group-hover:border-purple-400/50'
+    iconColor: 'text-amber-400',
+    bgGlow: 'group-hover:border-amber-400/50'
   },
   {
     id: 'prizes',
@@ -581,7 +581,7 @@ function renderAriaFormattedText(rawText) {
                   parts.push(
                     <strong
                       key={`${lIdx}-${match.index}`}
-                      className="font-semibold text-white drop-shadow-[0_0_8px_rgba(168,85,247,0.3)]"
+                      className="font-semibold text-white drop-shadow-[0_0_8px_rgba(245,158,11,0.3)]"
                     >
                       {token.slice(2, -2)}
                     </strong>
@@ -590,7 +590,7 @@ function renderAriaFormattedText(rawText) {
                   parts.push(
                     <code
                       key={`${lIdx}-${match.index}`}
-                      className="px-1.5 py-0.5 mx-0.5 rounded bg-purple-950/60 border border-purple-400/30 text-purple-200 font-mono text-[11px]"
+                      className="px-1.5 py-0.5 mx-0.5 rounded bg-amber-950/60 border border-amber-400/30 text-amber-200 font-mono text-[11px]"
                     >
                       {token.slice(1, -1)}
                     </code>
@@ -605,7 +605,7 @@ function renderAriaFormattedText(rawText) {
               if (isBullet) {
                 return (
                   <div key={lIdx} className="flex items-start gap-2 pl-0.5 text-zinc-300">
-                    <span className="text-purple-400 text-xs leading-5 shrink-0 select-none">
+                    <span className="text-amber-400 text-xs leading-5 shrink-0 select-none">
                       ✦
                     </span>
                     <span className="flex-1 leading-relaxed text-xs sm:text-[13px]">{parts}</span>
@@ -618,7 +618,7 @@ function renderAriaFormattedText(rawText) {
                 const num = numMatch ? numMatch[1] : '•';
                 return (
                   <div key={lIdx} className="flex items-start gap-2 pl-0.5 text-zinc-300">
-                    <span className="font-mono text-[9px] font-bold text-purple-300 px-1.5 py-0.5 rounded bg-purple-500/15 border border-purple-400/30 shrink-0 select-none mt-0.5">
+                    <span className="font-mono text-[9px] font-bold text-amber-300 px-1.5 py-0.5 rounded bg-amber-500/15 border border-amber-400/30 shrink-0 select-none mt-0.5">
                       {num}
                     </span>
                     <span className="flex-1 leading-relaxed text-xs sm:text-[13px]">{parts}</span>
@@ -758,7 +758,7 @@ export default function MissionControlChatbot({ onOpenRegister, onOpenTracks }) 
   return (
     <>
       {/* =====================================================================
-          FLOATING LAUNCHER BUTTON (Aria / Indigo Aesthetic with Astronaut Helmet)
+          FLOATING LAUNCHER BUTTON (Theme-aligned Amber Gold & Space Obsidian)
           ===================================================================== */}
       <div className="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-50 select-none">
         {!isOpen && (
@@ -766,19 +766,19 @@ export default function MissionControlChatbot({ onOpenRegister, onOpenTracks }) 
             id="open-chatbot-btn"
             onClick={handleToggleOpen}
             aria-label="Open Astra AI Assistant"
-            className="group relative flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-tr from-[#1b1736] via-[#16132e] to-[#251f47] hover:from-[#231e47] hover:to-[#2e2659] border border-purple-400/40 hover:border-purple-300 text-purple-200 hover:text-white backdrop-blur-2xl shadow-[0_8px_30px_rgba(0,0,0,0.85),0_0_20px_rgba(168,85,247,0.35)] hover:shadow-[0_10px_35px_rgba(168,85,247,0.55)] transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer"
+            className="group relative flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-tr from-[#141208] via-[#1b170c] to-[#251e0e] hover:from-[#231c0e] hover:to-[#2e2412] border border-amber-400/40 hover:border-amber-300 text-amber-300 hover:text-white backdrop-blur-2xl shadow-[0_8px_30px_rgba(0,0,0,0.85),0_0_20px_rgba(245,158,11,0.35)] hover:shadow-[0_10px_35px_rgba(245,158,11,0.55)] transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer"
           >
             {/* Ambient outer pulse ring */}
-            <span className="absolute inset-[-4px] rounded-full border border-purple-400/25 group-hover:border-purple-400/60 animate-pulse pointer-events-none" />
+            <span className="absolute inset-[-4px] rounded-full border border-amber-400/25 group-hover:border-amber-400/60 animate-pulse pointer-events-none" />
 
             {/* Astronaut Helmet Icon */}
-            <AstronautHelmetIcon className="w-6 h-6 sm:w-7 sm:h-7 text-purple-200 group-hover:text-white group-hover:scale-110 transition-all duration-200" glowing />
+            <AstronautHelmetIcon className="w-6 h-6 sm:w-7 sm:h-7 text-amber-300 group-hover:text-white group-hover:scale-110 transition-all duration-200" glowing />
 
             {/* Unread Alert Notification Ping */}
             {hasUnread && (
               <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-gradient-to-r from-purple-400 to-indigo-400 shadow-[0_0_8px_#a855f7]" />
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-gradient-to-r from-amber-400 to-yellow-400 shadow-[0_0_8px_#f59e0b]" />
               </span>
             )}
           </button>
@@ -790,17 +790,17 @@ export default function MissionControlChatbot({ onOpenRegister, onOpenTracks }) 
           ===================================================================== */}
       {isOpen && (
         <div
-          className={`fixed bottom-3 sm:bottom-6 right-3 sm:right-6 z-50 flex flex-col w-[calc(100vw-1.5rem)] sm:w-[390px] max-w-[420px] rounded-[28px] sm:rounded-[32px] border border-white/[0.12] bg-gradient-to-b from-[#141226] via-[#0d0c1b] to-[#070611] backdrop-blur-3xl shadow-[0_25px_60px_rgba(0,0,0,0.95),0_0_40px_rgba(139,92,246,0.18)] overflow-hidden transition-all duration-300 font-sans ${isMinimized ? 'h-14 sm:h-16' : 'h-[520px] sm:h-[640px] max-h-[88vh]'
+          className={`fixed bottom-3 sm:bottom-6 right-3 sm:right-6 z-50 flex flex-col w-[calc(100vw-1.5rem)] sm:w-[390px] max-w-[420px] rounded-[28px] sm:rounded-[32px] border border-white/[0.12] bg-gradient-to-b from-[#14121a] via-[#0d0c14] to-[#07060a] backdrop-blur-3xl shadow-[0_25px_60px_rgba(0,0,0,0.95),0_0_40px_rgba(245,158,11,0.18)] overflow-hidden transition-all duration-300 font-sans ${isMinimized ? 'h-14 sm:h-16' : 'h-[520px] sm:h-[640px] max-h-[88vh]'
             }`}
         >
           {/* Subtle Ambient Radial Lighting in Background */}
-          <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[340px] h-[220px] bg-[radial-gradient(ellipse_at_top,rgba(168,85,247,0.16)_0%,rgba(99,102,241,0.06)_50%,transparent_80%)] blur-2xl" />
+          <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[340px] h-[220px] bg-[radial-gradient(ellipse_at_top,rgba(245,158,11,0.16)_0%,rgba(217,119,6,0.06)_50%,transparent_80%)] blur-2xl" />
 
           {/* Top Status Bar (Aria Style) */}
           <div className="relative flex items-center justify-between px-5 pt-4 pb-2 z-10 shrink-0 select-none">
             {/* Left Brand Badge */}
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-purple-400/25 bg-purple-500/10 text-purple-300 text-xs font-medium tracking-wide">
-              <AstronautHelmetIcon className="w-3.5 h-3.5 text-purple-300" glowing />
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-amber-400/30 bg-amber-400/10 text-amber-300 text-xs font-medium tracking-wide">
+              <AstronautHelmetIcon className="w-3.5 h-3.5 text-amber-300" glowing />
               <span>Astra AI • 24h Copilot</span>
             </div>
 
@@ -850,8 +850,8 @@ export default function MissionControlChatbot({ onOpenRegister, onOpenTracks }) 
               onClick={() => setIsMinimized(false)}
               className="flex-1 flex items-center justify-between px-5 cursor-pointer hover:bg-white/5 transition-colors"
             >
-              <div className="flex items-center gap-2 text-xs text-purple-200">
-                <AstronautHelmetIcon className="w-4 h-4 text-purple-300" glowing />
+              <div className="flex items-center gap-2 text-xs text-amber-200">
+                <AstronautHelmetIcon className="w-4 h-4 text-amber-300" glowing />
                 <span>Astra is ready • Click to expand</span>
               </div>
               <ChevronLeft className="w-4 h-4 text-zinc-400 -rotate-90" />
@@ -863,7 +863,7 @@ export default function MissionControlChatbot({ onOpenRegister, onOpenTracks }) 
             <>
               {/* Optional Info Dropdown */}
               {showInfoModal && (
-                <div className="mx-5 mb-2 p-3 rounded-2xl border border-purple-400/20 bg-[#16142c]/95 text-xs text-zinc-300 space-y-1.5 z-20 shadow-xl animate-fadeIn">
+                <div className="mx-5 mb-2 p-3 rounded-2xl border border-amber-400/25 bg-[#14121a]/95 text-xs text-zinc-300 space-y-1.5 z-20 shadow-xl animate-fadeIn">
                   <div className="flex items-center justify-between font-semibold text-white">
                     <span>About Astra Assistant</span>
                     <button
@@ -886,15 +886,15 @@ export default function MissionControlChatbot({ onOpenRegister, onOpenTracks }) 
                   {/* Big Hero Greeting (Exact Aria Typography Layout with Astronaut Helmet Avatar) */}
                   <div className="space-y-1 sm:space-y-1.5 pt-1 sm:pt-2">
                     <div className="flex items-center gap-2 sm:gap-2.5">
-                      <div className="flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-2xl bg-gradient-to-tr from-purple-500/20 to-indigo-500/20 border border-purple-400/30 shadow-[0_0_15px_rgba(168,85,247,0.25)] shrink-0">
-                        <AstronautHelmetIcon className="w-4 h-4 sm:w-5 sm:h-5 text-purple-200" glowing />
+                      <div className="flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-2xl bg-gradient-to-tr from-amber-500/20 to-yellow-500/20 border border-amber-400/30 shadow-[0_0_15px_rgba(245,158,11,0.25)] shrink-0">
+                        <AstronautHelmetIcon className="w-4 h-4 sm:w-5 sm:h-5 text-amber-300" glowing />
                       </div>
                       <h3 className="text-xl sm:text-3xl font-bold tracking-tight text-white font-sans leading-none">
                         Hi, I'm Astra
                       </h3>
                     </div>
 
-                    <h4 className="text-lg sm:text-2xl font-bold tracking-tight bg-gradient-to-r from-purple-300 via-violet-300 to-indigo-300 bg-clip-text text-transparent font-sans">
+                    <h4 className="text-lg sm:text-2xl font-bold tracking-tight bg-gradient-to-r from-amber-200 via-amber-300 to-yellow-400 bg-clip-text text-transparent font-sans">
                       I can help you today
                     </h4>
                     <p className="text-xs sm:text-[13px] text-gray-400 font-sans leading-relaxed pt-0.5 sm:pt-1 max-w-[95%]">
@@ -911,7 +911,7 @@ export default function MissionControlChatbot({ onOpenRegister, onOpenTracks }) 
                           key={cat.id}
                           type="button"
                           onClick={() => handleUserSubmit(cat.query)}
-                          className={`group relative rounded-xl sm:rounded-2xl border border-white/[0.08] bg-[#16142a]/80 hover:bg-[#201d3d]/90 p-3 sm:p-4 flex flex-col justify-between h-24 sm:h-30 text-left transition-all duration-300 hover:shadow-[0_8px_25px_rgba(139,92,246,0.25)] hover:-translate-y-0.5 cursor-pointer ${cat.bgGlow}`}
+                          className={`group relative rounded-xl sm:rounded-2xl border border-white/[0.08] bg-[#12111a]/85 hover:bg-[#1a1826]/90 p-3 sm:p-4 flex flex-col justify-between h-24 sm:h-30 text-left transition-all duration-300 hover:shadow-[0_8px_25px_rgba(245,158,11,0.2)] hover:-translate-y-0.5 cursor-pointer ${cat.bgGlow}`}
                         >
                           {/* Top-left Icon */}
                           <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-white/[0.06] border border-white/10 flex items-center justify-center group-hover:scale-105 transition-transform">
@@ -920,7 +920,7 @@ export default function MissionControlChatbot({ onOpenRegister, onOpenTracks }) 
 
                           {/* Bottom Details */}
                           <div>
-                            <span className="block font-medium text-white text-xs sm:text-sm group-hover:text-purple-200 transition-colors">
+                            <span className="block font-medium text-white text-xs sm:text-sm group-hover:text-amber-300 transition-colors">
                               {cat.title}
                             </span>
                             <span className="block text-[9px] sm:text-[10px] text-zinc-400 mt-0.5 truncate">
@@ -936,7 +936,7 @@ export default function MissionControlChatbot({ onOpenRegister, onOpenTracks }) 
 
               {/* View 2: CHAT CONVERSATION VIEW */}
               {viewMode === 'chat' && (
-                <div className="flex-1 overflow-y-auto px-4 py-3 space-y-3.5 scrollbar-thin scrollbar-thumb-purple-500/30">
+                <div className="flex-1 overflow-y-auto px-4 py-3 space-y-3.5 scrollbar-thin scrollbar-thumb-amber-500/30">
                   {messages.map((msg) => (
                     <div
                       key={msg.id}
@@ -946,14 +946,14 @@ export default function MissionControlChatbot({ onOpenRegister, onOpenTracks }) 
                       {/* Message Bubble */}
                       <div
                         className={`max-w-[88%] rounded-2xl p-3.5 text-xs sm:text-[13px] leading-relaxed shadow-md transition-all ${msg.sender === 'user'
-                          ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-tr-none shadow-[0_4px_20px_rgba(168,85,247,0.3)]'
-                          : 'bg-[#18162d]/90 text-zinc-200 border border-white/10 rounded-tl-none shadow-[0_4px_25px_rgba(0,0,0,0.6)] backdrop-blur-md'
+                          ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-black font-medium rounded-tr-none shadow-[0_4px_20px_rgba(245,158,11,0.35)]'
+                          : 'bg-[#12111c]/95 text-zinc-200 border border-white/10 rounded-tl-none shadow-[0_4px_25px_rgba(0,0,0,0.6)] backdrop-blur-md'
                           }`}
                       >
                         {msg.sender === 'bot' ? (
                           renderAriaFormattedText(msg.text)
                         ) : (
-                          <p className="whitespace-pre-line text-white">{msg.text}</p>
+                          <p className="whitespace-pre-line text-black font-semibold">{msg.text}</p>
                         )}
 
                         {/* Interactive Action Chips */}
@@ -964,10 +964,10 @@ export default function MissionControlChatbot({ onOpenRegister, onOpenTracks }) 
                                 key={aIdx}
                                 type="button"
                                 onClick={() => handleActionClick(act)}
-                                className="group inline-flex items-center gap-1 px-3 py-1.5 rounded-full border border-purple-400/40 hover:border-purple-300 bg-purple-500/15 hover:bg-purple-500/30 text-purple-200 hover:text-white text-[11px] font-medium transition-all shadow-sm cursor-pointer"
+                                className="group inline-flex items-center gap-1 px-3 py-1.5 rounded-full border border-amber-400/40 hover:border-amber-300 bg-amber-400/10 hover:bg-amber-400/25 text-amber-300 hover:text-white text-[11px] font-medium transition-all shadow-sm cursor-pointer"
                               >
                                 <span>{act.label}</span>
-                                <ArrowRight className="w-3 h-3 text-purple-400 group-hover:translate-x-0.5 transition-transform" />
+                                <ArrowRight className="w-3 h-3 text-amber-400 group-hover:translate-x-0.5 transition-transform" />
                               </button>
                             ))}
                           </div>
@@ -982,11 +982,11 @@ export default function MissionControlChatbot({ onOpenRegister, onOpenTracks }) 
 
                   {/* Typing Indicator */}
                   {isTyping && (
-                    <div className="flex items-center gap-2 px-3 py-2 rounded-2xl bg-[#18162d]/80 border border-white/10 w-fit">
+                    <div className="flex items-center gap-2 px-3 py-2 rounded-2xl bg-[#12111c]/90 border border-white/10 w-fit">
                       <div className="flex items-center gap-1">
-                        <span className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-bounce [animation-delay:-0.3s]" />
-                        <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-bounce [animation-delay:-0.15s]" />
-                        <span className="w-1.5 h-1.5 rounded-full bg-purple-300 animate-bounce" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-bounce [animation-delay:-0.3s]" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-yellow-400 animate-bounce [animation-delay:-0.15s]" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-amber-300 animate-bounce" />
                       </div>
                       <span className="text-[11px] text-zinc-400">Astra is thinking...</span>
                     </div>
@@ -997,8 +997,7 @@ export default function MissionControlChatbot({ onOpenRegister, onOpenTracks }) 
               )}
 
               {/* =====================================================================
-                  PERMANENT BOTTOM TYPING BAR (Aria Aesthetic)
-                  Replaced voice orb with always-accessible typing console
+                  PERMANENT BOTTOM TYPING BAR (Theme Aligned)
                   ===================================================================== */}
               <div className="p-4 pt-1 z-20">
                 <form
@@ -1006,7 +1005,7 @@ export default function MissionControlChatbot({ onOpenRegister, onOpenTracks }) 
                     e.preventDefault();
                     handleUserSubmit();
                   }}
-                  className="mx-auto w-full rounded-full border border-white/15 bg-[#121024]/90 backdrop-blur-2xl p-1.5 pl-3 pr-1.5 flex items-center gap-2 shadow-[0_8px_30px_rgba(0,0,0,0.8)] focus-within:border-purple-400/50 focus-within:shadow-[0_0_25px_rgba(168,85,247,0.3)] transition-all"
+                  className="mx-auto w-full rounded-full border border-white/15 bg-[#100f18]/95 backdrop-blur-2xl p-1.5 pl-3 pr-1.5 flex items-center gap-2 shadow-[0_8px_30px_rgba(0,0,0,0.8)] focus-within:border-amber-400/50 focus-within:shadow-[0_0_25px_rgba(245,158,11,0.25)] transition-all"
                 >
                   {/* Left: Back Arrow (visible in chat view to easily return to the 4 category cards) */}
                   {viewMode === 'chat' && (
@@ -1031,14 +1030,14 @@ export default function MissionControlChatbot({ onOpenRegister, onOpenTracks }) 
                     className="flex-1 bg-transparent px-2 py-1.5 text-xs sm:text-sm text-white placeholder-zinc-500 font-sans focus:outline-none"
                   />
 
-                  {/* Send Button: Glowing iridescent purple/indigo gradient circular button */}
+                  {/* Send Button: Glowing Golden Amber Circular Button */}
                   <button
                     type="submit"
                     disabled={!inputValue.trim() || isTyping}
                     aria-label="Send message"
-                    className="flex items-center justify-center w-9 h-9 rounded-full bg-gradient-to-tr from-purple-600 via-indigo-500 to-pink-500 text-white disabled:opacity-30 disabled:cursor-not-allowed hover:shadow-[0_0_20px_rgba(168,85,247,0.7)] transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer shrink-0"
+                    className="flex items-center justify-center w-9 h-9 rounded-full bg-gradient-to-tr from-amber-500 via-amber-400 to-yellow-400 text-black font-bold disabled:opacity-30 disabled:cursor-not-allowed hover:shadow-[0_0_20px_rgba(245,158,11,0.7)] transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer shrink-0"
                   >
-                    <Send className="w-4 h-4 text-white" />
+                    <Send className="w-4 h-4 text-black" />
                   </button>
                 </form>
               </div>

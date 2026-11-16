@@ -7,7 +7,9 @@ import adityaPhoto from '../images/Aditya.png';
 import nehaPhoto from '../images/Neha.jpeg';
 import zaidPhoto from '../images/Zaid.jpg';
 import shashankPhoto from '../images/Shashank.jpeg';
+import meghaPhoto from '../images/Megha.png';
 import bharatPhoto from '../images/bharat.jpg';
+
 
 // Crisp inline SVGs for developer social links
 function GithubIcon({ className = "w-3.5 h-3.5" }) {
@@ -54,7 +56,7 @@ const DEVELOPERS = [
     role: 'Frontend Developer',
     department: 'Component Systems & Web Experience',
     type: 'developer',
-    image: null,
+    image: meghaPhoto,
     github: 'https://github.com/megha2004-web',
     linkedin: 'https://www.linkedin.com/in/megha-desai-1a3862344/'
   },

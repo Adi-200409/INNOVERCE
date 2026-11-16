@@ -6,7 +6,7 @@ import { useState, useEffect, useRef } from 'react';
  * Uses threshold: 0 and rootMargin: '120px 0px 120px 0px' so that tall sections NEVER
  * get stuck at opacity-0 or create empty black voids when entering/exiting the viewport.
  */
-export function useScrollReveal(threshold = 0, rootMargin = '120px 0px 120px 0px') {
+export function useScrollReveal(threshold = 0, rootMargin = '150px 0px 150px 0px') {
   const ref = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -18,14 +18,18 @@ export function useScrollReveal(threshold = 0, rootMargin = '120px 0px 120px 0px
     if (typeof window !== 'undefined') {
       const rect = el.getBoundingClientRect();
       const windowHeight = window.innerHeight || document.documentElement.clientHeight;
-      if (rect.top <= windowHeight + 120 && rect.bottom >= -120) {
+      if (rect.top <= windowHeight + 150 && rect.bottom >= -150) {
         setIsVisible(true);
+        return;
       }
     }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setIsVisible(entry.isIntersecting);
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(el);
+        }
       },
       { threshold, rootMargin }
     );

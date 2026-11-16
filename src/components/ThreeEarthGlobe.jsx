@@ -294,8 +294,8 @@ function ThreeEarthGlobe({
       powerPreference: 'high-performance'
     });
     renderer.setSize(width, height);
-    // Capped at 1.5 to maintain retina crispness while avoiding 4K GPU fragment fill lag
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+    // Capped at 1.25 to maintain crisp rendering while eliminating 4K/high-DPI GPU fill bottlenecks
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.25));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.25;
     container.appendChild(renderer.domElement);
@@ -360,7 +360,7 @@ function ThreeEarthGlobe({
     const starsGroup = new THREE.Group();
     scene.add(starsGroup);
 
-    const STARS_COUNT = 600;
+    const STARS_COUNT = 250;
     const starPositions = new Float32Array(STARS_COUNT * 3);
     const starColors = new Float32Array(STARS_COUNT * 3);
 
@@ -421,21 +421,22 @@ function ThreeEarthGlobe({
     // Exact match to user reference: glowing golden cities, sunrise flare, deep navy oceans
     // =========================================================================
     const texLoader = new THREE.TextureLoader();
+    const maxAniso = Math.min(4, renderer.capabilities.getMaxAnisotropy());
 
     const dayTexture = texLoader.load('/earth-blue-marble.jpg');
     dayTexture.colorSpace = THREE.SRGBColorSpace;
-    dayTexture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+    dayTexture.anisotropy = maxAniso;
 
     const nightTexture = texLoader.load('/earth-night.jpg');
     nightTexture.colorSpace = THREE.SRGBColorSpace;
-    nightTexture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+    nightTexture.anisotropy = maxAniso;
 
     const cloudsTexture = texLoader.load('/earth-clouds.png');
     cloudsTexture.colorSpace = THREE.SRGBColorSpace;
-    cloudsTexture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+    cloudsTexture.anisotropy = maxAniso;
 
     const topoTexture = texLoader.load('/earth-topology.png');
-    topoTexture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+    topoTexture.anisotropy = maxAniso;
 
     // Solar Sunrise Vector on the UPPER-LEFT HORIZON
     const sunDirection = new THREE.Vector3(-0.92, 0.44, 0.18).normalize();

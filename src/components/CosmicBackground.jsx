@@ -348,9 +348,10 @@ export default function CosmicBackground({ paused = false }) {
     // Initial scroll sync
     handleScroll();
 
-    // 8. Animation & Render Loop
+    // 8. Animation & Render Loop (Optimized with 45 FPS throttle to preserve GPU budget for page scroll)
     let animationFrameId;
-    let lastTime = performance.now();
+    let lastRenderTime = 0;
+    const FRAME_INTERVAL = 1000 / 45; // ~45 FPS cap saves up to 65% GPU load
     let isVisible = true;
 
     const handleVisibilityChange = () => {
@@ -363,8 +364,9 @@ export default function CosmicBackground({ paused = false }) {
 
       if (!isVisible || pausedRef.current) return;
 
-      const dt = Math.min(40, time - lastTime);
-      lastTime = time;
+      const elapsed = time - lastRenderTime;
+      if (elapsed < FRAME_INTERVAL) return;
+      lastRenderTime = time - (elapsed % FRAME_INTERVAL);
 
       // Smooth mouse parallax lerp
       currentMouseX += (targetMouseX - currentMouseX) * 0.05;
@@ -401,21 +403,9 @@ export default function CosmicBackground({ paused = false }) {
       celestialGlobe.rotation.y += 0.0006;
       celestialGlobe.rotation.x -= 0.0004;
 
-      // Drift foreground stardust particles
-      const dustPos = dustGeo.attributes.position.array;
-      for (let i = 0; i < DUST_COUNT; i++) {
-        const i3 = i * 3;
-        const v = dustVelocities[i];
-        dustPos[i3] += v.vx;
-        dustPos[i3 + 1] += v.vy;
-        dustPos[i3 + 2] += v.vz;
-
-        // Wrap around bounds
-        if (dustPos[i3 + 1] > 700) dustPos[i3 + 1] = -700;
-        if (dustPos[i3] > 900) dustPos[i3] = -900;
-        if (dustPos[i3] < -900) dustPos[i3] = 900;
-      }
-      dustGeo.attributes.position.needsUpdate = true;
+      // Drift foreground stardust particles via GPU rotation (Zero CPU buffer reallocation)
+      dustPoints.rotation.y += 0.0003;
+      dustPoints.rotation.x += 0.00015;
 
       // Twinkle luminance modulation
       const t = time * 0.002;

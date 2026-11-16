@@ -30,6 +30,12 @@ export default function TimelineSpaceship({ velocity = 0 }) {
     let flameGroup = null;
     const flames = [];
 
+    let isVisible = true;
+    const observer = new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting;
+    }, { threshold: 0.05 });
+    observer.observe(container);
+
     try {
       scene = new THREE.Scene();
       
@@ -46,7 +52,7 @@ export default function TimelineSpaceship({ velocity = 0 }) {
         powerPreference: 'high-performance'
       });
       renderer.setSize(width, height);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.25));
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
       renderer.toneMappingExposure = 1.45;
       container.appendChild(renderer.domElement);
@@ -218,9 +224,10 @@ export default function TimelineSpaceship({ velocity = 0 }) {
       flames.push(createThruster(0.080, 0.46, 0.02));
       flames.push(createThruster(0.0, 0.49, 0.08));
 
-      // 60 FPS Render Loop
+      // Render Loop (Pauses when offscreen or tab hidden to free GPU resources)
       const animate = (time) => {
         animId = requestAnimationFrame(animate);
+        if (!isVisible || document.hidden) return;
         const t = time * 0.001;
 
         // Dynamic throttle from scroll velocity
@@ -258,6 +265,7 @@ export default function TimelineSpaceship({ velocity = 0 }) {
     }
 
     return () => {
+      observer.disconnect();
       if (animId) cancelAnimationFrame(animId);
       if (renderer && renderer.domElement && container.contains(renderer.domElement)) {
         container.removeChild(renderer.domElement);
