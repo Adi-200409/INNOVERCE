@@ -40,18 +40,9 @@ const TIMELINE_JOURNEY = [
   {
     time: 'STEP 04',
     title: 'Shortlisted Team Registration',
-    desc: 'Shortlisted teams complete their registration before moving on to the hackathon phases.',
+    desc: 'Shortlisted teams complete their registration before moving on to the on-campus hackathon.',
     category: 'TEAM REGISTRATION',
     icon: Users,
-    active: true
-  },
-  {
-    time: 'PHASE 01',
-    title: 'Online PPT Evaluation',
-    desc: 'Shortlisted, registered teams present their project PPT online for evaluation by the jury.',
-    category: 'ONLINE PPT EVALUATION',
-    icon: Compass,
-    highlight: true,
     active: true
   },
   {

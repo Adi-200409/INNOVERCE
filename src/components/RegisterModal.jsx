@@ -69,14 +69,14 @@ export default function RegisterModal({ isOpen, onClose }) {
             <div className="flex items-center gap-2 mb-2">
               <span className="w-2 h-2 rounded-full bg-amber-400 shadow-[0_0_8px_#f59e0b] animate-pulse" />
               <p className="font-mono text-[10px] sm:text-xs uppercase tracking-widest text-amber-400">
-                INNOVERSE 3.0 // PHASE 1: ONLINE PPT EVALUATION
+                INNOVERSE 3.0 // SQUAD REGISTRATION
               </p>
             </div>
             <h2 className="text-xl sm:text-3xl font-display font-black text-white tracking-tight">
               Register Your 3-Member Squad
             </h2>
             <p className="text-xs sm:text-sm text-gray-400 mt-1 mb-4">
-              Submit your team details and project PPT for online evaluation. Selected teams advance to the 24-hour hackathon to compete for the ₹35,000 prize pool.
+              Submit your team details and project proposal. Selected teams advance to the 24-hour hackathon to compete for the ₹35,000 prize pool.
             </p>
 
             {/* Quick Specs Strip */}
@@ -255,7 +255,7 @@ export default function RegisterModal({ isOpen, onClose }) {
               <div className="p-3.5 rounded-xl border border-emerald-500/25 bg-emerald-500/[0.06] flex items-start gap-2.5 text-xs text-emerald-300">
                 <Ticket className="w-4 h-4 shrink-0 mt-0.5 text-emerald-400" />
                 <div>
-                  <strong>Registration Fee: ₹300 per team</strong>. Covers the online PPT evaluation. Selected teams receive details for the 24-hour hackathon. Payment instructions will be emailed to the team leader.
+                  <strong>Registration Fee: ₹300 per team</strong>. Covers squad registration and project idea evaluation. Selected teams receive details for the 24-hour hackathon. Payment instructions will be emailed to the team leader.
                 </div>
               </div>
 
@@ -275,9 +275,9 @@ export default function RegisterModal({ isOpen, onClose }) {
             <div className="w-16 h-16 rounded-full bg-amber-400/20 border border-amber-400 flex items-center justify-center text-amber-400 mb-4 animate-bounce">
               <CheckCircle2 className="w-8 h-8" />
             </div>
-            <h3 className="text-2xl font-display font-black text-white">Phase 1 Entry Submitted!</h3>
+            <h3 className="text-2xl font-display font-black text-white">Squad Entry Submitted!</h3>
             <p className="text-sm text-gray-300 max-w-sm mt-2 mb-6">
-              Welcome squad <strong className="text-white">{formData.teamName || 'Innovators'}</strong>! Your PPT evaluation entry has been received for the <strong className="text-amber-400">{formData.category === 'mca' ? 'MCA Track' : 'BCA Track'}</strong>.
+              Welcome squad <strong className="text-white">{formData.teamName || 'Innovators'}</strong>! Your registration entry has been received for the <strong className="text-amber-400">{formData.category === 'mca' ? 'MCA Track' : 'BCA Track'}</strong>.
             </p>
 
             <section

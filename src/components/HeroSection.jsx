@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowRight, Compass, Users, Trophy, Ticket, Sparkles } from 'lucide-react';
+import { ArrowRight, Compass, Users, Trophy, Ticket, Sparkles, GraduationCap, Laptop } from 'lucide-react';
 import ThreeEarthGlobe from './ThreeEarthGlobe';
 import confetti from 'canvas-confetti';
 
@@ -26,6 +26,48 @@ const calculateTimeLeft = (target) => {
 export default function HeroSection({ onOpenRegister, onOpenTracks }) {
   // Live countdown to Hackathon launch on January 5th
   const [timeLeft, setTimeLeft] = useState(() => calculateTimeLeft(getHackathonTargetDate()));
+
+  // Live registration counts for each track (MCA & BCA)
+  const [trackStats, setTrackStats] = useState({
+    mcaStudents: 0,
+    mcaTeams: 0,
+    bcaStudents: 0,
+    bcaTeams: 0,
+    totalStudents: 0,
+    isLoaded: false
+  });
+
+  useEffect(() => {
+    let isCancelled = false;
+    const fetchStats = async () => {
+      try {
+        const apiBase = (import.meta.env.VITE_API_URL || 'http://localhost:8000').replace(/\/+$/, '');
+        const res = await fetch(`${apiBase}/api/stats/`);
+        if (res.ok) {
+          const data = await res.json();
+          if (!isCancelled && data.success) {
+            setTrackStats({
+              mcaStudents: data.mca?.students || 0,
+              mcaTeams: data.mca?.teams || 0,
+              bcaStudents: data.bca?.students || 0,
+              bcaTeams: data.bca?.teams || 0,
+              totalStudents: data.total?.students || 0,
+              isLoaded: true
+            });
+          }
+        }
+      } catch (err) {
+        // Fallback gracefully without breaking UI
+      }
+    };
+
+    fetchStats();
+    const interval = setInterval(fetchStats, 15000);
+    return () => {
+      isCancelled = true;
+      clearInterval(interval);
+    };
+  }, []);
 
   useEffect(() => {
     const target = getHackathonTargetDate();
@@ -142,7 +184,7 @@ export default function HeroSection({ onOpenRegister, onOpenTracks }) {
         </div>
 
         {/* Quick Key Specifications Strip */}
-        <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2.5 mb-4 sm:mb-5 pointer-events-auto max-w-4xl mx-auto px-1 sm:px-2">
+        <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2.5 mb-3 sm:mb-4 pointer-events-auto max-w-4xl mx-auto px-1 sm:px-2">
           <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-3.5 py-1.5 rounded-full border border-white/15 bg-black/65 backdrop-blur-md text-[11px] sm:text-[13px] font-mono text-gray-200 shadow-[0_2px_12px_rgba(0,0,0,0.55)]">
             <Users className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-400 shrink-0" />
             <span>Team Size: <strong className="text-white font-bold">3 Members (Fixed)</strong></span>
@@ -157,7 +199,34 @@ export default function HeroSection({ onOpenRegister, onOpenTracks }) {
           </div>
           <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-3.5 py-1.5 rounded-full border border-white/15 bg-black/65 backdrop-blur-md text-[11px] sm:text-[13px] font-mono text-gray-200 shadow-[0_2px_12px_rgba(0,0,0,0.55)]">
             <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-cyan-400 shrink-0" />
-            <span>Online PPT Evaluation ➔ 24-Hour Hackathon</span>
+            <span>Idea Shortlisting ➔ 24-Hour Hackathon</span>
+          </div>
+        </div>
+
+        {/* Live Track Registration Counters (MCA & BCA) */}
+        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-4 sm:mb-5 pointer-events-auto max-w-4xl mx-auto px-2">
+          {/* MCA Track Registration Badge */}
+          <div className="group inline-flex items-center gap-2 sm:gap-2.5 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-2xl sm:rounded-full border border-amber-400/35 bg-[#0a0a10]/90 backdrop-blur-xl shadow-[0_0_20px_rgba(245,158,11,0.2)] hover:border-amber-400/70 transition-all text-left">
+            <span className="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-[0_0_10px_#f59e0b] animate-pulse shrink-0" />
+            <GraduationCap className="w-4 h-4 text-amber-400 shrink-0" />
+            <div className="flex items-baseline gap-1.5 flex-wrap">
+              <span className="font-mono text-xs sm:text-sm font-semibold text-white">MCA Track:</span>
+              <span className="font-display font-black text-sm sm:text-base text-amber-400">{trackStats.mcaStudents}</span>
+              <span className="font-mono text-[11px] sm:text-xs text-gray-300">Registered Students</span>
+              <span className="text-[10px] font-mono text-amber-400/70">({trackStats.mcaTeams} Teams)</span>
+            </div>
+          </div>
+
+          {/* BCA Track Registration Badge */}
+          <div className="group inline-flex items-center gap-2 sm:gap-2.5 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-2xl sm:rounded-full border border-cyan-400/35 bg-[#0a0a10]/90 backdrop-blur-xl shadow-[0_0_20px_rgba(56,189,248,0.2)] hover:border-cyan-400/70 transition-all text-left">
+            <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-[0_0_10px_#38bdf8] animate-pulse shrink-0" />
+            <Laptop className="w-4 h-4 text-cyan-400 shrink-0" />
+            <div className="flex items-baseline gap-1.5 flex-wrap">
+              <span className="font-mono text-xs sm:text-sm font-semibold text-white">BCA Track:</span>
+              <span className="font-display font-black text-sm sm:text-base text-cyan-400">{trackStats.bcaStudents}</span>
+              <span className="font-mono text-[11px] sm:text-xs text-gray-300">Registered Students</span>
+              <span className="text-[10px] font-mono text-cyan-400/70">({trackStats.bcaTeams} Teams)</span>
+            </div>
           </div>
         </div>
 

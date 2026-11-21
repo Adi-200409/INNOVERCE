@@ -109,7 +109,7 @@ export default function PrizesSection({ onOpenRegister }) {
             Prizes & <span className="text-amber-400">Honors</span>
           </h2>
           <p className="mt-3 sm:mt-4 text-xs sm:text-base text-gray-300 max-w-2xl font-sans leading-relaxed">
-            Separate competitive tracks for <strong className="text-white">MCA (Postgraduate)</strong> and <strong className="text-white">BCA (Undergraduate)</strong> students. Teams first complete an online PPT evaluation, followed by the 24-hour hackathon.
+            Separate competitive tracks for <strong className="text-white">MCA (Postgraduate)</strong> and <strong className="text-white">BCA (Undergraduate)</strong> students. Teams first submit project ideas for shortlisting, followed by the 24-hour hackathon.
           </p>
 
           {/* Quick Specifications Pill Bar */}
@@ -232,14 +232,14 @@ export default function PrizesSection({ onOpenRegister }) {
               <div className="flex items-center justify-between mb-3">
                 <span className="font-sans text-xs text-amber-400 font-bold">PHASE 01</span>
                 <span className="font-sans text-[10px] px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/20">
-                  ONLINE PPT EVALUATION
+                  IDEA SHORTLISTING
                 </span>
               </div>
               <h5 className="font-display font-bold text-lg text-white mb-2">
-                Online PPT Evaluation
+                Project Idea Submission
               </h5>
               <p className="text-xs text-gray-300 font-sans leading-relaxed">
-                Teams submit their project PPT online for jury evaluation. Selected teams advance to the 24-hour hackathon.
+                Registered squads submit their problem solution abstract. Top teams are shortlisted directly for the 24-hour on-campus finale.
               </p>
             </div>
 

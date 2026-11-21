@@ -4,12 +4,13 @@ import { useScrollReveal } from '../hooks/useScrollReveal';
 
 // Developer Profile Photos
 import adityaPhoto from '../images/Aditya.png';
-import nehaPhoto from '../images/Neha.jpeg';
+import nehaPhoto from '../images/Neha.png';
 import zaidPhoto from '../images/Zaid.jpg';
 import shashankPhoto from '../images/Shashank.jpeg';
-import meghaPhoto from '../images/Megha.png';
+import meghaPhoto from '../images/Megha.jpeg';
 import bharatPhoto from '../images/bharat.jpg';
-import MeghaPhoto from '../images/Megha.png';
+import harshitaPhoto from '../images/harshita.jpeg';
+import rajeshwariPhoto from '../images/Rajeshwari.jpeg';
 
 
 // Crisp inline SVGs for developer social links
@@ -57,11 +58,7 @@ const DEVELOPERS = [
     role: 'Frontend Developer',
     department: 'Component Systems & Web Experience',
     type: 'developer',
-<<<<<<< Updated upstream
     image: meghaPhoto,
-=======
-    image: MeghaPhoto,
->>>>>>> Stashed changes
     github: 'https://github.com/megha2004-web',
     linkedin: 'https://www.linkedin.com/in/megha-desai-1a3862344/'
   },
@@ -97,70 +94,59 @@ const DEVELOPERS = [
   }
 ];
 
-// Organizers Configuration - Replace names, roles and image URLs when photos are ready
+// Organizers Configuration - Innverse3.0 Organisers
 const ORGANIZERS = [
   {
     id: 'org-1',
-    name: 'Organizer Name',
-    role: 'Faculty Coordinator',
-    department: 'Department of MCA',
+    name: 'Mr. Shashank Alagawadi',
+    role: 'Event Organizer',
+    department: 'Innverse3.0 Organisers',
     type: 'organizer',
-    image: null, // e.g. '/team/organizer1.jpg'
+    image: null,
     github: null,
     linkedin: 'https://linkedin.com',
     email: 'contact@git.edu'
   },
   {
     id: 'org-2',
-    name: 'Organizer Name',
-    role: 'Lead Student Organizer',
-    department: 'INNOVERSE 3.0 Lead',
+    name: 'Mr. Bharat Joshi',
+    role: 'Event Organizer',
+    department: 'Innverse3.0 Organisers',
     type: 'organizer',
-    image: null,
-    github: null,
-    linkedin: 'https://linkedin.com',
+    image: bharatPhoto,
+    github: 'https://github.com/BharatBinaga',
+    linkedin: 'https://www.linkedin.com/in/bharat-joshi-203542318?utm_source=share_via&utm_content=profile&utm_medium=member_android',
     email: 'contact@git.edu'
   },
   {
     id: 'org-3',
-    name: 'Organizer Name',
-    role: 'Operations & Logistics',
-    department: 'Event Operations',
+    name: 'Mr. Aditya Patil',
+    role: 'Event Organizer',
+    department: 'Innverse3.0 Organisers',
     type: 'organizer',
-    image: null,
-    github: null,
-    linkedin: 'https://linkedin.com',
+    image: adityaPhoto,
+    github: 'https://github.com/Adi-200409',
+    linkedin: 'https://www.linkedin.com/in/aditya-patil-6971052a3?utm_source=share_via&utm_content=profile&utm_medium=member_android',
     email: 'contact@git.edu'
   },
   {
     id: 'org-4',
-    name: 'Organizer Name',
-    role: 'Sponsorship & Outreach',
-    department: 'Public Relations',
+    name: 'Ms. Rajeshwari Balagali',
+    role: 'Event Organizer',
+    department: 'Innverse3.0 Organisers',
     type: 'organizer',
-    image: null,
+    image: rajeshwariPhoto,
     github: null,
     linkedin: 'https://linkedin.com',
     email: 'contact@git.edu'
   },
   {
     id: 'org-5',
-    name: 'Organizer Name',
-    role: 'Technical Lead & Mentorship',
-    department: 'Hackathon Coordination',
+    name: 'Ms. Harshita Kulkarni',
+    role: 'Event Organizer',
+    department: 'Innverse3.0 Organisers',
     type: 'organizer',
-    image: null,
-    github: null,
-    linkedin: 'https://linkedin.com',
-    email: 'contact@git.edu'
-  },
-  {
-    id: 'org-6',
-    name: 'Organizer Name',
-    role: 'Creative & Media Head',
-    department: 'Digital Media & Coverage',
-    type: 'organizer',
-    image: null,
+    image: harshitaPhoto,
     github: null,
     linkedin: 'https://linkedin.com',
     email: 'contact@git.edu'
@@ -384,12 +370,12 @@ export default function TeamSection() {
                       Event Organizers
                     </h3>
                     <p className="text-xs font-mono text-gray-400">
-                      Faculty Coordination &amp; Operations Leadership
+                      Innverse3.0 Organisers
                     </p>
                   </div>
                 </div>
                 <span className="text-xs font-mono px-3 py-1 rounded-full border border-cyan-400/25 bg-cyan-400/10 text-cyan-300">
-                  {ORGANIZERS.length} Leads
+                  {ORGANIZERS.length} Organizers
                 </span>
               </div>
 

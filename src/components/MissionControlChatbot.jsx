@@ -365,7 +365,7 @@ const KNOWLEDGE_BASE = [
       'amenities'
     ],
     response: {
-      text: "Official **Accommodation & Food Arrangements**:\n\n• **Accommodation**: Arranged on-campus strictly for the night of **5th January 2027** for shortlisted finalist squads.\n• **Food & Refreshments**: Meals, snacks, tea, and midnight refreshments are provided throughout the 24-hour hackathon.\n• **Hardware/Laptops**: Participants must bring their own laptops, chargers, extension cords, and any project-specific hardware.",
+      text: "Official **Accommodation & Food Arrangements**:\n\n• **Accommodation**: Arranged on-campus strictly for the night of **5th January 2027** for shortlisted finalist squads.\n• **Food & Hospitality**: Full all-inclusive meals across both days — breakfast, lunch, and dinner on **5th January**, midnight refreshments, plus breakfast and lunch on **6th January** before the prize ceremony.\n• **Hardware/Laptops**: Participants must bring their own laptops, chargers, extension cords, and any project-specific hardware.",
       actions: [
         { label: '📋 View Rules', type: 'rules' },
         { label: '🗺️ Helpdesk Section', type: 'venue' }

@@ -24,19 +24,18 @@ export default function Preloader({ onComplete, onStartExit }) {
     let current = 0;
     let isCancelled = false;
 
-    // Fluid progression curve: every single integer from 0 to 100 is visited
+    // Fast, responsive progression curve (completes in ~600ms instead of 3000ms)
     const getDelay = (num) => {
-      if (num < 12) return 24;  // smooth launch
-      if (num < 80) return 18;  // fast, silky-smooth roll
-      if (num < 95) return 26;  // gentle deceleration
-      if (num < 99) return 42;  // precision approach
-      return 65;                // final lock into 100
+      if (num < 20) return 10;
+      if (num < 80) return 12;
+      if (num < 95) return 16;
+      return 22;
     };
 
     const step = () => {
       if (isCancelled) return;
 
-      current += 1;
+      current = Math.min(100, current + Math.floor(Math.random() * 3) + 3);
       setProgress(current);
 
       if (current < 25) {
@@ -58,25 +57,25 @@ export default function Preloader({ onComplete, onStartExit }) {
         setIsCompleted(true);
         setStatusText('SYSTEMS NOMINAL • INITIATING HYPER-LAUNCH');
 
-        // Step 1: Hold at 100% (180ms)
+        // Step 1: Hold at 100% (100ms)
         setTimeout(() => {
           if (isCancelled) return;
           setIsContentFading(true);
           setIsExiting(true);
           if (onStartExitRef.current) onStartExitRef.current();
 
-          // Smooth handoff to warp transition (320ms)
+          // Smooth handoff to main view (180ms)
           setTimeout(() => {
             if (isCancelled) return;
             setIsDone(true);
             if (onCompleteRef.current) onCompleteRef.current();
-          }, 320);
-        }, 180);
+          }, 180);
+        }, 100);
       }
     };
 
     // Kick off progression from 0
-    timeoutId = setTimeout(step, 24);
+    timeoutId = setTimeout(step, 10);
 
     return () => {
       isCancelled = true;

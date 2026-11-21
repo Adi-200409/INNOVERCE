@@ -179,3 +179,42 @@ class UserLoginView(APIView):
             },
             status=status.HTTP_200_OK,
         )
+
+
+class RegistrationStatsView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request, *args, **kwargs):
+        mca_teams = Registration.objects.filter(stream__iexact='MCA').count()
+        bca_teams = Registration.objects.filter(stream__iexact='BCA').count()
+        total_teams = Registration.objects.count()
+
+        # Each registered team consists of 3 students (Leader + Member 1 + Member 2)
+        mca_students = mca_teams * 3
+        bca_students = bca_teams * 3
+        total_students = total_teams * 3
+
+        domains = {}
+        for reg in Registration.objects.all():
+            d = (reg.domain or 'general').lower()
+            domains[d] = domains.get(d, 0) + 3
+
+        return Response(
+            {
+                "success": True,
+                "mca": {
+                    "teams": mca_teams,
+                    "students": mca_students,
+                },
+                "bca": {
+                    "teams": bca_teams,
+                    "students": bca_students,
+                },
+                "total": {
+                    "teams": total_teams,
+                    "students": total_students,
+                },
+                "domains": domains,
+            },
+            status=status.HTTP_200_OK,
+        )

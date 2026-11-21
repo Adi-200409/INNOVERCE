@@ -1,205 +1,464 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   ArrowLeft,
-  CheckCircle,
+  CheckCircle2,
   ClipboardList,
   Clock,
-  Code,
+  Code2,
   Copyright,
   Handshake,
   Hotel,
   Lightbulb,
   MapPin,
   Scale,
-  Users
+  Users,
+  ShieldAlert,
+  Sparkles,
+  Laptop,
+  Trophy,
+  AlertTriangle,
+  FileCheck
 } from 'lucide-react';
+
+const CATEGORIES = [
+  { id: 'all', label: 'All Protocols' },
+  { id: 'eligibility', label: 'Eligibility & Selection' },
+  { id: 'technical', label: 'Code & Submission' },
+  { id: 'judging', label: 'Judging & Conduct' },
+  { id: 'logistics', label: 'Venue & Stay' }
+];
+
+const STATS = [
+  { icon: Users, label: 'Team Size', value: '3 Members (Fixed)' },
+  { icon: Trophy, label: 'Eligibility', value: 'MCA & BCA Streams' },
+  { icon: Clock, label: 'Duration', value: '24 Hours Non-Stop' },
+  { icon: Scale, label: 'Finalists', value: '10 BCA + 10 MCA Teams' },
+  { icon: Laptop, label: 'Setup', value: 'BYOD (Laptops & Chargers)' }
+];
 
 const RULE_SECTIONS = [
   {
-    title: 'Eligibility',
+    id: 'eligibility',
+    category: 'eligibility',
+    title: 'Eligibility Criteria',
+    badge: 'Mandatory',
+    badgeColor: 'border-amber-400/30 bg-amber-400/10 text-amber-300',
     icon: Users,
     points: [
-      'Participants must be currently enrolled in MCA or BCA programs.',
-      'Participation is strictly team-based only.',
-      'Each team must consist of exactly 3 members.',
-      'Each team should represent only one stream, either MCA or BCA.',
-      'Participants must carry their college ID cards for verification.'
+      { text: 'Participants must be currently enrolled in an accredited MCA or BCA degree program.', highlight: 'MCA or BCA' },
+      { text: 'Participation is strictly team-based; solo or individual entries are not accepted.', highlight: 'Strictly Team-Based' },
+      { text: 'Each team must consist of exactly 3 members (no more, no fewer).', highlight: 'Exactly 3 Members' },
+      { text: 'Cross-stream teams are not allowed: a team must strictly represent either MCA or BCA.', highlight: 'Single Stream Only' },
+      { text: 'Original physical college ID cards are mandatory for on-campus entrance & verification.', highlight: 'College ID Required' }
     ]
   },
   {
-    title: 'Registration Guidelines',
+    id: 'registration',
+    category: 'eligibility',
+    title: 'Registration Protocols',
+    badge: 'Selection Phase',
+    badgeColor: 'border-cyan-400/30 bg-cyan-400/10 text-cyan-300',
     icon: ClipboardList,
     points: [
-      'Teams must register before the deadline announced by organizers.',
-      'A unique team name must be provided during registration.',
-      'Registration is a two-step process: application followed by competitive selection.',
-      'Once registered, team member changes are not allowed.',
-      'All participants are required to report on time for the event start on 5th January 2027 at 9:00 AM.'
+      { text: 'Teams must complete initial registration before the deadline published on the official portal.', highlight: 'Registration Deadline' },
+      { text: 'A unique, professional team name must be chosen during squad submission.', highlight: 'Unique Squad Name' },
+      { text: 'Selection pipeline: initial project abstract and idea submission followed by shortlisting to the 24h on-campus finale.', highlight: 'Two-Stage Selection' },
+      { text: 'Squad roster lock: once registered, no team member substitutions or modifications are permitted.', highlight: 'Roster Locked' },
+      { text: 'All shortlisted teams must report punctually at KLS GIT on 5th January 2027 at 09:00 AM IST.', highlight: '5th Jan 09:00 AM' }
     ]
   },
   {
-    title: 'Team Selection Process',
+    id: 'selection',
+    category: 'eligibility',
+    title: 'Team Selection & Quotas',
+    badge: 'Capacity Cap',
+    badgeColor: 'border-purple-400/30 bg-purple-400/10 text-purple-300',
     icon: Scale,
     points: [
-      'A maximum of 10 teams from BCA and 10 teams from MCA will be selected to participate.',
-      'No refund will be provided.'
+      { text: 'A maximum of 10 teams from BCA and 10 teams from MCA (20 teams total) will qualify for the grand 24h arena.', highlight: '10 BCA + 10 MCA Teams' },
+      { text: 'Selection is determined by panel evaluation of initial idea submissions, feasibility, and technical scope.', highlight: 'Merit-Based Shortlisting' },
+      { text: 'Registration fees are strictly non-refundable under any circumstance once payment is processed.', highlight: 'Non-Refundable', isWarning: true }
     ]
   },
   {
-    title: 'Project Scope & Theme',
+    id: 'project-scope',
+    category: 'technical',
+    title: 'Project Scope & Integrity',
+    badge: 'Originality',
+    badgeColor: 'border-emerald-400/30 bg-emerald-400/10 text-emerald-300',
     icon: Lightbulb,
     points: [
-      'Each team must choose one theme from the event themes.',
-      'All submitted solutions must be original and developed during the hackathon.',
-      'Any use of pre-built templates or open-source components must be properly credited.',
-      'Plagiarism or pre-built project submissions will lead to disqualification.',
-      'Any kind of misconduct or code plagiarism will lead to immediate disqualification.'
+      { text: 'Each team must select exactly one problem track from the official INNOVERSE 3.0 sector list.', highlight: '1 Chosen Sector' },
+      { text: 'All code, prototypes, and assets must be developed from scratch during the active 24-hour hackathon window.', highlight: 'Fresh Code Only' },
+      { text: 'Pre-existing projects, purchased templates, or code written prior to hackathon launch are strictly prohibited.', highlight: 'No Prior Code', isWarning: true },
+      { text: 'Use of open-source libraries, frameworks, and APIs is permitted provided proper licensing and attribution is included.', highlight: 'Open Source Allowed' },
+      { text: 'Plagiarism, code theft, or submitting another team’s work will result in immediate squad disqualification.', highlight: 'Zero Tolerance Disqualification', isWarning: true }
     ]
   },
   {
-    title: 'Hackathon Structure',
+    id: 'hackathon-structure',
+    category: 'technical',
+    title: '24-Hour Hackathon Structure',
+    badge: 'Schedule',
+    badgeColor: 'border-amber-400/30 bg-amber-400/10 text-amber-300',
     icon: Clock,
     points: [
-      'Event duration: 24 hours of non-stop coding across 2 days.',
-      'MCA and BCA streams will run in parallel but be judged separately.',
-      'Mentors will be available for technical guidance.',
-      'Teams cannot interfere with or obstruct other teams.',
-      'The event will conclude on 6th January 2027, followed by a prize distribution ceremony.'
+      { text: '24 continuous hours of non-stop architecture, programming, and testing spanning 5th–6th January 2027.', highlight: '24h Non-Stop' },
+      { text: 'MCA and BCA streams run concurrently in parallel labs and are judged on separate podium leaderboards.', highlight: 'Independent Streams' },
+      { text: 'Industry mentors and faculty guides will conduct checkpoint rounds for guidance and milestone tracking.', highlight: 'Checkpoint Mentoring' },
+      { text: 'Teams must maintain absolute camaraderie: any sabotage, network interference, or obstruction is forbidden.', highlight: 'Fair Play' },
+      { text: 'The hackathon concludes with jury pitches, live demos, and the Grand Prize Distribution Ceremony on 6th January.', highlight: 'Grand Demo Finale' }
     ]
   },
   {
+    id: 'technical-rules',
+    category: 'technical',
     title: 'Technical & Submission Rules',
-    icon: Code,
+    badge: 'Deliverables',
+    badgeColor: 'border-sky-400/30 bg-sky-400/10 text-sky-300',
+    icon: Code2,
     points: [
-      'Code must be pushed to the assigned repository or Git link before submission time.',
-      'Each team must submit a working prototype, project presentation (PPT), and documentation/README.',
-      'Late submissions will not be considered for evaluation.',
-      'Internet usage is allowed, but code must not be shared between teams.',
-      'Participants must submit their project code on the specified platform before final evaluation.'
+      { text: 'Code must be maintained in the designated Git repository (GitHub/GitLab) with transparent commit history.', highlight: 'Live Git Repository' },
+      { text: 'Final submission package: a working interactive prototype, final pitch slide deck (PPT), and comprehensive README documentation.', highlight: 'Prototype + PPT + Docs' },
+      { text: 'Strict cutoff: late submissions after the official buzzer sounds will not be accepted or evaluated by the jury.', highlight: 'Hard Submission Cutoff', isWarning: true },
+      { text: 'High-speed campus Wi-Fi is provided; internet usage is unrestricted for research and APIs, but code sharing between teams is prohibited.', highlight: 'Independent Work' },
+      { text: 'All prototypes must be demoed live in front of the jury — recorded mockups or slide-only pitches are disqualified.', highlight: 'Live Prototype Demo' }
     ]
   },
   {
-    title: 'Judging Criteria',
+    id: 'judging-criteria',
+    category: 'judging',
+    title: 'Jury Evaluation Criteria',
+    badge: '100 Point Rubric',
+    badgeColor: 'border-amber-400/30 bg-amber-400/10 text-amber-300',
     icon: Scale,
     points: [
-      'Innovation and creativity',
-      'Technical implementation and complexity',
-      'Relevance to theme',
-      'User experience and design',
-      'Presentation and communication',
-      'Practical impact and problem solving'
+      { text: 'Innovation, Originality & Creative Edge: Novelty of the idea and technical uniqueness.', highlight: 'Innovation (25%)' },
+      { text: 'Technical Execution & Architecture: Code quality, backend integrity, framework choice, and system complexity.', highlight: 'Implementation (25%)' },
+      { text: 'Sector Relevance & Feasibility: How effectively the solution addresses the real-world track brief.', highlight: 'Track Relevance (15%)' },
+      { text: 'User Experience & Visual Interface: UI elegance, accessibility, polish, responsiveness, and usability.', highlight: 'UI/UX Polish (15%)' },
+      { text: 'Practical Impact & Scalability: Viability as a real product, market adoption potential, and societal benefit.', highlight: 'Impact & Scale (10%)' },
+      { text: 'Pitch Delivery & Jury Q&A: Clarity of presentation, live prototype demo, and squad technical defense.', highlight: 'Presentation (10%)' }
     ]
   },
   {
-    title: 'Conduct & Discipline',
+    id: 'conduct',
+    category: 'judging',
+    title: 'Code of Conduct & Discipline',
+    badge: 'Ethics',
+    badgeColor: 'border-red-400/30 bg-red-400/10 text-red-300',
     icon: Handshake,
     points: [
-      'Participants must maintain professional discipline throughout the event.',
-      'Participants are expected to follow campus rules.',
-      'Any form of malpractice, cheating, or misconduct will lead to disqualification.',
-      'All decisions made by the organizing committee will be final and binding.'
+      { text: 'Professional decorum, mutual respect, and sportsmanship must be upheld throughout the 24-hour stay.', highlight: 'Professional Decorum' },
+      { text: 'All participants must abide by campus safety policies and department guidelines of KLS GIT Belagavi.', highlight: 'Campus Compliance' },
+      { text: 'Zero tolerance for harassment, offensive language, or behavioral misconduct — violators face immediate expulsion.', highlight: 'Zero Tolerance' },
+      { text: 'All verdicts and decisions rendered by the judging panel and organizing committee are final, binding, and uncontestable.', highlight: 'Decisions Final & Binding' }
     ]
   },
   {
-    title: 'Venue & Logistics Rules',
+    id: 'venue-logistics',
+    category: 'logistics',
+    title: 'Venue & Hardware Logistics',
+    badge: 'Campus Ops',
+    badgeColor: 'border-cyan-400/30 bg-cyan-400/10 text-cyan-300',
     icon: MapPin,
     points: [
-      'Teams must stay within designated workspaces during coding hours.',
-      'Breaks will be provided for food and refreshments.',
-      'Participants are responsible for their personal belongings.',
-      'Devices must be brought by participants.'
+      { text: 'Teams must remain inside the assigned innovation labs and designated hackathon floors during coding hours.', highlight: 'Designated Lab Workspaces' },
+      { text: 'Bring your own hardware: laptops, power adapters, extension boards, and smartphones must be brought by participants.', highlight: 'BYOD Hardware' },
+      { text: 'High-speed campus network and uninterrupted backup power will be provided throughout the entire 24h event.', highlight: 'Power & Wi-Fi Backed' },
+      { text: 'Scheduled nourishment breaks for snacks, midnight refreshments, coffee/tea, and meals are provided.', highlight: 'Meals & Coffee Included' },
+      { text: 'Participants are solely responsible for the physical security and care of their personal electronic gadgets.', highlight: 'Personal Equipment Safety' }
     ]
   },
   {
-    title: 'Accommodation & Food Arrangements',
+    id: 'accommodation',
+    category: 'logistics',
+    title: 'Accommodation & Hospitality',
+    badge: 'Night Stay',
+    badgeColor: 'border-purple-400/30 bg-purple-400/10 text-purple-300',
     icon: Hotel,
-    points: [    'Accommodation for participants will be arranged only for the night of 5th January 2027.']  },
+    points: [
+      { text: 'Overnight accommodation and resting zones will be arranged exclusively for the night of 5th January 2027.', highlight: 'Night of 5th Jan Only' },
+      { text: 'Rest zones with separate amenities for male and female participants will be operational on campus.', highlight: 'Separate Rest Areas' },
+      { text: 'Complete all-inclusive hospitality across both days: breakfast, lunch, evening tea/coffee, and dinner on 5th Jan, midnight refreshments, plus breakfast and lunch on 6th Jan before the award ceremony.', highlight: 'All Meals Included' },
+      { text: 'Any participant wishing to leave the campus premises before the closing ceremony must obtain official permission from organizers.', highlight: 'Campus Gate Passes' }
+    ]
+  },
   {
+    id: 'ip-rights',
+    category: 'judging',
     title: 'Intellectual Property Rights',
+    badge: '100% Creator Owned',
+    badgeColor: 'border-emerald-400/30 bg-emerald-400/10 text-emerald-300',
     icon: Copyright,
     points: [
-      'Teams own the rights to their project.',
-      'Organizers may request permission to showcase winning projects.'
+      { text: '100% Squad Ownership: All software, models, UI assets, and inventions created during the hackathon remain the exclusive intellectual property of the team.', highlight: '100% Team Owned' },
+      { text: 'Neither KLS GIT nor event organizers claim any copyright or equity in the technologies built by participants.', highlight: 'Zero Equity Claim' },
+      { text: 'Organizers reserve the non-commercial right to showcase project summaries, demo recordings, and photographs for academic & press coverage.', highlight: 'Media Showcase Rights' }
     ]
   },
   {
-    title: 'Acknowledgment',
-    icon: CheckCircle,
+    id: 'acknowledgment',
+    category: 'eligibility',
+    title: 'Participant Undertaking',
+    badge: 'Binding Agreement',
+    badgeColor: 'border-amber-400/30 bg-amber-400/10 text-amber-300',
+    icon: CheckCircle2,
     points: [
-      'By participating, all members agree to follow these rules and the event schedule.',
-      'All decisions made by the organizing committee will be final.'
+      { text: 'By submitting team registration, every squad member explicitly covenants to respect these rules, guidelines, and timelines.', highlight: 'Full Rule Acceptance' },
+      { text: 'Organizers reserve the right to revise or clarify operational protocols to guarantee safety, integrity, and fair competition.', highlight: 'Administrative Authority' },
+      { text: 'All tournament disputes, podium evaluations, and prize distributions are subject to the supreme decision of the organizing body.', highlight: 'Supreme Finality' }
     ]
   }
 ];
 
 export default function Rules() {
+  const [activeCategory, setActiveCategory] = useState('all');
+
+  const filteredSections = useMemo(() => {
+    if (activeCategory === 'all') return RULE_SECTIONS;
+    return RULE_SECTIONS.filter((section) => section.category === activeCategory);
+  }, [activeCategory]);
+
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#060608] px-4 pb-16 pt-24 text-white sm:px-6 sm:pt-32">
-      <div className="pointer-events-none absolute -left-40 top-40 h-96 w-96 rounded-full bg-amber-500/10 blur-[140px]" />
-      <div className="pointer-events-none absolute -right-40 top-1/3 h-96 w-96 rounded-full bg-blue-600/10 blur-[140px]" />
+    <main className="relative min-h-screen overflow-hidden bg-[#060608] px-4 pb-20 pt-24 text-white sm:px-6 sm:pt-28">
+      {/* Background Ambient Cosmic Illumination */}
+      <div className="pointer-events-none absolute -left-40 top-20 h-[500px] w-[500px] rounded-full bg-amber-500/[0.08] blur-[150px]" />
+      <div className="pointer-events-none absolute -right-40 top-1/3 h-[500px] w-[500px] rounded-full bg-blue-600/[0.08] blur-[160px]" />
+      <div className="pointer-events-none absolute bottom-10 left-1/3 h-[400px] w-[400px] rounded-full bg-purple-600/[0.05] blur-[140px]" />
+
+      {/* Top Horizon Transition Beam */}
+      <div className="pointer-events-none absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-amber-400/40 to-transparent" />
+      <div className="pointer-events-none absolute top-0 inset-x-0 h-24 bg-gradient-to-b from-amber-500/[0.03] via-transparent to-transparent" />
 
       <div className="relative z-10 mx-auto max-w-6xl">
-        <a
-          href="/"
-          className="mb-8 sm:mb-10 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 font-mono text-xs uppercase tracking-wider text-gray-300 transition-colors hover:border-amber-400/40 hover:text-white"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Back to Home
-        </a>
+        {/* Navigation & Header */}
+        <div className="flex items-center justify-between mb-8 sm:mb-12">
+          <a
+            href="/"
+            className="group inline-flex items-center gap-2 rounded-full border border-white/10 bg-[#0d0d14]/80 px-4 py-2 font-mono text-xs uppercase tracking-wider text-gray-300 transition-all hover:border-amber-400/50 hover:bg-amber-400/10 hover:text-white backdrop-blur-xl"
+          >
+            <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1 text-amber-400" />
+            <span>Back to Mission Control</span>
+          </a>
 
-        <header className="mb-10 text-center sm:mb-16">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-amber-400/30 bg-amber-400/10 text-amber-300 font-mono text-xs uppercase tracking-widest mb-4">
-            <span>INNOVERSE 3.0 PROTOCOLS</span>
+          <div className="hidden sm:inline-flex items-center gap-2 px-3 py-1 rounded-full border border-amber-400/20 bg-amber-400/5 font-mono text-[11px] text-amber-300">
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+            <span>OFFICIAL PROTOCOLS V3.0</span>
           </div>
-          <h1 className="font-display text-2xl min-[380px]:text-3xl font-black tracking-tight uppercase text-white sm:text-5xl md:text-6xl">
-            INNOVERSE 3.0{' '}
-            <span className="text-amber-400">
-              Rules &amp; Guidelines
-            </span>
+        </div>
+
+        {/* Hero Title */}
+        <header className="mb-10 text-center sm:mb-14">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-amber-400/30 bg-amber-400/10 text-amber-300 font-mono text-xs uppercase tracking-widest mb-4">
+            <ShieldAlert className="w-3.5 h-3.5" />
+            <span>INNOVERSE 3.0 COMPETITION DIRECTIVES</span>
+          </div>
+
+          <h1 className="font-display text-3xl min-[380px]:text-4xl sm:text-5xl md:text-6xl font-black tracking-tight uppercase text-white leading-tight">
+            Rules &amp; <span className="text-amber-400">Guidelines</span>
           </h1>
-          <div className="mx-auto mt-4 sm:mt-5 h-1 w-20 sm:w-24 rounded-full bg-gradient-to-r from-amber-400 to-yellow-500" />
+
+          <p className="mx-auto mt-4 max-w-2xl text-xs sm:text-base font-sans text-gray-400 leading-relaxed">
+            Essential directives, eligibility requirements, code of conduct, and evaluation criteria for all competing squads at KLS Gogte Institute of Technology.
+          </p>
+
+          <div className="mx-auto mt-5 h-1 w-24 rounded-full bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 shadow-[0_0_12px_rgba(245,158,11,0.5)]" />
         </header>
 
-        <div className="space-y-4 sm:space-y-5">
-          {RULE_SECTIONS.map(({ title, icon: Icon, points }) => (
-            <section
-              key={title}
-              className="group rounded-xl sm:rounded-2xl border border-white/10 bg-[#0c0c12]/80 p-4 sm:p-8 shadow-[0_8px_30px_rgba(0,0,0,0.5)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:border-amber-400/40"
+        {/* HUD Quick Stats Strip */}
+        <div className="mb-10 sm:mb-12 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
+          {STATS.map(({ icon: Icon, label, value }) => (
+            <div
+              key={label}
+              className="rounded-2xl border border-white/10 bg-[#0d0d14]/70 p-3 sm:p-4 backdrop-blur-xl flex flex-col items-center text-center shadow-[0_4px_20px_rgba(0,0,0,0.4)] hover:border-amber-400/40 transition-colors"
             >
-              <div className="mb-4 sm:mb-5 flex items-center gap-3 sm:gap-4">
-                <Icon className="h-6 w-6 sm:h-10 sm:w-10 shrink-0 text-amber-400" strokeWidth={2} />
-                <h2 className="font-display text-base sm:text-lg font-bold leading-snug text-white">
-                  {title}
-                </h2>
+              <div className="mb-2 p-2 rounded-xl bg-amber-400/10 border border-amber-400/25 text-amber-400">
+                <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
-              <ul className="space-y-3">
-                {points.map((point) => (
-                  <li
-                    key={point}
-                    className="flex items-start gap-3 text-xs font-sans leading-relaxed text-gray-400 sm:text-sm"
-                  >
-                    <span aria-hidden="true" className="mt-0.5 shrink-0 font-bold text-amber-400">
-                      ▹
-                    </span>
-                    <span>{point}</span>
-                  </li>
-                ))}
-              </ul>
-            </section>
+              <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-wider text-gray-400">
+                {label}
+              </span>
+              <span className="mt-0.5 font-display font-bold text-xs sm:text-sm text-white">
+                {value}
+              </span>
+            </div>
           ))}
         </div>
 
-        <div className="mt-12 text-center">
-          <p className="font-display text-lg font-bold text-amber-400 drop-shadow-[0_0_14px_rgba(245,158,11,0.35)]">
-            Good luck to all participants! 🚀
-          </p>
-          <a
-            href="/"
-            className="mx-auto mt-5 inline-flex items-center gap-2 rounded-full bg-amber-400 px-6 py-3 font-mono text-xs font-bold uppercase tracking-wider text-black transition-colors hover:bg-amber-300"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Back to Home
-          </a>
+        {/* Category Tabs */}
+        <div className="mb-8 sm:mb-10 flex items-center justify-center">
+          <div className="w-full sm:w-auto flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 p-1.5 rounded-2xl sm:rounded-full border border-white/10 bg-[#0c0c12]/90 backdrop-blur-xl shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
+            {CATEGORIES.map((cat) => {
+              const isActive = activeCategory === cat.id;
+              const count =
+                cat.id === 'all'
+                  ? RULE_SECTIONS.length
+                  : RULE_SECTIONS.filter((s) => s.category === cat.id).length;
+
+              return (
+                <button
+                  key={cat.id}
+                  type="button"
+                  onClick={() => setActiveCategory(cat.id)}
+                  className={`flex items-center gap-1.5 px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full font-mono text-[11px] sm:text-xs uppercase tracking-wider font-bold transition-all cursor-pointer ${
+                    isActive
+                      ? 'bg-amber-400 text-black shadow-[0_0_15px_rgba(245,158,11,0.4)]'
+                      : 'text-gray-400 hover:text-white hover:bg-white/5'
+                  }`}
+                >
+                  <span>{cat.label}</span>
+                  <span
+                    className={`px-1.5 py-0.2 rounded-full text-[9px] ${
+                      isActive ? 'bg-black/20 text-black font-extrabold' : 'bg-white/10 text-gray-400'
+                    }`}
+                  >
+                    {count}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Results Counter */}
+        <div className="mb-6 flex items-center justify-between text-xs font-mono text-gray-400 px-1">
+          <span>
+            Showing <strong className="text-amber-400">{filteredSections.length}</strong> of{' '}
+            {RULE_SECTIONS.length} directive sections
+          </span>
+          <span className="text-[11px] text-gray-500 uppercase tracking-wider">
+            {activeCategory === 'all' ? 'All Competition Categories' : CATEGORIES.find(c => c.id === activeCategory)?.label}
+          </span>
+        </div>
+
+        {/* 2-Column Responsive Bento Grid */}
+        {filteredSections.length === 0 ? (
+          <div className="rounded-2xl border border-white/10 bg-[#0d0d14]/70 p-12 text-center backdrop-blur-xl">
+            <AlertTriangle className="w-10 h-10 text-amber-400 mx-auto mb-3" />
+            <h3 className="font-display font-bold text-lg text-white">No Protocols Found</h3>
+            <p className="mt-1 text-sm font-sans text-gray-400">
+              No rules found in this category.
+            </p>
+            <button
+              type="button"
+              onClick={() => setActiveCategory('all')}
+              className="mt-4 px-4 py-2 rounded-full bg-white/10 hover:bg-white/15 text-xs font-mono text-white transition-colors"
+            >
+              Show All Protocols
+            </button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
+            {filteredSections.map((section) => {
+              const Icon = section.icon;
+
+              return (
+                <section
+                  key={section.id}
+                  className="group relative rounded-2xl sm:rounded-3xl border border-white/10 bg-[#0d0d14]/85 p-5 sm:p-7 shadow-[0_10px_35px_rgba(0,0,0,0.6)] backdrop-blur-2xl transition-all duration-300 hover:border-amber-400/40 hover:-translate-y-1 hover:shadow-[0_16px_40px_rgba(245,158,11,0.12)] flex flex-col justify-between"
+                >
+                  <div>
+                    {/* Card Header: Icon, Title, and Badge */}
+                    <div className="flex items-start justify-between gap-3 mb-5 pb-4 border-b border-white/10">
+                      <div className="flex items-center gap-3">
+                        <div className="p-2.5 rounded-xl bg-amber-400/10 border border-amber-400/25 text-amber-400 group-hover:scale-105 group-hover:bg-amber-400/20 transition-all shrink-0">
+                          <Icon className="w-5 h-5 sm:w-6 sm:h-6" strokeWidth={2} />
+                        </div>
+                        <div>
+                          <h2 className="font-display text-base sm:text-lg font-bold text-white group-hover:text-amber-300 transition-colors">
+                            {section.title}
+                          </h2>
+                          <span className="font-mono text-[10px] text-gray-500 uppercase tracking-wider">
+                            {section.points.length} Essential Rules
+                          </span>
+                        </div>
+                      </div>
+
+                      <span
+                        className={`shrink-0 inline-flex items-center px-2.5 py-0.5 rounded-full border font-mono text-[10px] uppercase tracking-wider font-semibold ${section.badgeColor}`}
+                      >
+                        {section.badge}
+                      </span>
+                    </div>
+
+                    {/* Bullet Points with Highlight Badges */}
+                    <ul className="space-y-3.5">
+                      {section.points.map((pt, idx) => (
+                        <li key={idx} className="flex items-start gap-3 group/item">
+                          <span
+                            className={`mt-1 flex h-4 w-4 shrink-0 items-center justify-center rounded-full text-[10px] font-bold ${
+                              pt.isWarning
+                                ? 'bg-amber-500/20 text-amber-400 border border-amber-400/40'
+                                : 'bg-white/10 text-amber-400 group-hover/item:bg-amber-400/20 transition-colors'
+                            }`}
+                          >
+                            ✓
+                          </span>
+                          <p className="text-xs sm:text-sm font-sans text-gray-300 leading-relaxed">
+                            {pt.highlight && (
+                              <span className="mr-1.5 font-mono text-[11px] font-bold text-amber-300 bg-amber-400/10 px-2 py-0.5 rounded-md border border-amber-400/20 inline-block">
+                                {pt.highlight}
+                              </span>
+                            )}
+                            <span className={pt.isWarning ? 'text-amber-200/90 font-medium' : ''}>
+                              {pt.text}
+                            </span>
+                          </p>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Card Micro Footer Line */}
+                  <div className="mt-5 pt-3 border-t border-white/5 flex items-center justify-between text-[10px] font-mono text-gray-500">
+                    <span>INNOVERSE 3.0 PROTOCOL</span>
+                    <span className="text-amber-400/60 font-semibold group-hover:text-amber-300 transition-colors">
+                      VERIFIED DIRECTIVE ▹
+                    </span>
+                  </div>
+                </section>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Bottom Callout & Action Bar */}
+        <div className="mt-14 sm:mt-18 rounded-3xl border border-white/10 bg-gradient-to-b from-[#101018] to-[#07070b] p-8 sm:p-12 text-center backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.8)] relative overflow-hidden">
+          <div className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 bg-amber-500/10 rounded-full blur-[100px]" />
+
+          <div className="relative z-10 max-w-2xl mx-auto flex flex-col items-center">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-amber-400/25 bg-amber-400/10 text-amber-300 font-mono text-xs uppercase tracking-widest mb-3">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>READY TO LAUNCH YOUR SQUAD?</span>
+            </div>
+
+            <h3 className="font-display text-2xl sm:text-3xl font-black text-white uppercase tracking-tight">
+              Good Luck to All Innovators 🚀
+            </h3>
+
+            <p className="mt-3 text-xs sm:text-sm text-gray-400 leading-relaxed font-sans">
+              Review your problem arenas, assemble your 3-member squad, and get your team registered before slots fill.
+            </p>
+
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
+              <a
+                href="/register.html"
+                className="inline-flex items-center gap-2 rounded-full bg-amber-400 px-6 py-3 font-mono text-xs font-bold uppercase tracking-wider text-black transition-all hover:bg-amber-300 hover:shadow-[0_0_20px_rgba(245,158,11,0.5)] cursor-pointer"
+              >
+                <span>Register Squad Now</span>
+                <span className="font-bold">→</span>
+              </a>
+
+              <a
+                href="/"
+                className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-6 py-3 font-mono text-xs font-bold uppercase tracking-wider text-gray-300 transition-all hover:bg-white/10 hover:text-white"
+              >
+                <ArrowLeft className="h-4 w-4" />
+                <span>Return to Home</span>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </main>

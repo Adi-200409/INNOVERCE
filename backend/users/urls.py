@@ -3,6 +3,7 @@ from .views import (
     RegistrationCreateView,
     RegistrationDetailView,
     RegistrationListView,
+    RegistrationStatsView,
     TeamLoginView,
     UserLoginView,
     UserSignupView,
@@ -13,6 +14,7 @@ urlpatterns = [
     path('login/', TeamLoginView.as_view(), name='team-login'),
     path('auth/signup/', UserSignupView.as_view(), name='user-signup'),
     path('auth/login/', UserLoginView.as_view(), name='user-login'),
+    path('stats/', RegistrationStatsView.as_view(), name='registration-stats'),
     path('registrations/', RegistrationListView.as_view(), name='registration-list'),
     path('registrations/<str:confirmation_id>/', RegistrationDetailView.as_view(), name='registration-detail'),
 ]

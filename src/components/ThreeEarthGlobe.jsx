@@ -59,42 +59,31 @@ function createStarTexture() {
 function createNexus1SpaceShuttle(onLoaded) {
   const ship = new THREE.Group();
 
-  const texLoader = new THREE.TextureLoader();
-  const baseColorMap = texLoader.load('/nexus-1-space-shuttle/space_shuttle_3d_model_basecolor.JPEG');
-  baseColorMap.colorSpace = THREE.SRGBColorSpace;
-  const normalMap = texLoader.load('/nexus-1-space-shuttle/space_shuttle_3d_model_normal.JPEG');
-  const metallicMap = texLoader.load('/nexus-1-space-shuttle/space_shuttle_3d_model_metallic.JPEG');
-  const roughnessMap = texLoader.load('/nexus-1-space-shuttle/space_shuttle_3d_model_roughness.JPEG');
-
-  const shuttleMaterial = new THREE.MeshStandardMaterial({
-    map: baseColorMap,
-    normalMap: normalMap,
-    metalnessMap: metallicMap,
-    roughnessMap: roughnessMap,
-    metalness: 0.88,
-    roughness: 0.35,
-    envMapIntensity: 1.6
+  // Instant procedural delta hull while the detailed OBJ loads asynchronously
+  const tempMaterial = new THREE.MeshStandardMaterial({
+    color: 0xe8ecf2,
+    metalness: 0.85,
+    roughness: 0.35
   });
 
   const modelWrapper = new THREE.Group();
   ship.add(modelWrapper);
 
-  // Instant procedural delta hull while the detailed OBJ loads asynchronously
   const tempHull = new THREE.Group();
   {
     const bodyGeo = new THREE.ConeGeometry(0.18, 0.95, 16);
     bodyGeo.rotateX(Math.PI / 2);
-    const body = new THREE.Mesh(bodyGeo, shuttleMaterial);
+    const body = new THREE.Mesh(bodyGeo, tempMaterial);
     tempHull.add(body);
 
     const wingGeo = new THREE.BoxGeometry(0.72, 0.025, 0.45);
     wingGeo.translate(0, -0.04, -0.15);
-    const wings = new THREE.Mesh(wingGeo, shuttleMaterial);
+    const wings = new THREE.Mesh(wingGeo, tempMaterial);
     tempHull.add(wings);
 
     const finGeo = new THREE.BoxGeometry(0.02, 0.22, 0.22);
     finGeo.translate(0, 0.12, -0.32);
-    const fin = new THREE.Mesh(finGeo, shuttleMaterial);
+    const fin = new THREE.Mesh(finGeo, tempMaterial);
     tempHull.add(fin);
   }
   modelWrapper.add(tempHull);
@@ -746,6 +735,8 @@ function ThreeEarthGlobe({
 
     // 6. Animation Loop & Scratch Vectors (Zero Garbage-Collection pauses)
     let animationFrameId;
+    let lastRenderTime = 0;
+    const FRAME_INTERVAL = 1000 / 55; // ~18.2ms per frame throttle prevents GPU choking & thermal throttling
     const _tempV3 = new THREE.Vector3();
     const _heroTangent = new THREE.Vector3();
     const _scrollTangent = new THREE.Vector3();
@@ -759,12 +750,16 @@ function ThreeEarthGlobe({
     const _dummyObj = new THREE.Object3D();
     const _targetQuat = new THREE.Quaternion();
 
-    const animate = () => {
+    const animate = (now = performance.now()) => {
       animationFrameId = requestAnimationFrame(animate);
 
-      if (!isVisible) return;
+      if (!isVisible || document.hidden) return;
 
-      const animTime = performance.now() * 0.001;
+      const elapsed = now - lastRenderTime;
+      if (elapsed < FRAME_INTERVAL) return;
+      lastRenderTime = now - (elapsed % FRAME_INTERVAL);
+
+      const animTime = now * 0.001;
 
       // Spin & Inertia damping for Earth
       if (!pointerDown) {
@@ -833,7 +828,7 @@ function ThreeEarthGlobe({
       }
 
       // Dynamic Spaceship Flight: Continuous Orbital Motion & Smooth Scroll Descent
-      const time = performance.now() * 0.001;
+      const time = animTime;
       const prevScroll = currentScrollProgress;
       currentScrollProgress += (targetScrollProgress - currentScrollProgress) * 0.08;
       const scrollVelocity = Math.abs(currentScrollProgress - prevScroll);
