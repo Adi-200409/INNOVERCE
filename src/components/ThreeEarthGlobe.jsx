@@ -59,12 +59,16 @@ function createStarTexture() {
 function createNexus1SpaceShuttle(onLoaded) {
   const ship = new THREE.Group();
 
-  // Instant procedural delta hull while the detailed OBJ loads asynchronously
-  const tempMaterial = new THREE.MeshStandardMaterial({
-    color: 0xe8ecf2,
-    metalness: 0.85,
-    roughness: 0.35
+  // Bright ceramic white PBR material with ambient cosmic fill so it never appears black in orbit
+  const fallbackShuttleMaterial = new THREE.MeshStandardMaterial({
+    color: 0xf5f8fc,
+    metalness: 0.12,
+    roughness: 0.45,
+    emissive: new THREE.Color(0x283344),
+    emissiveIntensity: 0.45
   });
+
+  const tempMaterial = fallbackShuttleMaterial;
 
   const modelWrapper = new THREE.Group();
   ship.add(modelWrapper);
@@ -92,8 +96,17 @@ function createNexus1SpaceShuttle(onLoaded) {
     if (!obj) return;
     const clone = obj.clone(true);
     clone.traverse((child) => {
-      if (child.isMesh && (!child.material || !child.material.map)) {
-        child.material = shuttleMaterial;
+      if (child.isMesh) {
+        if (!child.material || !child.material.map) {
+          child.material = fallbackShuttleMaterial;
+        } else if (child.material) {
+          child.material.metalness = Math.min(child.material.metalness ?? 0.12, 0.25);
+          child.material.roughness = Math.max(child.material.roughness ?? 0.45, 0.4);
+          if (!child.material.emissive || child.material.emissive.getHex() === 0) {
+            child.material.emissive = new THREE.Color(0x283344);
+            child.material.emissiveIntensity = 0.45;
+          }
+        }
       }
     });
     if (tempHull.parent) {
@@ -196,6 +209,19 @@ function createNexus1SpaceShuttle(onLoaded) {
   const thrusterLight = new THREE.PointLight(0xff6600, 3.6, 7.5);
   thrusterLight.position.set(0, 0, -0.92);
   ship.add(thrusterLight);
+
+  // Companion Hull Illumination Lights (mounts with the shuttle so it stays vibrantly illuminated around Earth)
+  const cockpitSunLight = new THREE.DirectionalLight(0xfff7ed, 2.8);
+  cockpitSunLight.position.set(0.8, 2.5, 2.0);
+  ship.add(cockpitSunLight);
+
+  const earthAlbedoLight = new THREE.DirectionalLight(0x7dd3fc, 2.2);
+  earthAlbedoLight.position.set(0, -2.5, 0.5);
+  ship.add(earthAlbedoLight);
+
+  const shuttleFillLight = new THREE.PointLight(0xffffff, 2.0, 8.0);
+  shuttleFillLight.position.set(0, 0.6, 0.8);
+  ship.add(shuttleFillLight);
 
   // Prominent, enlarged 3D Space Shuttle (increased size for heroic cinematic presence)
   ship.scale.set(0.38, 0.38, 0.38);
@@ -620,15 +646,18 @@ function ThreeEarthGlobe({
     // =========================================================================
     // 4. SCENE LIGHTING (Natural Sunlight from Upper-Left + Cosmic Ambient)
     // =========================================================================
-    const ambientLight = new THREE.AmbientLight(0x0a1120, 1.6);
+    const hemiLight = new THREE.HemisphereLight(0xe2e8f0, 0x1e3a5f, 2.2);
+    scene.add(hemiLight);
+
+    const ambientLight = new THREE.AmbientLight(0x334155, 2.2);
     scene.add(ambientLight);
 
-    const keyLight = new THREE.DirectionalLight(0xfff7ed, 2.5);
+    const keyLight = new THREE.DirectionalLight(0xfff7ed, 3.2);
     keyLight.position.set(-5.5, 3.5, 4.5);
     scene.add(keyLight);
 
-    const fillLight = new THREE.DirectionalLight(0x1e293b, 1.0);
-    fillLight.position.set(5, -2, 3.0);
+    const fillLight = new THREE.DirectionalLight(0x93c5fd, 1.8);
+    fillLight.position.set(5.5, -1.5, 3.0);
     scene.add(fillLight);
 
     // Instantiate Nexus-1 Space Shuttle 3D Model

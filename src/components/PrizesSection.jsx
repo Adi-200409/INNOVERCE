@@ -21,7 +21,7 @@ export default function PrizesSection({ onOpenRegister }) {
       title: 'Galactic Champion',
       amount: '₹12,000',
       badge: '1ST PLACE PER TRACK',
-      streamNote: 'Awarded to #1 Team in MCA & #1 Team in BCA',
+      streamNote: 'Awarded to #1 Team in MCA & #1 Team in BCA&BSC(CS)',
       color: '#f59e0b',
       borderColor: 'border-amber-400/60',
       icon: Trophy,
@@ -38,7 +38,7 @@ export default function PrizesSection({ onOpenRegister }) {
       title: 'Silver Vanguard',
       amount: '₹6,000',
       badge: '2ND PLACE PER TRACK',
-      streamNote: 'Awarded to #2 Team in MCA & #2 Team in BCA',
+      streamNote: 'Awarded to #2 Team in MCA & #2 Team in BCA&BSC(CS)',
       color: '#38bdf8',
       borderColor: 'border-cyan-500/40',
       icon: Medal,
@@ -102,14 +102,14 @@ export default function PrizesSection({ onOpenRegister }) {
         >
           <div className="inline-flex items-center gap-2 px-3 sm:px-3.5 py-1.5 rounded-2xl sm:rounded-full border border-amber-400/30 bg-amber-400/10 text-amber-300 font-sans text-[10px] min-[400px]:text-xs uppercase tracking-widest mb-4 text-center">
             <Trophy className="w-3.5 h-3.5 shrink-0" />
-            <span>INNOVERSE 3.0 • ₹35,000 TOTAL PRIZE POOL • DUAL LEAGUES (MCA & BCA)</span>
+            <span>INNOVERSE 3.0 • ₹35,000 TOTAL PRIZE POOL • DUAL LEAGUES (BCA&BSC(CS) | MCA)</span>
           </div>
 
           <h2 className="font-display font-black text-2xl min-[380px]:text-3xl sm:text-5xl md:text-6xl text-white tracking-tight uppercase">
             Prizes & <span className="text-amber-400">Honors</span>
           </h2>
           <p className="mt-3 sm:mt-4 text-xs sm:text-base text-gray-300 max-w-2xl font-sans leading-relaxed">
-            Separate competitive tracks for <strong className="text-white">MCA (Postgraduate)</strong> and <strong className="text-white">BCA (Undergraduate)</strong> students. Teams first submit project ideas for shortlisting, followed by the 24-hour hackathon.
+            Separate competitive tracks for <strong className="text-white">MCA (Postgraduate)</strong> and <strong className="text-white">BCA&BSC(CS) (Undergraduate)</strong> students. Teams first submit project ideas for shortlisting, followed by the 24-hour hackathon.
           </p>
 
           {/* Quick Specifications Pill Bar */}
@@ -133,7 +133,7 @@ export default function PrizesSection({ onOpenRegister }) {
         <div className="flex items-center justify-center mb-8 sm:mb-10">
           <div className="inline-flex items-center p-1 sm:p-1.5 rounded-full border border-white/15 bg-[#0e0e14] backdrop-blur-xl">
             <span className="px-4 sm:px-6 py-1.5 sm:py-2 rounded-full font-sans text-[11px] sm:text-xs uppercase tracking-wider font-semibold bg-amber-400 text-black shadow-[0_0_15px_rgba(245,158,11,0.5)]">
-              Both Tracks (MCA + BCA)
+              Both Tracks (BCA&BSC(CS) | MCA)
             </span>
           </div>
         </div>
@@ -198,15 +198,7 @@ export default function PrizesSection({ onOpenRegister }) {
                   </ul>
                 </div>
 
-                <div className="relative z-10">
-                  <button
-                    onClick={onOpenRegister}
-                    className="w-full py-3 sm:py-3.5 rounded-full font-sans text-xs uppercase tracking-wider font-bold border border-white/15 bg-amber-400 text-black cursor-pointer shadow-[0_0_12px_rgba(245,158,11,0.2)] flex items-center justify-center gap-2"
-                  >
-                    <span>Register 3-Member Team</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
-                </div>
+               
               </div>
             );
           })}

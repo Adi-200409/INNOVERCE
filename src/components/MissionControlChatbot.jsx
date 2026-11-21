@@ -221,7 +221,7 @@ const KNOWLEDGE_BASE = [
       'students'
     ],
     response: {
-      text: "Official **Squad Composition & Eligibility Rules**:\n\n• **Team Size**: Exactly **3 members per team (Fixed)**. Solo/individual participation is not permitted.\n• **Eligible Programs**: Students currently enrolled in **MCA** or **BCA** programs.\n• **Stream Representation**: Each team strictly represents only one stream (either MCA or BCA). Dual parallel leagues are judged separately.\n• **Same College Requirement**: All 3 members must belong to the **same institution** (cross-college squads are not allowed).\n• **ID Verification**: All participants must present their original college ID cards at check-in on 5th January 2027.",
+      text: "Official **Squad Composition & Eligibility Rules**:\n\n• **Team Size**: Exactly **3 members per team (Fixed)**. Solo/individual participation is not permitted.\n• **Eligible Programs**: Students currently enrolled in **BCA&BSC(CS) | MCA** programs.\n• **Stream Representation**: Each team strictly represents only one stream (either BCA&BSC(CS) or MCA). Dual parallel leagues are judged separately.\n• **Same College Requirement**: All 3 members must belong to the **same institution** (cross-college squads are not allowed).\n• **ID Verification**: All participants must present their original college ID cards at check-in on 5th January 2027.",
       actions: [
         { label: '📋 Read Full Rules', type: 'rules' },
         { label: '🚀 Register Squad', type: 'register' }
@@ -283,7 +283,7 @@ const KNOWLEDGE_BASE = [
       '35000'
     ],
     response: {
-      text: "🏆 **₹35,000+ Total Cash Prize Pool** with dual podium tracks:\n\n• **MCA Podium**:\n  - **1st Prize (Galactic Champion)**: **₹12,000** Direct Cash Award + Champion Trophy + Official Merit Certificates\n  - **2nd Prize (Silver Vanguard)**: **₹6,000** Direct Cash Award + Runner-Up Trophy + Official Merit Certificates\n\n• **BCA Podium**:\n  - **1st Prize (Galactic Champion)**: **₹12,000** Direct Cash Award + Champion Trophy + Official Merit Certificates\n  - **2nd Prize (Silver Vanguard)**: **₹6,000** Direct Cash Award + Runner-Up Trophy + Official Merit Certificates\n\n• Merit & Participation Certificates awarded to all shortlisted finalists!",
+      text: "🏆 **₹35,000+ Total Cash Prize Pool** with dual podium tracks:\n\n• **MCA Podium**:\n  - **1st Prize (Galactic Champion)**: **₹12,000** Direct Cash Award + Champion Trophy + Official Merit Certificates\n  - **2nd Prize (Silver Vanguard)**: **₹6,000** Direct Cash Award + Runner-Up Trophy + Official Merit Certificates\n\n• **BCA&BSC(CS) Podium**:\n  - **1st Prize (Galactic Champion)**: **₹12,000** Direct Cash Award + Champion Trophy + Official Merit Certificates\n  - **2nd Prize (Silver Vanguard)**: **₹6,000** Direct Cash Award + Runner-Up Trophy + Official Merit Certificates\n\n• Merit & Participation Certificates awarded to all shortlisted finalists!",
       actions: [
         { label: '🏆 View Prize Podiums', type: 'prizes' },
         { label: '🚀 Register Squad', type: 'register' }
@@ -312,7 +312,7 @@ const KNOWLEDGE_BASE = [
       'ppt evaluation'
     ],
     response: {
-      text: "📅 **INNOVERSE 3.0 Official Event Flight Plan**:\n\n• **16 Nov – 30 Nov 2026**: Team Registration Window (Active)\n• **1 Dec – 10 Dec 2026**: Final Idea Submission\n• **Step 03**: Idea-Based Shortlisting (Top 10 BCA & Top 10 MCA squads selected)\n• **Step 04**: Shortlisted Team Final Registration\n• **Phase 01**: Online Project PPT Evaluation by Technical Jury\n• **5 Jan – 6 Jan 2027**: **24-Hour Grand Finale Hackathon** at KLS GIT Belagavi Campus (Reporting at 9:00 AM on 5th Jan, concluding 6th Jan with final pitch demos & awards).",
+      text: "📅 **INNOVERSE 3.0 Official Event Flight Plan**:\n\n• **16 Nov – 30 Nov 2026**: Team Registration Window (Active)\n• **1 Dec – 10 Dec 2026**: Final Idea Submission\n• **Step 03**: Idea-Based Shortlisting (Top 10 BCA&BSC(CS) & Top 10 MCA squads selected)\n• **Step 04**: Shortlisted Team Final Registration\n• **Phase 01**: Online Project PPT Evaluation by Technical Jury\n• **5 Jan – 6 Jan 2027**: **24-Hour Grand Finale Hackathon** at KLS GIT Belagavi Campus (Reporting at 9:00 AM on 5th Jan, concluding 6th Jan with final pitch demos & awards).",
       actions: [
         { label: '⏱️ View Full Timeline', type: 'timeline' },
         { label: '📋 View Rules', type: 'rules' }
@@ -391,7 +391,7 @@ const KNOWLEDGE_BASE = [
       'disqualification'
     ],
     response: {
-      text: "Crucial **Hackathon Rules & Evaluation Criteria**:\n\n• **Original Code**: All solutions must be built from scratch during the 24-hour sprint. Plagiarism or pre-built projects lead to immediate disqualification.\n• **Deliverables**: Each squad must submit a working prototype, project presentation (PPT), and documentation/README before final judging.\n• **Judging Criteria**:\n  1. Innovation and creativity\n  2. Technical implementation and complexity\n  3. Relevance to theme\n  4. User experience and design\n  5. Presentation and communication\n  6. Practical impact and problem solving\n• **Shortlisting**: Maximum 10 teams from BCA and 10 teams from MCA advance to the on-campus finale.",
+      text: "Crucial **Hackathon Rules & Evaluation Criteria**:\n\n• **Original Code**: All solutions must be built from scratch during the 24-hour sprint. Plagiarism or pre-built projects lead to immediate disqualification.\n• **Deliverables**: Each squad must submit a working prototype, project presentation (PPT), and documentation/README before final judging.\n• **Judging Criteria**:\n  1. Innovation and creativity\n  2. Technical implementation and complexity\n  3. Relevance to theme\n  4. User experience and design\n  5. Presentation and communication\n  6. Practical impact and problem solving\n• **Shortlisting**: Maximum 10 teams from BCA&BSC(CS) and 10 teams from MCA advance to the on-campus finale.",
       actions: [
         { label: '📋 Read All Rules', type: 'rules' }
       ]
@@ -529,7 +529,7 @@ const ARIA_CATEGORIES = [
   {
     id: 'prizes',
     title: '₹35,000 Prizes',
-    subtitle: 'MCA & BCA cash podiums',
+    subtitle: 'BCA&BSC(CS) | MCA cash podiums',
     query: 'What is the prize pool and cash bounty breakdown?',
     icon: Trophy,
     iconColor: 'text-amber-300',

@@ -21,10 +21,47 @@ import {
   FileCheck,
   Trash2,
   Copy,
-  Check
+  Check,
+  CreditCard,
+  GraduationCap,
+  HeartPulse,
+  Sprout
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import BoardingPass from './BoardingPass';
+import ServerErrorModal, { triggerServerError } from './ServerErrorModal';
+
+// Official Hackathon Sectors
+const SECTORS = [
+  {
+    id: 'fintech',
+    title: 'Fintech',
+    icon: CreditCard,
+    iconColor: 'text-amber-400',
+    desc: 'Digital payments, micro-lending, fraud detection, DeFi & fiscal intelligence.'
+  },
+  {
+    id: 'education',
+    title: 'Education',
+    icon: GraduationCap,
+    iconColor: 'text-blue-400',
+    desc: 'Adaptive learning, student AI, interactive pedagogy & gamification.'
+  },
+  {
+    id: 'healthcare',
+    title: 'Healthcare',
+    icon: HeartPulse,
+    iconColor: 'text-emerald-400',
+    desc: 'Telemedicine, diagnostics, remote vitals & patient healthcare AI.'
+  },
+  {
+    id: 'agriculture',
+    title: 'Agriculture',
+    icon: Sprout,
+    iconColor: 'text-orange-400',
+    desc: 'Precision farming, crop disease detection, smart irrigation & agri-logistics.'
+  }
+];
 
 const API_BASE = (import.meta.env.VITE_API_URL || 'http://localhost:8000').replace(/\/+$/, '');
 const LOCAL_REGISTRATIONS_KEY = 'innoverce_local_registrations';
@@ -44,6 +81,8 @@ function saveLocalRegistration(formData, confirmationId) {
       institution_name: formData.institutionName,
       college_address: formData.collegeAddress,
       stream: formData.stream,
+      sector: formData.sector,
+      domain: formData.sector,
       utr_number: formData.utrNumber,
       payment_status: 'PENDING'
     };
@@ -64,6 +103,7 @@ export default function RegistrationPage({ onBackToHome, embedded = false, onSwi
     institutionName: '',
     collegeAddress: '',
     stream: '',
+    sector: '',
     utrNumber: ''
   });
 
@@ -71,6 +111,12 @@ export default function RegistrationPage({ onBackToHome, embedded = false, onSwi
   const [screenshotPreview, setScreenshotPreview] = useState(null);
   const [utrError, setUtrError] = useState('');
   const [fileError, setFileError] = useState('');
+  const [teamNameStatus, setTeamNameStatus] = useState({
+    checking: false,
+    available: null,
+    message: ''
+  });
+  const [teamNameError, setTeamNameError] = useState('');
   const fileInputRef = useRef(null);
 
   const [submitted, setSubmitted] = useState(false);
@@ -90,6 +136,54 @@ export default function RegistrationPage({ onBackToHome, embedded = false, onSwi
       navigator.clipboard.writeText('9611606975@kbl');
       setCopiedUpi(true);
       setTimeout(() => setCopiedUpi(false), 2000);
+    }
+  };
+
+  const checkTeamNameAvailability = async (name) => {
+    const trimmed = (name || '').trim();
+    if (!trimmed) {
+      setTeamNameStatus({ checking: false, available: null, message: '' });
+      setTeamNameError('');
+      return;
+    }
+
+    setTeamNameStatus({ checking: true, available: null, message: 'Checking availability...' });
+    setTeamNameError('');
+
+    try {
+      const res = await fetch(`${API_BASE}/api/check-team-name/?name=${encodeURIComponent(trimmed)}`);
+      if (res.ok) {
+        const data = await res.json();
+        if (data.available) {
+          setTeamNameStatus({
+            checking: false,
+            available: true,
+            message: `Team name "${trimmed}" is available!`
+          });
+          setTeamNameError('');
+        } else {
+          setTeamNameStatus({
+            checking: false,
+            available: false,
+            message: data.message || `Team name "${trimmed}" is already taken.`
+          });
+          setTeamNameError(data.message || `Team name "${trimmed}" is already taken. Please choose a unique name.`);
+        }
+      } else {
+        if (res.status >= 500) {
+          triggerServerError({
+            endpoint: '/api/check-team-name/',
+            message: `Backend returned error (HTTP ${res.status}) while checking team name.`
+          });
+        }
+        setTeamNameStatus({ checking: false, available: null, message: '' });
+      }
+    } catch {
+      triggerServerError({
+        endpoint: '/api/check-team-name/',
+        message: 'Backend server is not responding while verifying squad name uniqueness.'
+      });
+      setTeamNameStatus({ checking: false, available: null, message: '' });
     }
   };
 
@@ -171,6 +265,28 @@ export default function RegistrationPage({ onBackToHome, embedded = false, onSwi
     setSubmitError('');
 
     // Pre-flight validation
+    const cleanTeamName = (formData.teamName || '').trim();
+    if (!cleanTeamName) {
+      setTeamNameError('Team name is required.');
+      setSubmitError('Please enter a team name.');
+      return;
+    }
+
+    if (teamNameError || teamNameStatus.available === false) {
+      setSubmitError(teamNameError || 'Team name is already taken. Please choose a unique name.');
+      return;
+    }
+
+    if (!formData.stream) {
+      setSubmitError('Please select your stream (BCA&BSC(CS) | MCA).');
+      return;
+    }
+
+    if (!formData.sector) {
+      setSubmitError('Please select a problem sector (Fintech, Education, Healthcare, or Agriculture).');
+      return;
+    }
+
     const cleanUtr = (formData.utrNumber || '').trim();
     if (!/^\d{12}$/.test(cleanUtr)) {
       setUtrError('12-digit UTR / Transaction ID must be exactly 12 digits.');
@@ -212,6 +328,8 @@ export default function RegistrationPage({ onBackToHome, embedded = false, onSwi
       multipartData.append('collegeAddress', formData.collegeAddress);
       multipartData.append('college_address', formData.collegeAddress);
       multipartData.append('stream', formData.stream);
+      multipartData.append('sector', formData.sector);
+      multipartData.append('domain', formData.sector);
       multipartData.append('utrNumber', cleanUtr);
       multipartData.append('utr_number', cleanUtr);
       multipartData.append('paymentScreenshot', paymentScreenshot);
@@ -240,11 +358,23 @@ export default function RegistrationPage({ onBackToHome, embedded = false, onSwi
           colors: ['#f59e0b', '#fbbf24', '#3b82f6', '#10b981', '#ffffff']
         });
       } else {
+        if (response.status >= 500) {
+          triggerServerError({
+            endpoint: '/api/register/',
+            message: `Backend internal server error (HTTP ${response.status}). The server encountered an issue processing registration.`
+          });
+        }
         const errPayload = await response.json().catch(() => null);
         let errorMsg = 'Please verify all required registration fields.';
         if (errPayload) {
           if (typeof errPayload === 'string') {
             errorMsg = errPayload;
+          } else if (errPayload.team_name || errPayload.teamName) {
+            const teamErr = errPayload.team_name || errPayload.teamName;
+            const teamErrMsg = Array.isArray(teamErr) ? teamErr[0] : String(teamErr);
+            errorMsg = teamErrMsg;
+            setTeamNameError(teamErrMsg);
+            setTeamNameStatus({ checking: false, available: false, message: teamErrMsg });
           } else if (errPayload.message) {
             errorMsg = errPayload.message;
           } else if (errPayload.detail) {
@@ -258,7 +388,11 @@ export default function RegistrationPage({ onBackToHome, embedded = false, onSwi
       }
     } catch (err) {
       console.error('Registration submission error:', err);
-      setSubmitError(err.message || 'Unable to connect to the registration server. Please check your backend connection.');
+      triggerServerError({
+        endpoint: '/api/register/',
+        message: 'The registration server is not responding. Please make sure the Django backend is running.'
+      });
+      setSubmitError(err.message || 'Unable to connect to the registration server. Telemetry connection offline.');
     } finally {
       setSubmitting(false);
     }
@@ -275,6 +409,7 @@ export default function RegistrationPage({ onBackToHome, embedded = false, onSwi
       institutionName: '',
       collegeAddress: '',
       stream: '',
+      sector: '',
       utrNumber: ''
     });
     setPaymentScreenshot(null);
@@ -284,6 +419,8 @@ export default function RegistrationPage({ onBackToHome, embedded = false, onSwi
     setScreenshotPreview(null);
     setUtrError('');
     setFileError('');
+    setTeamNameError('');
+    setTeamNameStatus({ checking: false, available: null, message: '' });
     setSubmitError('');
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
@@ -319,17 +456,41 @@ export default function RegistrationPage({ onBackToHome, embedded = false, onSwi
 
               {/* Organizer Accreditation */}
               <div className="mt-4 p-4 rounded-2xl border border-white/10 bg-white/[0.03] space-y-1">
-                <div className="flex items-start gap-2.5 text-xs sm:text-sm text-gray-200">
-                  <span className="text-base select-none">🚀</span>
+                <div className="flex items-start gap-3 text-xs sm:text-sm text-gray-200">
+                  <div className="flex items-center gap-2 shrink-0 pt-0.5">
+                    <img
+                      src="/kls-logo.png"
+                      alt="KLS - Karnatak Law Society"
+                      className="h-7 w-auto sm:h-8 object-contain drop-shadow-[0_0_8px_rgba(245,158,11,0.3)]"
+                    />
+                    <img
+                      src="/git-badge-logo.png"
+                      alt="KLS GIT - Gogte Institute of Technology"
+                      className="h-7 w-7 sm:h-8 sm:w-8 rounded-full object-contain shadow-[0_0_10px_rgba(255,255,255,0.4)]"
+                    />
+                  </div>
                   <div>
                     <span className="text-white/60 font-mono text-xs uppercase tracking-wider block mb-0.5">
                       Presented by:
                     </span>
                     <strong className="text-white font-semibold">
-                      Official Event Venue
+                      Department of Master of Computer Applications, KLS Gogte Institute of Technology, Belagavi
                     </strong>
-                    <div className="text-amber-400 font-medium text-xs mt-0.5">
-                      in collaboration with <strong className="text-amber-300 font-bold">Prodhee Technologies</strong>
+                    <div className="text-amber-400 font-medium text-xs mt-1.5 flex flex-wrap items-center gap-2">
+                      <span>in collaboration with</span>
+                      <a
+                        href="https://dlithe.com/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center px-2 py-0.5 rounded-lg bg-white hover:bg-white/95 transition-all hover:scale-105 shadow-[0_2px_8px_rgba(0,0,0,0.3)]"
+                        title="DLithe - Official Industry Partner"
+                      >
+                        <img
+                          src="/dlithe-logo.png"
+                          alt="DLithe"
+                          className="h-4 sm:h-5 w-auto object-contain"
+                        />
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -353,7 +514,7 @@ export default function RegistrationPage({ onBackToHome, embedded = false, onSwi
                   </div>
                   <div>
                     <span className="text-white/40 text-[10px] uppercase block">Venue</span>
-                    <span className="text-white font-bold truncate block">Event Campus</span>
+                    <span className="text-white font-bold truncate block">KLS GIT Campus, Belagavi</span>
                   </div>
                 </div>
 
@@ -383,7 +544,7 @@ export default function RegistrationPage({ onBackToHome, embedded = false, onSwi
                   </div>
                   <div>
                     <span className="text-white/40 text-[10px] uppercase block">Pool Prize</span>
-                    <span className="text-amber-400 font-black text-sm">Rs 50,000/-</span>
+                    <span className="text-amber-400 font-black text-sm">Rs 36,000/-</span>
                   </div>
                 </div>
               </div>
@@ -457,17 +618,89 @@ export default function RegistrationPage({ onBackToHome, embedded = false, onSwi
 
               {/* 1. Team Name */}
               <div className="p-6 rounded-2xl border border-white/10 bg-[#0a0a0e]/95 space-y-2">
-                <label className="block font-mono text-xs uppercase tracking-wider text-white font-bold">
-                  Team Name <span className="text-amber-400">*</span>
-                </label>
-                <input
-                  required
-                  type="text"
-                  placeholder="Your answer"
-                  value={formData.teamName}
-                  onChange={(e) => setFormData({ ...formData, teamName: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/15 focus:border-amber-400 focus:outline-none focus:ring-1 focus:ring-amber-400 font-sans text-sm text-white placeholder-gray-500 transition-all"
-                />
+                <div className="flex items-center justify-between gap-2 flex-wrap">
+                  <label className="block font-mono text-xs uppercase tracking-wider text-white font-bold">
+                    Team Name <span className="text-amber-400">*</span>
+                    <span className="ml-2 text-[10px] text-gray-400 font-normal font-sans tracking-normal">
+                      (Must be unique)
+                    </span>
+                  </label>
+                  {teamNameStatus.checking && (
+                    <span className="flex items-center gap-1.5 text-[11px] font-mono text-amber-400/90 animate-pulse">
+                      <Loader2 className="w-3 h-3 animate-spin" />
+                      Checking availability...
+                    </span>
+                  )}
+                  {!teamNameStatus.checking && teamNameStatus.available === true && (
+                    <span className="flex items-center gap-1 text-[11px] font-mono text-emerald-400">
+                      <Check className="w-3.5 h-3.5" />
+                      Name available
+                    </span>
+                  )}
+                  {!teamNameStatus.checking && (teamNameError || teamNameStatus.available === false) && (
+                    <span className="flex items-center gap-1 text-[11px] font-mono text-red-400">
+                      <AlertCircle className="w-3.5 h-3.5" />
+                      Already taken
+                    </span>
+                  )}
+                </div>
+
+                <div className="relative">
+                  <input
+                    required
+                    type="text"
+                    placeholder="Enter a unique squad name"
+                    value={formData.teamName}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      setFormData({ ...formData, teamName: val });
+                      if (teamNameError) setTeamNameError('');
+                      if (teamNameStatus.available !== null) {
+                        setTeamNameStatus({ checking: false, available: null, message: '' });
+                      }
+                    }}
+                    onBlur={(e) => {
+                      if (e.target.value.trim().length >= 2) {
+                        checkTeamNameAvailability(e.target.value.trim());
+                      }
+                    }}
+                    className={`w-full px-4 py-3 rounded-xl bg-white/[0.04] border font-sans text-sm text-white placeholder-gray-500 transition-all ${
+                      teamNameError || teamNameStatus.available === false
+                        ? 'border-red-500/80 focus:border-red-400 focus:ring-1 focus:ring-red-400 bg-red-500/[0.04]'
+                        : teamNameStatus.available === true
+                        ? 'border-emerald-500/80 focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 bg-emerald-500/[0.04]'
+                        : 'border-white/15 focus:border-amber-400 focus:outline-none focus:ring-1 focus:ring-amber-400'
+                    }`}
+                  />
+                  {teamNameStatus.checking && (
+                    <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-amber-400">
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    </div>
+                  )}
+                  {!teamNameStatus.checking && teamNameStatus.available === true && (
+                    <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-emerald-400">
+                      <CheckCircle2 className="w-4 h-4" />
+                    </div>
+                  )}
+                  {!teamNameStatus.checking && (teamNameError || teamNameStatus.available === false) && (
+                    <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-red-400">
+                      <AlertCircle className="w-4 h-4" />
+                    </div>
+                  )}
+                </div>
+
+                {(teamNameError || teamNameStatus.available === false) && (
+                  <p className="text-[11px] font-mono text-red-400 flex items-center gap-1.5 pt-1">
+                    <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                    <span>{teamNameError || teamNameStatus.message || 'This team name is already taken. Please choose a different unique name.'}</span>
+                  </p>
+                )}
+                {!teamNameError && teamNameStatus.available === true && (
+                  <p className="text-[11px] font-mono text-emerald-400 flex items-center gap-1.5 pt-1">
+                    <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
+                    <span>{teamNameStatus.message}</span>
+                  </p>
+                )}
               </div>
 
               {/* 2. Team Leader Name */}
@@ -601,7 +834,7 @@ export default function RegistrationPage({ onBackToHome, embedded = false, onSwi
                         <div className="w-1.5 h-1.5 rounded-full bg-black" />
                       )}
                     </div>
-                    <span className="font-mono text-sm font-semibold">BCA</span>
+                    <span className="font-mono text-sm font-semibold">BCA &amp; BSC(CS)</span>
                   </label>
 
                   <label
@@ -630,13 +863,67 @@ export default function RegistrationPage({ onBackToHome, embedded = false, onSwi
                 {!formData.stream && (
                   <p className="text-[11px] font-mono text-amber-400/80 flex items-center gap-1.5">
                     <AlertCircle className="w-3.5 h-3.5" />
-                    <span>Please select your stream (BCA or MCA)</span>
+                    <span>Please select your stream (BCA&amp;BSC(CS) | MCA)</span>
+                  </p>
+                )}
+              </div>
+
+              {/* 10. Sector Selection */}
+              <div className="p-6 rounded-2xl border border-white/10 bg-[#0a0a0e]/95 space-y-4">
+                <div className="flex items-center justify-between">
+                  <label className="block font-mono text-xs uppercase tracking-wider text-white font-bold">
+                    Choose Problem Sector <span className="text-amber-400">*</span>
+                  </label>
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded border border-amber-400/30 bg-amber-400/10 text-amber-300">
+                    4 Official Sectors
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {SECTORS.map((sec) => (
+                    <label
+                      key={sec.id}
+                      onClick={() => setFormData({ ...formData, sector: sec.title })}
+                      className={`flex items-start gap-3 p-3.5 sm:p-4 rounded-xl border cursor-pointer transition-all ${
+                        formData.sector === sec.title
+                          ? 'border-amber-400 bg-amber-500/10 text-white shadow-[0_0_15px_rgba(245,158,11,0.15)]'
+                          : 'border-white/10 bg-white/[0.02] text-gray-300 hover:border-white/25 hover:bg-white/[0.04]'
+                      }`}
+                    >
+                      <div
+                        className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 mt-0.5 ${
+                          formData.sector === sec.title
+                            ? 'border-amber-400 bg-amber-400'
+                            : 'border-white/30'
+                        }`}
+                      >
+                        {formData.sector === sec.title && (
+                          <div className="w-1.5 h-1.5 rounded-full bg-black" />
+                        )}
+                      </div>
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-1.5">
+                          <sec.icon className={`w-3.5 h-3.5 ${sec.iconColor} shrink-0`} />
+                          <span className="font-mono text-sm font-semibold text-white">{sec.title}</span>
+                        </div>
+                        <p className="text-[11px] text-gray-400 mt-1 leading-snug">
+                          {sec.desc}
+                        </p>
+                      </div>
+                    </label>
+                  ))}
+                </div>
+
+                {!formData.sector && (
+                  <p className="text-[11px] font-mono text-amber-400/80 flex items-center gap-1.5">
+                    <AlertCircle className="w-3.5 h-3.5" />
+                    <span>Please select your team's challenge sector</span>
                   </p>
                 )}
               </div>
 
               {/* =========================================================================
-                  10. MANUAL UPI PAYMENT VERIFICATION SECTION
+                  11. MANUAL UPI PAYMENT VERIFICATION SECTION
                   ========================================================================= */}
               <div className="p-6 sm:p-8 rounded-3xl border border-amber-500/30 bg-[#0a0a0e]/95 space-y-6 relative overflow-hidden shadow-[0_10px_35px_rgba(245,158,11,0.08)]">
                 {/* Ambient Glow */}
@@ -912,7 +1199,7 @@ export default function RegistrationPage({ onBackToHome, embedded = false, onSwi
 
                 <button
                   type="submit"
-                  disabled={!formData.stream || !formData.utrNumber || formData.utrNumber.length !== 12 || !paymentScreenshot || submitting}
+                  disabled={!formData.stream || !formData.sector || !formData.utrNumber || formData.utrNumber.length !== 12 || !paymentScreenshot || submitting}
                   className="w-full sm:w-auto px-10 py-4 rounded-full bg-amber-400 hover:bg-amber-300 disabled:opacity-50 disabled:cursor-not-allowed text-black font-mono text-xs uppercase tracking-wider font-bold shadow-[0_0_25px_rgba(245,158,11,0.4)] hover:shadow-[0_0_35px_rgba(245,158,11,0.65)] hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
                   {isSubmitting ? (
@@ -1002,6 +1289,7 @@ export default function RegistrationPage({ onBackToHome, embedded = false, onSwi
                 member1Name={formData.member1Name}
                 member2Name={formData.member2Name}
                 stream={formData.stream}
+                sector={formData.sector}
                 confirmationId={confirmationId}
                 submitted
               />
@@ -1087,6 +1375,9 @@ export default function RegistrationPage({ onBackToHome, embedded = false, onSwi
 
         {formContent}
       </div>
+
+      {/* Global Server Offline Modal */}
+      <ServerErrorModal />
     </div>
   );
 }

@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import BoardingPass from './BoardingPass';
 import RegistrationPage from './RegistrationPage';
+import ServerErrorModal, { triggerServerError } from './ServerErrorModal';
 
 const SESSION_KEY = 'innoverce_squad_session';
 const LOCAL_REGISTRATIONS_KEY = 'innoverce_local_registrations';
@@ -108,6 +109,10 @@ export default function LoginPage({ onBackToHome }) {
         window.scrollTo({ top: 0, behavior: 'smooth' });
         return;
       }
+      triggerServerError({
+        endpoint: '/api/login/',
+        message: 'Unable to connect to the mission server. Backend server is currently offline or unreachable.'
+      });
       setError('Unable to connect to the mission server. Ensure the backend is running.');
     } finally {
       setLoading(false);
@@ -381,6 +386,9 @@ export default function LoginPage({ onBackToHome }) {
           </div>
         )}
       </div>
+
+      {/* Global Server Offline Modal */}
+      <ServerErrorModal />
     </div>
   );
 }

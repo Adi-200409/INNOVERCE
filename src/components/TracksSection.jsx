@@ -4,7 +4,6 @@ import {
   GraduationCap,
   HeartPulse,
   Sprout,
-  Terminal,
   Layers,
   Sparkles
 } from 'lucide-react';
@@ -25,8 +24,8 @@ export const TRACKS_DATA = [
     subsystems: 'SEC-01 // FINTECH CORE'
   },
   {
-    id: 'educational',
-    title: 'Educational',
+    id: 'education',
+    title: 'Education',
     domain: 'Learning and education',
     icon: GraduationCap,
     color: '#3b82f6',
@@ -194,34 +193,6 @@ export default function TracksSection({ onOpenRegister }) {
               </div>
             );
           })}
-        </div>
-
-        {/* Global Track Perks Banner */}
-        <div
-          className={`relative rounded-2xl sm:rounded-3xl border border-white/10 bg-gradient-to-r from-amber-500/10 via-blue-500/5 to-purple-500/10 p-5 sm:p-8 backdrop-blur-xl flex flex-col md:flex-row items-center justify-between gap-6 transition-all duration-700 delay-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
-        >
-          <div className="flex items-center gap-3.5 sm:gap-4">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-amber-400/20 border border-amber-400/40 flex items-center justify-center shrink-0">
-              <Terminal className="w-5 h-5 sm:w-6 sm:h-6 text-amber-400" />
-            </div>
-            <div>
-              <h4 className="font-display font-bold text-white text-sm sm:text-lg">
-                Multi-Sector & Interdisciplinary Innovations Welcome
-              </h4>
-              <p className="text-xs sm:text-sm text-gray-400 mt-0.5">
-                You do not need to choose or lock in a sector during registration. Teams are free to address real-world challenges across any of these 4 vital domains.
-              </p>
-            </div>
-          </div>
-
-          <button
-            onClick={onOpenRegister}
-            className="w-full md:w-auto text-center shrink-0 px-6 py-3 rounded-full bg-amber-400 hover:bg-amber-300 text-black font-mono text-xs font-bold uppercase tracking-wider transition-all shadow-[0_0_20px_rgba(245,158,11,0.3)] hover:scale-105 cursor-pointer"
-          >
-            Claim Your Boarding Pass
-          </button>
         </div>
       </div>
     </section>

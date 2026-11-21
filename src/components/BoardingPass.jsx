@@ -63,7 +63,7 @@ function drawPass(ctx, pass) {
 
   drawField(ctx, 'LAUNCH SITE', [pass.institutionName, pass.collegeAddress].filter(Boolean).join(', '), 438, 360, 190, 4);
   drawField(ctx, 'ARRIVAL SITE', 'KLS Gogte Institute of Technology, Belagavi', 662, 360, 158, 3);
-  drawField(ctx, 'ROCKET', pass.stream ? `${pass.stream} TRACK` : '', 846, 360, 180, 2);
+  drawField(ctx, 'ROCKET', [pass.stream ? `${pass.stream} TRACK` : '', pass.sector].filter(Boolean).join(' • '), 846, 360, 180, 2);
 
   drawField(ctx, 'TEAM LEADER CONTACT', [pass.leaderEmail, pass.leaderContact].filter(Boolean).join('  •  '), 438, 646, 340, 2);
   drawField(ctx, 'SQUAD MEMBERS', [pass.member1Name, pass.member2Name].filter(Boolean).join('  •  '), 817, 646, 360, 2);
@@ -79,6 +79,7 @@ export default function BoardingPass({
   member1Name,
   member2Name,
   stream,
+  sector,
   confirmationId,
   submitted = false
 }) {
@@ -95,6 +96,7 @@ export default function BoardingPass({
     member1Name,
     member2Name,
     stream,
+    sector,
     confirmationId: confirmationId || 'INN-3.0-PREVIEW'
   }), [
     teamName,

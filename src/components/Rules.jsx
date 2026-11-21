@@ -30,9 +30,9 @@ const CATEGORIES = [
 
 const STATS = [
   { icon: Users, label: 'Team Size', value: '3 Members (Fixed)' },
-  { icon: Trophy, label: 'Eligibility', value: 'MCA & BCA Streams' },
+  { icon: Trophy, label: 'Eligibility', value: 'BCA&BSC(CS) | MCA' },
   { icon: Clock, label: 'Duration', value: '24 Hours Non-Stop' },
-  { icon: Scale, label: 'Finalists', value: '10 BCA + 10 MCA Teams' },
+  { icon: Scale, label: 'Finalists', value: '10 BCA&BSC(CS) + 10 MCA Teams' },
   { icon: Laptop, label: 'Setup', value: 'BYOD (Laptops & Chargers)' }
 ];
 
@@ -45,10 +45,10 @@ const RULE_SECTIONS = [
     badgeColor: 'border-amber-400/30 bg-amber-400/10 text-amber-300',
     icon: Users,
     points: [
-      { text: 'Participants must be currently enrolled in an accredited MCA or BCA degree program.', highlight: 'MCA or BCA' },
+      { text: 'Participants must be currently enrolled in an accredited BCA&BSC(CS) | MCA degree program.', highlight: 'BCA&BSC(CS) | MCA' },
       { text: 'Participation is strictly team-based; solo or individual entries are not accepted.', highlight: 'Strictly Team-Based' },
       { text: 'Each team must consist of exactly 3 members (no more, no fewer).', highlight: 'Exactly 3 Members' },
-      { text: 'Cross-stream teams are not allowed: a team must strictly represent either MCA or BCA.', highlight: 'Single Stream Only' },
+      { text: 'Cross-stream teams are not allowed: a team must strictly represent either BCA&BSC(CS) or MCA.', highlight: 'Single Stream Only' },
       { text: 'Original physical college ID cards are mandatory for on-campus entrance & verification.', highlight: 'College ID Required' }
     ]
   },
@@ -75,7 +75,7 @@ const RULE_SECTIONS = [
     badgeColor: 'border-purple-400/30 bg-purple-400/10 text-purple-300',
     icon: Scale,
     points: [
-      { text: 'A maximum of 10 teams from BCA and 10 teams from MCA (20 teams total) will qualify for the grand 24h arena.', highlight: '10 BCA + 10 MCA Teams' },
+      { text: 'A maximum of 10 teams from BCA&BSC(CS) and 10 teams from MCA (20 teams total) will qualify for the grand 24h arena.', highlight: '10 BCA&BSC(CS) + 10 MCA Teams' },
       { text: 'Selection is determined by panel evaluation of initial idea submissions, feasibility, and technical scope.', highlight: 'Merit-Based Shortlisting' },
       { text: 'Registration fees are strictly non-refundable under any circumstance once payment is processed.', highlight: 'Non-Refundable', isWarning: true }
     ]
@@ -104,7 +104,7 @@ const RULE_SECTIONS = [
     icon: Clock,
     points: [
       { text: '24 continuous hours of non-stop architecture, programming, and testing spanning 5th–6th January 2027.', highlight: '24h Non-Stop' },
-      { text: 'MCA and BCA streams run concurrently in parallel labs and are judged on separate podium leaderboards.', highlight: 'Independent Streams' },
+      { text: 'BCA&BSC(CS) and MCA streams run concurrently in parallel labs and are judged on separate podium leaderboards.', highlight: 'Independent Streams' },
       { text: 'Industry mentors and faculty guides will conduct checkpoint rounds for guidance and milestone tracking.', highlight: 'Checkpoint Mentoring' },
       { text: 'Teams must maintain absolute camaraderie: any sabotage, network interference, or obstruction is forbidden.', highlight: 'Fair Play' },
       { text: 'The hackathon concludes with jury pitches, live demos, and the Grand Prize Distribution Ceremony on 6th January.', highlight: 'Grand Demo Finale' }
@@ -155,30 +155,43 @@ const RULE_SECTIONS = [
       { text: 'All verdicts and decisions rendered by the judging panel and organizing committee are final, binding, and uncontestable.', highlight: 'Decisions Final & Binding' }
     ]
   },
-  {
-    id: 'venue-logistics',
-    category: 'logistics',
-    title: 'Venue & Hardware Logistics',
-    badge: 'Campus Ops',
-    badgeColor: 'border-cyan-400/30 bg-cyan-400/10 text-cyan-300',
-    icon: MapPin,
-    points: [
-      { text: 'Teams must remain inside the assigned innovation labs and designated hackathon floors during coding hours.', highlight: 'Designated Lab Workspaces' },
-      { text: 'Bring your own hardware: laptops, power adapters, extension boards, and smartphones must be brought by participants.', highlight: 'BYOD Hardware' },
-      { text: 'High-speed campus network and uninterrupted backup power will be provided throughout the entire 24h event.', highlight: 'Power & Wi-Fi Backed' },
-      { text: 'Scheduled nourishment breaks for snacks, midnight refreshments, coffee/tea, and meals are provided.', highlight: 'Meals & Coffee Included' },
-      { text: 'Participants are solely responsible for the physical security and care of their personal electronic gadgets.', highlight: 'Personal Equipment Safety' }
-    ]
-  },
+  
+{
+  id: 'venue-logistics',
+  category: 'logistics',
+  title: 'Hackathon Essentials',
+  badge: 'Event Essentials',
+  badgeColor: 'border-cyan-400/30 bg-cyan-400/10 text-cyan-300',
+  icon: Laptop,
+  points: [
+    {
+      text: 'Teams must stay within their assigned innovation labs and designated hackathon areas during coding hours.',
+      highlight: 'Designated Lab Workspaces'
+    },
+    {
+      text: 'Participants must bring their own laptops, chargers, extension boards, smartphones, and other required equipment.',
+      highlight: 'Bring Your Own Device (BYOD)'
+    },
+    {
+      text: 'High-speed campus Wi-Fi and backup power will be available throughout the 24-hour hackathon.',
+      highlight: 'Power & Wi-Fi Support'
+    },
+    {
+      text: 'Participants are responsible for the safety and security of their personal belongings and electronic devices.',
+      highlight: 'Personal Equipment Safety'
+    }
+  ]
+},
+
   {
     id: 'accommodation',
     category: 'logistics',
-    title: 'Accommodation & Hospitality',
+    title: 'Hospitality',
     badge: 'Night Stay',
     badgeColor: 'border-purple-400/30 bg-purple-400/10 text-purple-300',
     icon: Hotel,
     points: [
-      { text: 'Overnight accommodation and resting zones will be arranged exclusively for the night of 5th January 2027.', highlight: 'Night of 5th Jan Only' },
+      { text: 'Overnight resting zones will be arranged exclusively for the night of 5th January 2027.', highlight: 'Night of 5th Jan Only' },
       { text: 'Rest zones with separate amenities for male and female participants will be operational on campus.', highlight: 'Separate Rest Areas' },
       { text: 'Complete all-inclusive hospitality across both days: breakfast, lunch, evening tea/coffee, and dinner on 5th Jan, midnight refreshments, plus breakfast and lunch on 6th Jan before the award ceremony.', highlight: 'All Meals Included' },
       { text: 'Any participant wishing to leave the campus premises before the closing ceremony must obtain official permission from organizers.', highlight: 'Campus Gate Passes' }
@@ -268,15 +281,20 @@ export default function Rules() {
 
         {/* HUD Quick Stats Strip */}
         <div className="mb-10 sm:mb-12 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
-          {STATS.map(({ icon: Icon, label, value }) => (
+          {STATS.map(({ icon: Icon, label, value }, idx) => (
             <div
               key={label}
-              className="rounded-2xl border border-white/10 bg-[#0d0d14]/70 p-3 sm:p-4 backdrop-blur-xl flex flex-col items-center text-center shadow-[0_4px_20px_rgba(0,0,0,0.4)] hover:border-amber-400/40 transition-colors"
+              style={{
+                animationDelay: `${idx * 70}ms`
+              }}
+              className="group relative rounded-2xl border border-white/10 bg-[#0d0d14]/70 p-3 sm:p-4 backdrop-blur-xl flex flex-col items-center text-center shadow-[0_4px_20px_rgba(0,0,0,0.4)] hover:border-amber-400/50 hover:bg-[#12121b] hover:-translate-y-1.5 transition-all duration-300 overflow-hidden animate-rule-card"
             >
-              <div className="mb-2 p-2 rounded-xl bg-amber-400/10 border border-amber-400/25 text-amber-400">
+              {/* Backlight Ambient Glow on Hover */}
+              <div className="pointer-events-none absolute -top-10 left-1/2 -translate-x-1/2 w-24 h-24 bg-amber-400/0 group-hover:bg-amber-400/15 rounded-full blur-xl transition-all duration-300" />
+              <div className="mb-2 p-2 rounded-xl bg-amber-400/10 border border-amber-400/25 text-amber-400 group-hover:scale-115 group-hover:bg-amber-400/25 group-hover:border-amber-400/50 group-hover:shadow-[0_0_16px_rgba(245,158,11,0.4)] transition-all duration-300">
                 <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
-              <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-wider text-gray-400">
+              <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-wider text-gray-400 group-hover:text-amber-300 transition-colors">
                 {label}
               </span>
               <span className="mt-0.5 font-display font-bold text-xs sm:text-sm text-white">
@@ -301,15 +319,15 @@ export default function Rules() {
                   key={cat.id}
                   type="button"
                   onClick={() => setActiveCategory(cat.id)}
-                  className={`flex items-center gap-1.5 px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full font-mono text-[11px] sm:text-xs uppercase tracking-wider font-bold transition-all cursor-pointer ${
+                  className={`relative flex items-center gap-1.5 px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full font-mono text-[11px] sm:text-xs uppercase tracking-wider font-bold transition-all duration-200 cursor-pointer active:scale-95 ${
                     isActive
-                      ? 'bg-amber-400 text-black shadow-[0_0_15px_rgba(245,158,11,0.4)]'
-                      : 'text-gray-400 hover:text-white hover:bg-white/5'
+                      ? 'bg-amber-400 text-black shadow-[0_0_20px_rgba(245,158,11,0.5)] animate-tab-active scale-102'
+                      : 'text-gray-400 hover:text-white hover:bg-white/5 hover:scale-102'
                   }`}
                 >
                   <span>{cat.label}</span>
                   <span
-                    className={`px-1.5 py-0.2 rounded-full text-[9px] ${
+                    className={`px-1.5 py-0.2 rounded-full text-[9px] transition-colors ${
                       isActive ? 'bg-black/20 text-black font-extrabold' : 'bg-white/10 text-gray-400'
                     }`}
                   >
@@ -323,19 +341,26 @@ export default function Rules() {
 
         {/* Results Counter */}
         <div className="mb-6 flex items-center justify-between text-xs font-mono text-gray-400 px-1">
-          <span>
-            Showing <strong className="text-amber-400">{filteredSections.length}</strong> of{' '}
-            {RULE_SECTIONS.length} directive sections
-          </span>
-          <span className="text-[11px] text-gray-500 uppercase tracking-wider">
-            {activeCategory === 'all' ? 'All Competition Categories' : CATEGORIES.find(c => c.id === activeCategory)?.label}
+          <div className="flex items-center gap-2">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500" />
+            </span>
+            <span>
+              Showing <strong className="text-amber-400">{filteredSections.length}</strong> of{' '}
+              {RULE_SECTIONS.length} directive sections
+            </span>
+          </div>
+          <span className="text-[11px] text-gray-500 uppercase tracking-wider flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400/80 animate-pulse" />
+            <span>{activeCategory === 'all' ? 'All Competition Categories' : CATEGORIES.find(c => c.id === activeCategory)?.label}</span>
           </span>
         </div>
 
         {/* 2-Column Responsive Bento Grid */}
         {filteredSections.length === 0 ? (
-          <div className="rounded-2xl border border-white/10 bg-[#0d0d14]/70 p-12 text-center backdrop-blur-xl">
-            <AlertTriangle className="w-10 h-10 text-amber-400 mx-auto mb-3" />
+          <div className="rounded-2xl border border-white/10 bg-[#0d0d14]/70 p-12 text-center backdrop-blur-xl animate-fade-in">
+            <AlertTriangle className="w-10 h-10 text-amber-400 mx-auto mb-3 animate-bounce" />
             <h3 className="font-display font-bold text-lg text-white">No Protocols Found</h3>
             <p className="mt-1 text-sm font-sans text-gray-400">
               No rules found in this category.
@@ -343,30 +368,41 @@ export default function Rules() {
             <button
               type="button"
               onClick={() => setActiveCategory('all')}
-              className="mt-4 px-4 py-2 rounded-full bg-white/10 hover:bg-white/15 text-xs font-mono text-white transition-colors"
+              className="mt-4 px-4 py-2 rounded-full bg-white/10 hover:bg-white/15 text-xs font-mono text-white transition-colors cursor-pointer"
             >
               Show All Protocols
             </button>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
-            {filteredSections.map((section) => {
+            {filteredSections.map((section, idx) => {
               const Icon = section.icon;
 
               return (
                 <section
-                  key={section.id}
-                  className="group relative rounded-2xl sm:rounded-3xl border border-white/10 bg-[#0d0d14]/85 p-5 sm:p-7 shadow-[0_10px_35px_rgba(0,0,0,0.6)] backdrop-blur-2xl transition-all duration-300 hover:border-amber-400/40 hover:-translate-y-1 hover:shadow-[0_16px_40px_rgba(245,158,11,0.12)] flex flex-col justify-between"
+                  key={`${activeCategory}-${section.id}`}
+                  style={{
+                    animationDelay: `${idx * 60}ms`
+                  }}
+                  className="group relative rounded-2xl sm:rounded-3xl border border-white/10 bg-[#0d0d14]/85 p-5 sm:p-7 shadow-[0_10px_35px_rgba(0,0,0,0.6)] backdrop-blur-2xl transition-all duration-300 hover:border-amber-400/50 hover:-translate-y-1.5 hover:shadow-[0_20px_45px_rgba(245,158,11,0.18)] flex flex-col justify-between overflow-hidden animate-rule-card will-change-transform"
                 >
+                  {/* Top Holographic Scanning Border */}
+                  <div className="pointer-events-none absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-amber-400 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 overflow-hidden">
+                    <div className="w-full h-full animate-beam-scan bg-gradient-to-r from-amber-500 via-amber-300 to-yellow-200" />
+                  </div>
+
+                  {/* Ambient Hover Backlight Glow */}
+                  <div className="pointer-events-none absolute -top-16 -right-16 w-52 h-52 bg-amber-500/[0.03] group-hover:bg-amber-500/[0.12] rounded-full blur-3xl transition-all duration-500" />
+
                   <div>
                     {/* Card Header: Icon, Title, and Badge */}
-                    <div className="flex items-start justify-between gap-3 mb-5 pb-4 border-b border-white/10">
+                    <div className="flex items-start justify-between gap-3 mb-5 pb-4 border-b border-white/10 relative z-10">
                       <div className="flex items-center gap-3">
-                        <div className="p-2.5 rounded-xl bg-amber-400/10 border border-amber-400/25 text-amber-400 group-hover:scale-105 group-hover:bg-amber-400/20 transition-all shrink-0">
+                        <div className="p-2.5 rounded-xl bg-amber-400/10 border border-amber-400/25 text-amber-400 group-hover:scale-110 group-hover:bg-amber-400/25 group-hover:border-amber-400/60 group-hover:shadow-[0_0_20px_rgba(245,158,11,0.4)] transition-all duration-300 shrink-0">
                           <Icon className="w-5 h-5 sm:w-6 sm:h-6" strokeWidth={2} />
                         </div>
                         <div>
-                          <h2 className="font-display text-base sm:text-lg font-bold text-white group-hover:text-amber-300 transition-colors">
+                          <h2 className="font-display text-base sm:text-lg font-bold text-white group-hover:text-amber-300 transition-colors duration-200">
                             {section.title}
                           </h2>
                           <span className="font-mono text-[10px] text-gray-500 uppercase tracking-wider">
@@ -376,32 +412,35 @@ export default function Rules() {
                       </div>
 
                       <span
-                        className={`shrink-0 inline-flex items-center px-2.5 py-0.5 rounded-full border font-mono text-[10px] uppercase tracking-wider font-semibold ${section.badgeColor}`}
+                        className={`shrink-0 inline-flex items-center px-2.5 py-0.5 rounded-full border font-mono text-[10px] uppercase tracking-wider font-semibold transition-all duration-300 group-hover:scale-105 group-hover:shadow-[0_0_12px_rgba(245,158,11,0.25)] ${section.badgeColor}`}
                       >
                         {section.badge}
                       </span>
                     </div>
 
                     {/* Bullet Points with Highlight Badges */}
-                    <ul className="space-y-3.5">
-                      {section.points.map((pt, idx) => (
-                        <li key={idx} className="flex items-start gap-3 group/item">
+                    <ul className="space-y-3.5 relative z-10">
+                      {section.points.map((pt, pIdx) => (
+                        <li
+                          key={pIdx}
+                          className="flex items-start gap-3 group/item transition-transform duration-200 hover:translate-x-1.5"
+                        >
                           <span
-                            className={`mt-1 flex h-4 w-4 shrink-0 items-center justify-center rounded-full text-[10px] font-bold ${
+                            className={`mt-1 flex h-4 w-4 shrink-0 items-center justify-center rounded-full text-[10px] font-bold transition-all duration-300 ${
                               pt.isWarning
-                                ? 'bg-amber-500/20 text-amber-400 border border-amber-400/40'
-                                : 'bg-white/10 text-amber-400 group-hover/item:bg-amber-400/20 transition-colors'
+                                ? 'bg-amber-500/20 text-amber-400 border border-amber-400/40 group-hover/item:scale-115 group-hover/item:shadow-[0_0_10px_rgba(245,158,11,0.6)]'
+                                : 'bg-white/10 text-amber-400 group-hover/item:bg-amber-400 group-hover/item:text-black group-hover/item:scale-115 group-hover/item:shadow-[0_0_12px_rgba(245,158,11,0.7)]'
                             }`}
                           >
                             ✓
                           </span>
                           <p className="text-xs sm:text-sm font-sans text-gray-300 leading-relaxed">
                             {pt.highlight && (
-                              <span className="mr-1.5 font-mono text-[11px] font-bold text-amber-300 bg-amber-400/10 px-2 py-0.5 rounded-md border border-amber-400/20 inline-block">
+                              <span className="mr-1.5 font-mono text-[11px] font-bold text-amber-300 bg-amber-400/10 px-2 py-0.5 rounded-md border border-amber-400/20 inline-block transition-all duration-200 group-hover/item:border-amber-400/60 group-hover/item:bg-amber-400/25 group-hover/item:text-amber-200 group-hover/item:shadow-[0_0_8px_rgba(245,158,11,0.2)]">
                                 {pt.highlight}
                               </span>
                             )}
-                            <span className={pt.isWarning ? 'text-amber-200/90 font-medium' : ''}>
+                            <span className={`${pt.isWarning ? 'text-amber-200/90 font-medium' : ''} group-hover/item:text-white transition-colors duration-200`}>
                               {pt.text}
                             </span>
                           </p>
@@ -411,10 +450,11 @@ export default function Rules() {
                   </div>
 
                   {/* Card Micro Footer Line */}
-                  <div className="mt-5 pt-3 border-t border-white/5 flex items-center justify-between text-[10px] font-mono text-gray-500">
+                  <div className="mt-5 pt-3 border-t border-white/5 flex items-center justify-between text-[10px] font-mono text-gray-500 relative z-10">
                     <span>INNOVERSE 3.0 PROTOCOL</span>
-                    <span className="text-amber-400/60 font-semibold group-hover:text-amber-300 transition-colors">
-                      VERIFIED DIRECTIVE ▹
+                    <span className="text-amber-400/60 font-semibold group-hover:text-amber-300 transition-colors flex items-center gap-1">
+                      <span>VERIFIED DIRECTIVE</span>
+                      <span className="inline-block transition-transform duration-300 group-hover:translate-x-1 font-bold">▹</span>
                     </span>
                   </div>
                 </section>

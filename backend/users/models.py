@@ -1,6 +1,7 @@
 import os
 import re
 import uuid
+from django.core.exceptions import ValidationError
 from django.db import models, transaction
 
 
@@ -57,7 +58,12 @@ class Registration(models.Model):
         db_index=True,
         help_text="Unique boarding pass / sequential confirmation ID (e.g. INN-3.0-001)"
     )
-    team_name = models.CharField(max_length=150)
+    team_name = models.CharField(
+        max_length=150,
+        unique=True,
+        db_index=True,
+        help_text="Unique name of the participating team"
+    )
     leader_name = models.CharField(max_length=150)
     leader_email = models.EmailField()
     leader_contact = models.CharField(max_length=20)
@@ -96,7 +102,19 @@ class Registration(models.Model):
         verbose_name = 'Hackathon Registration'
         verbose_name_plural = 'Hackathon Registrations'
 
+    def clean(self):
+        super().clean()
+        if self.team_name:
+            self.team_name = self.team_name.strip()
+            qs = Registration.objects.filter(team_name__iexact=self.team_name)
+            if self.pk:
+                qs = qs.exclude(pk=self.pk)
+            if qs.exists():
+                raise ValidationError({'team_name': f"Team name '{self.team_name}' is already taken. Please choose a unique name."})
+
     def save(self, *args, **kwargs):
+        if self.team_name:
+            self.team_name = self.team_name.strip()
         if not self.confirmation_id:
             with transaction.atomic():
                 new_id = get_next_serial_confirmation_id()

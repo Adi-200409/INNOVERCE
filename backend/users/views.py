@@ -53,6 +53,29 @@ class RegistrationListView(generics.ListAPIView):
     permission_classes = [AllowAny]
 
 
+class CheckTeamNameView(APIView):
+    """
+    Real-time team name availability check.
+    GET /api/check-team-name/?name=CyberKnights
+    """
+    permission_classes = [AllowAny]
+
+    def get(self, request, *args, **kwargs):
+        team_name = (request.query_params.get('name') or request.query_params.get('team_name') or '').strip()
+        if not team_name:
+            return Response(
+                {"available": False, "message": "Team name cannot be empty."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        exists = Registration.objects.filter(team_name__iexact=team_name).exists()
+        return Response({
+            "available": not exists,
+            "team_name": team_name,
+            "message": f"Team name '{team_name}' is already taken. Please choose a unique squad name." if exists else f"Team name '{team_name}' is available!"
+        }, status=status.HTTP_200_OK)
+
+
 class TeamLoginView(APIView):
     permission_classes = [AllowAny]
 
@@ -215,6 +238,25 @@ class RegistrationStatsView(APIView):
                     "students": total_students,
                 },
                 "domains": domains,
+            },
+            status=status.HTTP_200_OK,
+        )
+
+
+class HealthCheckView(APIView):
+    """
+    Lightweight health check endpoint to verify backend server responsiveness.
+    GET /api/health/
+    """
+    permission_classes = [AllowAny]
+
+    def get(self, request, *args, **kwargs):
+        return Response(
+            {
+                "success": True,
+                "status": "online",
+                "service": "INNOVERSE 3.0 Telemetry Gateway",
+                "database": "connected",
             },
             status=status.HTTP_200_OK,
         )

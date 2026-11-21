@@ -35,3 +35,137 @@
 .animate-fade-in {
   animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
+/* Rules & Guidelines Interactive Animations */
+@keyframes ruleCardAppear {
+  0% {
+    opacity: 0;
+    transform: translateY(22px) scale(0.97);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes beamScan {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes tabGlowPulse {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(245, 158, 11, 0.4), inset 0 0 10px rgba(245, 158, 11, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(245, 158, 11, 0.7), inset 0 0 14px rgba(245, 158, 11, 0.35);
+  }
+}
+
+.animate-rule-card {
+  animation: ruleCardAppear 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-beam-scan {
+  animation: beamScan 3s ease-in-out infinite;
+}
+
+.animate-tab-active {
+  animation: tabGlowPulse 2.5s ease-in-out infinite;
+}
+
+/* Team Tab Switch Animations - 3D Sci-Fi Holographic Warp & Scanline */
+@keyframes teamWarpDev {
+  0% {
+    opacity: 0;
+    transform: perspective(1000px) rotateY(-24deg) translateX(-32px) scale(0.9);
+    filter: blur(6px) brightness(1.5);
+  }
+  50% {
+    filter: blur(1px) brightness(1.15);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(1000px) rotateY(0deg) translateX(0) scale(1);
+    filter: blur(0px) brightness(1);
+  }
+}
+
+@keyframes teamWarpOrg {
+  0% {
+    opacity: 0;
+    transform: perspective(1000px) rotateY(24deg) translateX(32px) scale(0.9);
+    filter: blur(6px) brightness(1.5);
+  }
+  50% {
+    filter: blur(1px) brightness(1.15);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(1000px) rotateY(0deg) translateX(0) scale(1);
+    filter: blur(0px) brightness(1);
+  }
+}
+
+@keyframes teamScanline {
+  0% {
+    top: -40%;
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.9;
+  }
+  80% {
+    opacity: 0.7;
+  }
+  100% {
+    top: 140%;
+    opacity: 0;
+  }
+}
+
+@keyframes teamHoloPulse {
+  0% {
+    opacity: 0.7;
+    transform: scaleX(0.4);
+  }
+  50% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+  100% {
+    opacity: 0.7;
+    transform: scaleX(0.4);
+  }
+}
+
+.animate-team-warp-dev {
+  animation: teamWarpDev 0.52s cubic-bezier(0.16, 1, 0.3, 1) both;
+  will-change: transform, opacity, filter;
+}
+
+.animate-team-warp-org {
+  animation: teamWarpOrg 0.52s cubic-bezier(0.16, 1, 0.3, 1) both;
+  will-change: transform, opacity, filter;
+}
+
+.animate-team-scanline {
+  animation: teamScanline 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  will-change: top, opacity;
+}
+
+.animate-holo-pulse {
+  animation: teamHoloPulse 2s ease-in-out infinite;
+}

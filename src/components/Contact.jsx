@@ -4,7 +4,7 @@ import { useScrollReveal } from '../hooks/useScrollReveal';
 
 const CONTACTS = [
   { name: 'Vaishnavi Shivkale', phone: '79751 11929' },
-  { name: 'Aditya Belled', phone: '76766 87006' }
+  { name: 'xyz', phone: '454545456' }
 ];
 
 export default function Contact() {

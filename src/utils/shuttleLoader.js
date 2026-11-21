@@ -22,18 +22,17 @@ export function preloadShuttleModel() {
       const metallicMap = texLoader.load('/nexus-1-space-shuttle/space_shuttle_3d_model_metallic.JPEG');
       const roughnessMap = texLoader.load('/nexus-1-space-shuttle/space_shuttle_3d_model_roughness.JPEG');
 
-      const envMap = texLoader.load('/cosmic-space-bg.jpg');
-      envMap.mapping = THREE.EquirectangularReflectionMapping;
-
+      // Authentic Space Shuttle Ceramic PBR Material (dielectric white ceramic tiles with soft cosmic starlight fill)
       const shuttleMaterial = new THREE.MeshStandardMaterial({
         map: baseColorMap,
         normalMap: normalMap,
         metalnessMap: metallicMap,
         roughnessMap: roughnessMap,
-        metalness: 0.88,
-        roughness: 0.32,
-        envMap: envMap,
-        envMapIntensity: 1.75
+        color: new THREE.Color(0xffffff),
+        metalness: 0.12,
+        roughness: 0.45,
+        emissive: new THREE.Color(0x283344), // Subtle ambient illumination so it NEVER turns pitch black in orbit
+        emissiveIntensity: 0.45
       });
 
       const objLoader = new OBJLoader();

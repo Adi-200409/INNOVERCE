@@ -9,6 +9,15 @@ class RegistrationSerializer(serializers.ModelSerializer):
     confirmationId = serializers.CharField(source='confirmation_id', read_only=True)
     created_at = serializers.DateTimeField(read_only=True)
     createdAt = serializers.DateTimeField(source='created_at', read_only=True)
+    team_name = serializers.CharField(
+        max_length=150,
+        required=True,
+        error_messages={
+            'required': 'Team name is required.',
+            'blank': 'Team name cannot be blank.',
+            'max_length': 'Team name cannot exceed 150 characters.'
+        }
+    )
     utr_number = serializers.CharField(
         max_length=12,
         required=True,
@@ -70,6 +79,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
             'utr': 'utr_number',
             'paymentScreenshot': 'payment_screenshot',
             'screenshot': 'payment_screenshot',
+            'sector': 'domain',
         }
         for camel, snake in camel_to_snake.items():
             if camel in data and snake not in data:
@@ -79,6 +89,17 @@ class RegistrationSerializer(serializers.ModelSerializer):
             data['stream'] = data['stream'].strip().upper()
 
         return super().to_internal_value(data)
+
+    def validate_team_name(self, value):
+        cleaned = str(value or '').strip()
+        if not cleaned:
+            raise serializers.ValidationError("Team name is required.")
+        qs = Registration.objects.filter(team_name__iexact=cleaned)
+        if self.instance:
+            qs = qs.exclude(pk=self.instance.pk)
+        if qs.exists():
+            raise serializers.ValidationError(f"Team name '{cleaned}' is already taken. Please choose a unique team name.")
+        return cleaned
 
     def validate_utr_number(self, value):
         val = str(value or '').strip()

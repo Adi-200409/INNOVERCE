@@ -15,20 +15,25 @@ import TracksModal from './components/TracksModal';
 import Preloader from './components/Preloader';
 import CosmicBackground from './components/CosmicBackground';
 import MissionControlChatbot from './components/MissionControlChatbot';
+import NotFoundPage from './components/NotFoundPage';
+import ServerErrorModal from './components/ServerErrorModal';
+import ErrorBoundary from './components/ErrorBoundary';
 import { hasSeenInitialPreloader, markInitialPreloaderSeen } from './utils/sessionPreloader';
 import './App.css';
 
 function App() {
-  const normalizedPath = window.location.pathname.replace(/\/+$/, '');
+  const normalizedPath = window.location.pathname.replace(/\/+$/, '') || '/';
   const isRulesPage = normalizedPath === '/rules';
+  const isHome = normalizedPath === '/' || normalizedPath === '/index.html';
+  const is404 = !isHome && !isRulesPage;
 
   const alreadySeenPreloader = hasSeenInitialPreloader();
-  const shouldShowPreloader = !isRulesPage && !alreadySeenPreloader;
+  const shouldShowPreloader = !isRulesPage && !is404 && !alreadySeenPreloader;
 
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
   const [isTracksOpen, setIsTracksOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(shouldShowPreloader);
-  const [isReady, setIsReady] = useState(isRulesPage || alreadySeenPreloader);
+  const [isReady, setIsReady] = useState(isRulesPage || is404 || alreadySeenPreloader);
 
   // Guarantee that on initial load and reload, the page always starts at top: 0
   useEffect(() => {
@@ -82,40 +87,47 @@ function App() {
   };
 
   return (
-    <div className="relative w-full min-h-screen bg-[#060608] text-white overflow-x-hidden selection:bg-amber-400 selection:text-black">
-      {/* Moving Cosmic Starfield Background */}
-      <CosmicBackground />
+    <ErrorBoundary>
+      <div className="relative w-full min-h-screen bg-[#060608] text-white overflow-x-hidden selection:bg-amber-400 selection:text-black">
+        {/* Moving Cosmic Starfield Background */}
+        <CosmicBackground />
 
-      {/* Initial Full-Screen Loading State */}
-      {isLoading && (
-        <Preloader
-          onStartExit={handlePreloaderStartExit}
-          onComplete={handlePreloaderComplete}
-        />
-      )}
+        {/* Initial Full-Screen Loading State */}
+        {isLoading && (
+          <Preloader
+            onStartExit={handlePreloaderStartExit}
+            onComplete={handlePreloaderComplete}
+          />
+        )}
 
-      {/* Sticky Top Navigation Bar */}
-      <Navbar
-        isReady={isReady}
-        onOpenRegister={handleOpenRegister}
-        onOpenTracks={() => setIsTracksOpen(true)}
-      />
+        {/* Sticky Top Navigation Bar (Hidden on 404 page for clean dedicated layout) */}
+        {!is404 && (
+          <Navbar
+            isReady={isReady}
+            onOpenRegister={handleOpenRegister}
+            onOpenTracks={() => setIsTracksOpen(true)}
+          />
+        )}
 
-      {/* Main Content with smooth cinematic reveal */}
-      <div
-        className={`w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-          isReady
-            ? 'opacity-100 scale-100'
-            : 'opacity-0 scale-[0.99] pointer-events-none'
-        }`}
-      >
-        {/* Main Hackathon Mission Sections */}
-        {isRulesPage ? (
-          <main className="w-full relative z-20">
-            <Rules />
-          </main>
-        ) : (
-          <main id="main-content" className="w-full relative z-20">
+        {/* Main Content with smooth cinematic reveal */}
+        <div
+          className={`w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+            isReady
+              ? 'opacity-100 scale-100'
+              : 'opacity-0 scale-[0.99] pointer-events-none'
+          }`}
+        >
+          {/* Main Hackathon Mission Sections */}
+          {is404 ? (
+            <main className="w-full relative z-20">
+              <NotFoundPage currentPath={normalizedPath} />
+            </main>
+          ) : isRulesPage ? (
+            <main className="w-full relative z-20">
+              <Rules />
+            </main>
+          ) : (
+            <main id="main-content" className="w-full relative z-20">
             {/* 1. Hero Section */}
             <HeroSection
               onOpenRegister={handleOpenRegister}
@@ -185,7 +197,11 @@ function App() {
         onOpenRegister={handleOpenRegister}
         onOpenTracks={() => setIsTracksOpen(true)}
       />
+
+      {/* Global Server Offline / Error Modal */}
+      <ServerErrorModal />
     </div>
+  </ErrorBoundary>
   );
 }
 

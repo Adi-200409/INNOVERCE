@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   ArrowRight,
   Terminal,
@@ -9,7 +9,9 @@ import {
   Layers,
   Award,
   BookOpen,
-  Briefcase
+  Briefcase,
+  GraduationCap,
+  Laptop
 } from 'lucide-react';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 
@@ -24,6 +26,48 @@ const LEARNING_MODALITIES = [
 
 export default function AboutSection({ onOpenRegister: _onOpenRegister, onOpenTracks: _onOpenTracks, bgImage: _bgImage = '/about-bg.jpg' } = {}) {
   const [sectionRef, isVisible] = useScrollReveal();
+
+  // Live registration counts for each track (MCA & BCA)
+  const [trackStats, setTrackStats] = useState({
+    mcaStudents: 0,
+    mcaTeams: 0,
+    bcaStudents: 0,
+    bcaTeams: 0,
+    totalStudents: 0,
+    isLoaded: false
+  });
+
+  useEffect(() => {
+    let isCancelled = false;
+    const fetchStats = async () => {
+      try {
+        const apiBase = (import.meta.env.VITE_API_URL || 'http://localhost:8000').replace(/\/+$/, '');
+        const res = await fetch(`${apiBase}/api/stats/`);
+        if (res.ok) {
+          const data = await res.json();
+          if (!isCancelled && data.success) {
+            setTrackStats({
+              mcaStudents: data.mca?.students || 0,
+              mcaTeams: data.mca?.teams || 0,
+              bcaStudents: data.bca?.students || 0,
+              bcaTeams: data.bca?.teams || 0,
+              totalStudents: data.total?.students || 0,
+              isLoaded: true
+            });
+          }
+        }
+      } catch (err) {
+        // Fallback gracefully without breaking UI
+      }
+    };
+
+    fetchStats();
+    const interval = setInterval(fetchStats, 15000);
+    return () => {
+      isCancelled = true;
+      clearInterval(interval);
+    };
+  }, []);
 
   return (
     <section
@@ -67,12 +111,39 @@ export default function AboutSection({ onOpenRegister: _onOpenRegister, onOpenTr
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-amber-400/30 bg-amber-400/10 text-amber-300 font-mono text-xs uppercase tracking-widest mb-4">
             <span>ABOUT INNOVERSE 3.0</span>
           </div>
-          <h2 className="font-display font-black text-2xl min-[380px]:text-3xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tight text-white leading-[1.08] mb-8 sm:mb-12">
+          <h2 className="font-display font-black text-2xl min-[380px]:text-3xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tight text-white leading-[1.08] mb-5 sm:mb-6">
             What is{' '}
             <span className="bg-gradient-to-r from-amber-200 via-amber-400 to-yellow-500 bg-clip-text text-transparent">
               INNOVERSE 3.0?
             </span>
           </h2>
+
+          {/* Live Track Registration Counters (MCA & BCA) */}
+          <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-4 mb-8 sm:mb-12 w-full px-2">
+            {/* MCA Track Registration Badge */}
+            <div className="group inline-flex items-center gap-2 sm:gap-2.5 px-4 sm:px-5 py-2 sm:py-2.5 rounded-2xl sm:rounded-full border border-amber-400/35 bg-[#0a0a10]/90 backdrop-blur-xl shadow-[0_0_20px_rgba(245,158,11,0.2)] hover:border-amber-400/70 transition-all text-left">
+              <span className="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-[0_0_10px_#f59e0b] animate-pulse shrink-0" />
+              <GraduationCap className="w-4 h-4 sm:w-5 sm:h-5 text-amber-400 shrink-0" />
+              <div className="flex items-baseline gap-1.5 flex-wrap">
+                <span className="font-mono text-xs sm:text-sm font-semibold text-white">MCA Track:</span>
+                <span className="font-display font-black text-sm sm:text-base text-amber-400">{trackStats.mcaStudents}</span>
+                <span className="font-mono text-[11px] sm:text-xs text-gray-300">Registered Students</span>
+                <span className="text-[10px] font-mono text-amber-400/70">({trackStats.mcaTeams} Teams)</span>
+              </div>
+            </div>
+
+            {/* BCA Track Registration Badge */}
+            <div className="group inline-flex items-center gap-2 sm:gap-2.5 px-4 sm:px-5 py-2 sm:py-2.5 rounded-2xl sm:rounded-full border border-cyan-400/35 bg-[#0a0a10]/90 backdrop-blur-xl shadow-[0_0_20px_rgba(56,189,248,0.2)] hover:border-cyan-400/70 transition-all text-left">
+              <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-[0_0_10px_#38bdf8] animate-pulse shrink-0" />
+              <Laptop className="w-4 h-4 sm:w-5 sm:h-5 text-cyan-400 shrink-0" />
+              <div className="flex items-baseline gap-1.5 flex-wrap">
+                <span className="font-mono text-xs sm:text-sm font-semibold text-white">BCA&BSC(CS) Track:</span>
+                <span className="font-display font-black text-sm sm:text-base text-cyan-400">{trackStats.bcaStudents}</span>
+                <span className="font-mono text-[11px] sm:text-xs text-gray-300">Registered Students</span>
+                <span className="text-[10px] font-mono text-cyan-400/70">({trackStats.bcaTeams} Teams)</span>
+              </div>
+            </div>
+          </div>
 
           {/* Description Container with Hover & Entrance Transitions */}
           <div
@@ -105,7 +176,7 @@ export default function AboutSection({ onOpenRegister: _onOpenRegister, onOpenTr
               </p>
               <p>
                 <span className="text-cyan-300">
-                  With separate competitive tracks for MCA and BCA students,
+                  With separate competitive tracks for BCA&BSC(CS) | MCA students,
                 </span>{' '}
                 <span className="text-amber-400">INNOVERSE 3.0</span> aims to inspire new ideas, build futuristic prototypes, and celebrate the spirit of technology and teamwork.
               </p>
@@ -154,8 +225,17 @@ export default function AboutSection({ onOpenRegister: _onOpenRegister, onOpenTr
               <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 border-b border-white/10 pb-6 sm:pb-8">
                 <div className="space-y-3 max-w-2xl">
                   {/* Institutional Affiliation Badge */}
-                  <div className="inline-flex items-center gap-2 px-3 sm:px-3.5 py-1.5 rounded-full border border-amber-400/30 bg-amber-400/10 text-amber-300 font-mono text-[10px] sm:text-xs uppercase tracking-widest">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  <div className="inline-flex items-center gap-2 sm:gap-2.5 px-3 sm:px-4 py-1.5 rounded-full border border-amber-400/30 bg-amber-400/10 text-amber-300 font-mono text-[10px] sm:text-xs uppercase tracking-widest">
+                    <img
+                      src="/kls-logo.png"
+                      alt="KLS"
+                      className="h-4 w-auto object-contain"
+                    />
+                    <img
+                      src="/git-badge-logo.png"
+                      alt="GIT"
+                      className="h-4 w-4 rounded-full object-contain"
+                    />
                     <span>ORGANIZER // KLS GIT • DEPARTMENT OF MCA</span>
                   </div>
 

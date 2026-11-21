@@ -3,7 +3,7 @@ import { Code2, User, ShieldCheck, Mail, Sparkles } from 'lucide-react';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 
 // Developer Profile Photos
-import adityaPhoto from '../images/Aditya.png';
+import adityaPhoto from '../images/Aditya.jpg';
 import nehaPhoto from '../images/Neha.png';
 import zaidPhoto from '../images/Zaid.jpg';
 import shashankPhoto from '../images/Shashank.jpeg';
@@ -11,7 +11,7 @@ import meghaPhoto from '../images/Megha.jpeg';
 import bharatPhoto from '../images/bharat.jpg';
 import harshitaPhoto from '../images/harshita.jpeg';
 import rajeshwariPhoto from '../images/Rajeshwari.jpeg';
-
+import shashankCRPhoto from '../images/ShashankCR.jpeg';
 
 // Crisp inline SVGs for developer social links
 function GithubIcon({ className = "w-3.5 h-3.5" }) {
@@ -102,7 +102,7 @@ const ORGANIZERS = [
     role: 'Event Organizer',
     department: 'Innverse3.0 Organisers',
     type: 'organizer',
-    image: null,
+    image: shashankCRPhoto,
     github: null,
     linkedin: 'https://linkedin.com',
     email: 'contact@git.edu'
@@ -153,12 +153,30 @@ const ORGANIZERS = [
   }
 ];
 
-function TeamMemberCard({ member }) {
+function TeamMemberCard({ member, index = 0, activeTab = 'developers' }) {
   const isDev = member.type === 'developer';
+  const animClass = activeTab === 'developers' ? 'animate-team-warp-dev' : 'animate-team-warp-org';
+
   return (
     <div
-      className="group relative rounded-2xl sm:rounded-3xl border border-white/10 bg-[#0d0d14]/80 backdrop-blur-xl p-5 sm:p-7 flex flex-col items-center text-center transition-all duration-300 hover:border-amber-400/50 hover:-translate-y-1.5 hover:shadow-[0_16px_35px_rgba(245,158,11,0.15)]"
+      key={`${activeTab}-${member.id}`}
+      style={{
+        animationDelay: `${index * 75}ms`
+      }}
+      className={`${animClass} group relative rounded-2xl sm:rounded-3xl border border-white/10 bg-[#0d0d14]/80 backdrop-blur-xl p-5 sm:p-7 flex flex-col items-center text-center transition-all duration-300 hover:border-amber-400/50 hover:-translate-y-1.5 hover:shadow-[0_16px_35px_rgba(245,158,11,0.15)] overflow-hidden`}
     >
+      {/* Holographic Entry Scanline */}
+      <div
+        className={`pointer-events-none absolute -inset-x-4 h-16 opacity-0 animate-team-scanline ${
+          isDev
+            ? 'bg-gradient-to-b from-transparent via-amber-400/25 to-transparent'
+            : 'bg-gradient-to-b from-transparent via-cyan-400/25 to-transparent'
+        }`}
+        style={{
+          animationDelay: `${index * 75 + 100}ms`
+        }}
+      />
+
       {/* Circular Picture Frame */}
       <div className={`relative mb-4 sm:mb-6 flex h-28 w-28 sm:h-36 sm:w-36 items-center justify-center rounded-full transition-all duration-300 shadow-[0_0_25px_rgba(0,0,0,0.7)] group-hover:shadow-[0_0_30px_rgba(245,158,11,0.3)] ${
         member.image
@@ -294,14 +312,23 @@ export default function TeamSection() {
           </p>
 
           {/* Toggle Button: Switch between Developers & Organizers */}
-          <div className="mt-6 sm:mt-8 w-full max-w-sm sm:w-auto flex items-center justify-center p-1 sm:p-1.5 rounded-full border border-white/15 bg-[#0e0e14] backdrop-blur-xl shadow-[0_0_25px_rgba(0,0,0,0.5)]">
+          <div className="relative mt-6 sm:mt-8 w-full max-w-[340px] sm:max-w-md mx-auto grid grid-cols-2 p-1 sm:p-1.5 rounded-full border border-white/15 bg-[#0e0e14]/90 backdrop-blur-xl shadow-[0_0_30px_rgba(0,0,0,0.6)]">
+            {/* Sliding neon highlight pill */}
+            <div
+              className={`absolute top-1 bottom-1 sm:top-1.5 sm:bottom-1.5 w-[calc(50%-4px)] sm:w-[calc(50%-6px)] rounded-full transition-all duration-350 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                activeTab === 'developers'
+                  ? 'left-1 sm:left-1.5 bg-gradient-to-r from-amber-400 to-amber-500 shadow-[0_0_25px_rgba(245,158,11,0.65)]'
+                  : 'left-[calc(50%+2px)] sm:left-[calc(50%+3px)] bg-gradient-to-r from-cyan-400 to-cyan-500 shadow-[0_0_25px_rgba(34,211,238,0.65)]'
+              }`}
+            />
+
             <button
               type="button"
               onClick={() => setActiveTab('developers')}
-              className={`flex-1 sm:flex-initial flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2 sm:py-2.5 rounded-full font-mono text-[11px] min-[380px]:text-xs uppercase tracking-wider font-bold transition-all duration-300 cursor-pointer ${
+              className={`relative z-10 flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2 sm:py-2.5 rounded-full font-mono text-[11px] min-[380px]:text-xs uppercase tracking-wider font-bold transition-colors duration-250 cursor-pointer active:scale-95 ${
                 activeTab === 'developers'
-                  ? 'bg-amber-400 text-black shadow-[0_0_20px_rgba(245,158,11,0.55)] scale-100'
-                  : 'text-white/60 hover:text-white hover:bg-white/5'
+                  ? 'text-black'
+                  : 'text-white/60 hover:text-white'
               }`}
             >
               <Code2 className="w-3.5 h-3.5 shrink-0" />
@@ -311,10 +338,10 @@ export default function TeamSection() {
             <button
               type="button"
               onClick={() => setActiveTab('organizers')}
-              className={`flex-1 sm:flex-initial flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2 sm:py-2.5 rounded-full font-mono text-[11px] min-[380px]:text-xs uppercase tracking-wider font-bold transition-all duration-300 cursor-pointer ${
+              className={`relative z-10 flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2 sm:py-2.5 rounded-full font-mono text-[11px] min-[380px]:text-xs uppercase tracking-wider font-bold transition-colors duration-250 cursor-pointer active:scale-95 ${
                 activeTab === 'organizers'
-                  ? 'bg-amber-400 text-black shadow-[0_0_20px_rgba(245,158,11,0.55)] scale-100'
-                  : 'text-white/60 hover:text-white hover:bg-white/5'
+                  ? 'text-black'
+                  : 'text-white/60 hover:text-white'
               }`}
             >
               <ShieldCheck className="w-3.5 h-3.5 shrink-0" />
@@ -325,14 +352,15 @@ export default function TeamSection() {
 
         {/* Display: Shows Developers by default, switches to Organizers on toggle */}
         <div
-          className={`transition-all duration-700 delay-150 ease-[cubic-bezier(0.16,1,0.3,1)] ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          key={activeTab}
+          className={`transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
             }`}
         >
           {activeTab === 'developers' ? (
-            <div id="developers" className="space-y-6">
+            <div id="developers" key="developers-view" className="space-y-6 animate-team-warp-dev">
               <div className="flex items-center justify-between border-b border-white/10 pb-4">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-xl bg-amber-400/10 border border-amber-400/30 text-amber-300">
+                  <div className="p-2 rounded-xl bg-amber-400/10 border border-amber-400/30 text-amber-300 shadow-[0_0_15px_rgba(245,158,11,0.2)]">
                     <Code2 className="w-5 h-5" />
                   </div>
                   <div>
@@ -350,19 +378,21 @@ export default function TeamSection() {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {DEVELOPERS.map((member) => (
+                {DEVELOPERS.map((member, idx) => (
                   <TeamMemberCard
-                    key={member.id}
+                    key={`${activeTab}-${member.id}`}
                     member={member}
+                    index={idx}
+                    activeTab={activeTab}
                   />
                 ))}
               </div>
             </div>
           ) : (
-            <div id="organizers" className="space-y-6">
+            <div id="organizers" key="organizers-view" className="space-y-6 animate-team-warp-org">
               <div className="flex items-center justify-between border-b border-white/10 pb-4">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-xl bg-cyan-400/10 border border-cyan-400/30 text-cyan-300">
+                  <div className="p-2 rounded-xl bg-cyan-400/10 border border-cyan-400/30 text-cyan-300 shadow-[0_0_15px_rgba(34,211,238,0.2)]">
                     <ShieldCheck className="w-5 h-5" />
                   </div>
                   <div>
@@ -380,10 +410,12 @@ export default function TeamSection() {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {ORGANIZERS.map((member) => (
+                {ORGANIZERS.map((member, idx) => (
                   <TeamMemberCard
-                    key={member.id}
+                    key={`${activeTab}-${member.id}`}
                     member={member}
+                    index={idx}
+                    activeTab={activeTab}
                   />
                 ))}
               </div>
